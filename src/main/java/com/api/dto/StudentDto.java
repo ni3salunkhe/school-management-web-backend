@@ -2,6 +2,8 @@ package com.api.dto;
 
 import java.sql.Date;
 
+import com.api.entity.Student;
+
 import lombok.Data;
 
 @Data
@@ -48,5 +50,7 @@ public class StudentDto {
 	private String currentAcadmicYear;
 	private String ebcInformation;
 	private String minorityInformation;
-
+	
+    
+	
 }
