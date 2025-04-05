@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,6 +25,7 @@ import com.api.service.SchoolService;
 import com.api.service.StateService;
 import com.api.service.TehsilService;
 import com.api.service.VillageService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
 @RequestMapping("/school")
@@ -43,56 +46,55 @@ public class SchoolController {
 	@Autowired
 	private VillageService villageService;
 	
-	@PostMapping("/")
-	public ResponseEntity<School> savedata(@ModelAttribute  SchoolDto schoolDto)
-	{
-		try {
-			School school=new School();
-			school.setUdiseNo(schoolDto.getUdiseNo());
-			school.setSchoolSlogan(schoolDto.getSchoolSlogan());
-			school.setSansthaName(schoolDto.getSansthaName());
-			school.setSchoolName(schoolDto.getSchoolName());
-			school.setTehsil(tehsilService.getbyid (schoolDto.getTehsil()));
-			school.setDistrict(districtService.getbyid( schoolDto.getDistrict()));
-			school.setState(stateService.getbyid(schoolDto.getState()));
-			school.setVillage(villageService.getbyid(schoolDto.getVillage()));
-			school.setPinCode(schoolDto.getPinCode());
-			school.setMedium(schoolDto.getMedium());
-			school.setHeadMasterName(schoolDto.getHeadMasterName());
-			school.setHeadMasterMobileNo(schoolDto.getHeadMasterMobileNo());
-			school.setHeadMasterPassword(schoolDto.getHeadMasterPassword());
-			school.setBoard(schoolDto.getBoard());
-			school.setBoardDivision(schoolDto.getBoardDivision());
-			school.setBoardIndexNo(schoolDto.getBoardIndexNo());
-			school.setSchoolEmailId(schoolDto.getSchoolEmailId());
-			school.setSchoolApprovalNo(schoolDto.getSchoolApprovalNo());
-			
-			
-			if(schoolDto.getLogo() !=null && !schoolDto.getLogo().isEmpty())
-			{
-				MultipartFile logoFile=schoolDto.getLogo();
-				 if (!logoFile.getContentType().startsWith("image/")) {
-		             
-					 return new ResponseEntity<School>(HttpStatus.BAD_REQUEST);
-					 
-		            }
+	@PostMapping(value = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public ResponseEntity<School> savedata(@RequestPart("schoolDto") String schoolDtoJson,
+	                                       @RequestPart(value = "logo", required = false) MultipartFile logoFile) {
+	    try {
+	    	ObjectMapper objectMapper = new ObjectMapper();
+	        SchoolDto schoolDto = objectMapper.readValue(schoolDtoJson, SchoolDto.class);
+	        // If logo file was sent separately, set it in the DTO
+	        if (logoFile != null && !logoFile.isEmpty()) {
+	            schoolDto.setLogo(logoFile);
+	        }
+	        
+	        School school = new School();
+	        school.setUdiseNo(schoolDto.getUdiseNo());
+	        school.setSchoolSlogan(schoolDto.getSchoolSlogan());
+	        school.setSansthaName(schoolDto.getSansthaName());
+	        school.setSchoolName(schoolDto.getSchoolName());
+	        school.setTehsil(tehsilService.getbyid(schoolDto.getTehsil()));
+	        school.setDistrict(districtService.getbyid(schoolDto.getDistrict()));
+	        school.setState(stateService.getbyid(schoolDto.getState()));
+	        school.setVillage(villageService.getbyid(schoolDto.getVillage()));
+	        school.setPinCode(schoolDto.getPinCode());
+	        school.setMedium(schoolDto.getMedium());
+	        school.setHeadMasterName(schoolDto.getHeadMasterName());
+	        school.setHeadMasterMobileNo(schoolDto.getHeadMasterMobileNo());
+	        school.setHeadMasterPassword(schoolDto.getHeadMasterPassword());
+	        school.setBoard(schoolDto.getBoard());
+	        school.setBoardDivision(schoolDto.getBoardDivision());
+	        school.setBoardIndexNo(schoolDto.getBoardIndexNo());
+	        school.setSchoolEmailId(schoolDto.getSchoolEmailId());
+	        school.setSchoolApprovalNo(schoolDto.getSchoolApprovalNo());
 
-				school.setLogo(logoFile.getBytes());
-			}
-			
-			
-			school.setCreatedAt(schoolDto.getCreatedAt());
-			
-			School saveSchool=schoolService.post(school);
-			
-			return new ResponseEntity<School>(saveSchool,HttpStatus.CREATED);
-		
-		} catch (Exception e) {
-			 e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-	}
-	
+	        // Handle logo content
+	        if (schoolDto.getLogo() != null && !schoolDto.getLogo().isEmpty()) {
+	            MultipartFile logo = schoolDto.getLogo();
+	            if (!logo.getContentType().startsWith("image/")) {
+	                return new ResponseEntity<School>(HttpStatus.BAD_REQUEST);
+	            }
+	            school.setLogo(logo.getBytes());
+	        }
+
+	        school.setCreatedAt(schoolDto.getCreatedAt());
+	        
+	        School saveSchool = schoolService.post(school);
+	        return new ResponseEntity<School>(saveSchool, HttpStatus.CREATED);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
+	}	
 	@GetMapping("/")
 	public ResponseEntity<List<School>> getdata()
 	{
