@@ -21,6 +21,7 @@ public class SecurityConfig {
             .csrf().disable()
             .authorizeHttpRequests()
             .requestMatchers("/school/**").permitAll()
+            .requestMatchers("/**").permitAll()
             .anyRequest().authenticated();
 
         return http.build();
