@@ -1,7 +1,11 @@
 package com.api.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,8 +29,10 @@ import com.api.service.TehsilService;
 import com.api.service.VillageService;
 
 @RestController
-@RequestMapping("/student")
+@RequestMapping("api/student")
 public class StudentController {
+	
+	private static final Logger logger = LoggerFactory.getLogger(StudentController.class);
 	
 	@Autowired
 	private StudentService studentService;
@@ -153,5 +159,14 @@ public class StudentController {
 	{
 		studentService.deletedata(id);
 		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+	
+	@GetMapping("/school/{udiseNo}")
+	public ResponseEntity<?> getStudentsBySchool(@PathVariable long udiseNo) {
+		List<Student> students = studentService.getStudentsBySchool(udiseNo);
+		if (students.isEmpty()) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok(students);
 	}
 }
