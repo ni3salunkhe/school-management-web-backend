@@ -3,7 +3,10 @@ package com.api.entity;
 import java.sql.Date;
 
 import jakarta.persistence.Entity;
+<<<<<<< HEAD
 import jakarta.persistence.FetchType;
+=======
+>>>>>>> daa3f1e132236efd940915c9b3a2134fc7401fc1
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -19,18 +22,21 @@ public class Student {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
+<<<<<<< HEAD
 	
+=======
+>>>>>>> daa3f1e132236efd940915c9b3a2134fc7401fc1
 	private long registerNumber;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "school_udise_no", nullable = false)
 	private School school;
 	
-	private long apparId;
+	private String apparId;
 	
-	private long studentId;
+	private String studentId;
 	
-	private long adhaarNumber;
+	private String adhaarNumber;
 	
 	private String gender;
 	
@@ -45,6 +51,8 @@ public class Student {
 	private String subCast;
 	private String residentialAddress;
 	private String mobileNo;
+	private String birthPlace;
+	
 	@ManyToOne
 	private Village villageOfBirth;
 	@ManyToOne
@@ -60,8 +68,8 @@ public class Student {
 	private Date admissionDate;
 	private String whichStandardAdmitted;
 	private Date createdAt;
-	private String currentAcadmicYear;
 	private String ebcInformation;
 	private String minorityInformation;
+	private String casteCategory;
 	
 }

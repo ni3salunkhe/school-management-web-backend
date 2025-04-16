@@ -35,17 +35,17 @@ public class School {
 	@JoinColumn(name = "villageId")
 	private Village village;
 	
-	private long pinCode;
+	private String pinCode;
 	private String medium;
-	private String headMasterName;
+	private String headMasterUserName;
 	private String headMasterMobileNo;
 	private String headMasterPassword;
 	private String schoolPlace;
 	private String board;
 	private String boardDivision;
-	private long boardIndexNo;
+	private String boardIndexNo;
 	private String schoolEmailId;
-	private long schoolApprovalNo;
+	private String schoolApprovalNo;
 	private Date createdAt;
 	
 	@Lob

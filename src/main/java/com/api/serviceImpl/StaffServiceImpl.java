@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.api.entity.School;
 import com.api.entity.Staff;
 import com.api.repository.StaffRepository;
 import com.api.service.StaffService;
@@ -37,6 +38,18 @@ public class StaffServiceImpl implements StaffService{
 	public void deletedata(long id) {
 		// TODO Auto-generated method stub
 		staffRepository.deleteById(id);
+	}
+
+	@Override
+	public List<Staff> getUnassignedStaff() {
+		// TODO Auto-generated method stub
+		return staffRepository.findUnassignedStaff();
+	}
+
+	@Override
+	public List<Staff> getaAllDataByUdise(long udiseNo) {
+		// TODO Auto-generated method stub
+		return staffRepository.findBySchool_UdiseNo(udiseNo);
 	}
 
 }

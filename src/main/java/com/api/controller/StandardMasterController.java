@@ -9,6 +9,8 @@ import java.util.stream.IntStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -69,5 +71,29 @@ public class StandardMasterController {
 		return new ResponseEntity<StandardMaster>(HttpStatus.CREATED);
 
 	}
+	
+	@GetMapping("/")
+	public ResponseEntity<List<StandardMaster>> getalldata()
+	{
+		List<StandardMaster> standardMaster=standardMasterService.getdata();
+		
+		return new ResponseEntity<List<StandardMaster>>(standardMaster,HttpStatus.OK);
+	}
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<StandardMaster> getbyiddata(@PathVariable long id)
+	{
+		StandardMaster standardMaster=standardMasterService.getbyid(id);
+		
+		return new ResponseEntity<StandardMaster>(standardMaster,HttpStatus.OK);
+	}
 
+	@GetMapping("getbyudise/{udiseNo}")
+	public ResponseEntity<List<StandardMaster>> getbyUdiseAllStandard(@PathVariable long udiseNo)
+	{
+		List<StandardMaster> standardMaster=standardMasterService.getStandardAllDataBySchool(udiseNo);
+		
+		return new ResponseEntity<List<StandardMaster>>(standardMaster,HttpStatus.OK);
+	}
+	
 }

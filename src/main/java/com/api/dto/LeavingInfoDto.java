@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class LeavingInfoDto {
 
-	private long studentRegisterNo;
+	private long studentId;
 
 	private String reasonOfLeavingSchool;
 

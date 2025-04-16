@@ -22,7 +22,7 @@ public class LeavingInfo {
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "studentRegistrationNo" ,referencedColumnName = "id")
-	private Student studentRegisterNo;
+	private Student studentId;
 	
 	
 	

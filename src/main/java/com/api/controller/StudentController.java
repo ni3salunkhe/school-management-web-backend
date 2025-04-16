@@ -1,6 +1,6 @@
 package com.api.controller;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,11 +16,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.api.dto.StudentDto;
+import com.api.entity.AcademicCurrent;
+import com.api.entity.ClassTeacher;
+import com.api.entity.School;
 import com.api.entity.Student;
-
+import com.api.service.AcademicCurrentService;
+import com.api.service.ClassTeacherService;
 import com.api.service.DistrictService;
 import com.api.service.SchoolService;
 import com.api.service.StateService;
@@ -31,33 +36,35 @@ import com.api.service.VillageService;
 @RestController
 @RequestMapping("api/student")
 public class StudentController {
-	
-	private static final Logger logger = LoggerFactory.getLogger(StudentController.class);
-	
+
 	@Autowired
 	private StudentService studentService;
-	
+
 	@Autowired
 	private SchoolService schoolService;
-	
+
 	@Autowired
 	private StateService stateService;
-	
+
 	@Autowired
 	private DistrictService districtService;
-	
+
 	@Autowired
 	private TehsilService tehsilService;
-	
+
 	@Autowired
 	private VillageService villageService;
-	
-	
+
+	@Autowired
+	private ClassTeacherService classTeacherService;
+
+	@Autowired
+	private AcademicCurrentService academicCurrentService;
+
 	@PostMapping("/")
-	public ResponseEntity<Student> savedata(@RequestBody StudentDto studentDto)
-	{
-		Student student=new Student();
-		
+	public ResponseEntity<Student> savedata(@RequestBody StudentDto studentDto) {
+		Student student = new Student();
+
 		student.setRegisterNumber(studentDto.getRegisterNumber());
 		student.setSchool(schoolService.getbyid(studentDto.getSchool()));
 		student.setApparId(studentDto.getApparId());
@@ -83,39 +90,97 @@ public class StudentController {
 		student.setAdmissionDate(studentDto.getAdmissionDate());
 		student.setWhichStandardAdmitted(studentDto.getWhichStandardAdmitted());
 		student.setCreatedAt(studentDto.getCreatedAt());
-		student.setCurrentAcadmicYear(studentDto.getCurrentAcadmicYear());
+		student.setBirthPlace(studentDto.getBirthPlace());
+		student.setCasteCategory(studentDto.getCasteCategory());
 		student.setEbcInformation(studentDto.getEbcInformation());
 		student.setMinorityInformation(studentDto.getMinorityInformation());
 		student.setMobileNo(studentDto.getMobileNo());
 		student.setResidentialAddress(studentDto.getResidentialAddress());
 
-		Student saveStudent=studentService.post(student);
-		
-		return new ResponseEntity<Student>(saveStudent,HttpStatus.OK);
+		Student saveStudent = studentService.post(student);
+
+		return new ResponseEntity<Student>(saveStudent, HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/")
-	public ResponseEntity<List<Student>> getdata(){
-		List<Student> student=studentService.getdata();
-		return new ResponseEntity<List<Student>>(student,HttpStatus.OK);
+	public ResponseEntity<List<Student>> getdata() {
+		List<Student> student = studentService.getdata();
+		return new ResponseEntity<List<Student>>(student, HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/{id}")
-	public ResponseEntity<Student> getbyid(@PathVariable long id)
-	{
-		Student student=studentService.getbyid(id);
-		return new ResponseEntity<Student>(student,HttpStatus.OK);
+	public ResponseEntity<Student> getbyid(@PathVariable long id) {
+		Student student = studentService.getbyid(id);
+		return new ResponseEntity<Student>(student, HttpStatus.OK);
 	}
-	
+
+	@GetMapping("/byudise/{udise}")
+	public ResponseEntity<List<Student>> getbyUdiseOnly(@PathVariable long udise) {
+		List<Student> students = studentService.getAllDataByudise(udise);
+		return new ResponseEntity<List<Student>>(students, HttpStatus.OK);
+	}
+
+//	@GetMapping("/byudise/get/{udise}")
+//	public ResponseEntity<List<Student>> getbyUdiseAndRegisteNo(@PathVariable long udise) {
+//
+//		List<Student> students = studentService.getAllDataByudise(udise);
+//
+//		// Search for register number from the list
+//		for (Student s : students) {
+//			if (s.getId() == studentId) {
+//				return new ResponseEntity<>(s, HttpStatus.OK);
+//			}
+//		}
+//
+//		return new ResponseEntity<>(students,HttpStatus.OK); // If not found
+//	}
+
+	// API for searching students
+	@GetMapping("/search")
+	public ResponseEntity<List<Student>> searchStudents(@RequestParam(required = false) String surName,
+			@RequestParam(required = false) String studentName, @RequestParam(required = false) String fatherName,
+			@RequestParam(required = false) String motherName, @RequestParam Long udise) {
+
+		List<Student> students = studentService.getUnassignedStudents(udise);
+		List<Student> filteredStudents = new ArrayList<>();
+
+		for (Student student : students) {
+			boolean matches = true;
+
+			if (surName != null && !student.getSurName().toLowerCase().contains(surName.toLowerCase())) {
+				matches = false;
+			}
+			if (studentName != null && !student.getStudentName().toLowerCase().contains(studentName.toLowerCase())) {
+				matches = false;
+			}
+			if (fatherName != null && !student.getFatherName().toLowerCase().contains(fatherName.toLowerCase())) {
+				matches = false;
+			}
+			if (motherName != null && !student.getMotherName().toLowerCase().contains(motherName.toLowerCase())) {
+				matches = false;
+			}
+
+			if (matches) {
+				filteredStudents.add(student);
+			}
+		}
+
+		return ResponseEntity.ok(filteredStudents);
+	}
+
+	@GetMapping("/unassigned")
+	public ResponseEntity<List<Student>> getUnassignedStudents(@RequestParam long udise) {
+		List<Student> students = studentService.getUnassignedStudents(udise);
+		return ResponseEntity.ok(students);
+	}
+
 	@PutMapping("/{id}")
-	public ResponseEntity<Student> editdata(@PathVariable long id,@RequestBody StudentDto studentDto)
-	{
-		Student student=studentService.getbyid(id);
-		if(student==null)
-		{
+	public ResponseEntity<Student> editdata(@PathVariable long id, @RequestBody StudentDto studentDto) {
+		Student student = studentService.getbyid(id);
+		if (student == null) {
 			return new ResponseEntity<Student>(HttpStatus.NOT_FOUND);
 		}
-		
+
 		else {
 			student.setRegisterNumber(studentDto.getRegisterNumber());
 			student.setSchool(schoolService.getbyid(studentDto.getSchool()));
@@ -142,21 +207,93 @@ public class StudentController {
 			student.setAdmissionDate(studentDto.getAdmissionDate());
 			student.setWhichStandardAdmitted(studentDto.getWhichStandardAdmitted());
 			student.setCreatedAt(studentDto.getCreatedAt());
-			student.setCurrentAcadmicYear(studentDto.getCurrentAcadmicYear());
+			student.setBirthPlace(studentDto.getBirthPlace());
+			student.setCasteCategory(studentDto.getCasteCategory());
 			student.setEbcInformation(studentDto.getEbcInformation());
 			student.setMinorityInformation(studentDto.getMinorityInformation());
 			student.setMobileNo(studentDto.getMobileNo());
 			student.setResidentialAddress(studentDto.getResidentialAddress());
 
-			Student saveStudent=studentService.post(student);
-			
-			return new ResponseEntity<Student>(saveStudent,HttpStatus.OK);
+			Student saveStudent = studentService.post(student);
+
+			return new ResponseEntity<Student>(saveStudent, HttpStatus.OK);
 
 		}
 	}
+
+	@GetMapping("/byclass/{teacheId}")
+	public ResponseEntity<List<Student>> getallStudentsByClass(@PathVariable long teacherId) {
+		ClassTeacher classTeacher = classTeacherService.getByStaffId(teacherId);
+
+		List<AcademicCurrent> academicCurrents = academicCurrentService.getByClassTeacheId(classTeacher.getId());
+
+		ArrayList<Student> students = new ArrayList<Student>();
+
+		List<Student> studentss = studentService.getdata();
+
+		for (Student student : studentss) {
+			for (AcademicCurrent academicCurrent : academicCurrents) {
+				if (student.getId() == academicCurrent.getStudentId().getId()) {
+					students.add(student);
+				}
+			}
+
+		}
+
+		return new ResponseEntity<List<Student>>(students, HttpStatus.OK);
+	}
+
+	@GetMapping("/byclass/search/{teacherId}")
+	public ResponseEntity<List<Student>> getFilteredStudentsByClassTeacher(
+	        @PathVariable long teacherId,
+	        @RequestParam(required = false) String surName,
+	        @RequestParam(required = false) String studentName,
+	        @RequestParam(required = false) String fatherName,
+	        @RequestParam(required = false) String motherName,
+	        @RequestParam long udise) {
+
+	    ClassTeacher classTeacher = classTeacherService.getByStaffId(teacherId);
+	    List<AcademicCurrent> academicCurrents = academicCurrentService.getByClassTeacheId(classTeacher.getId());
+	    List<Student> allStudents = studentService.getdata();
+	    List<Student> students = new ArrayList<>();
+
+	    for (Student student : allStudents) {
+	        for (AcademicCurrent academicCurrent : academicCurrents) {
+	            if (student.getId() == academicCurrent.getStudentId().getId()) {
+	                students.add(student);
+	                break;
+	            }
+	        }
+	    }
+
+	    // Filter the students by search parameters
+	    List<Student> filteredStudents = new ArrayList<>();
+	    for (Student student : students) {
+	        boolean matches = true;
+
+	        if (surName != null && !student.getSurName().toLowerCase().contains(surName.toLowerCase())) {
+	            matches = false;
+	        }
+	        if (studentName != null && !student.getStudentName().toLowerCase().contains(studentName.toLowerCase())) {
+	            matches = false;
+	        }
+	        if (fatherName != null && !student.getFatherName().toLowerCase().contains(fatherName.toLowerCase())) {
+	            matches = false;
+	        }
+	        if (motherName != null && !student.getMotherName().toLowerCase().contains(motherName.toLowerCase())) {
+	            matches = false;
+	        }
+
+	        if (matches) {
+	            filteredStudents.add(student);
+	        }
+	    }
+
+	    return new ResponseEntity<>(filteredStudents, HttpStatus.OK);
+	}
+	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deletedata(@PathVariable long id)
-	{
+	public ResponseEntity<Void> deletedata(@PathVariable long id) {
 		studentService.deletedata(id);
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}

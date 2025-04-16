@@ -34,7 +34,7 @@ public class LeavingInfoController {
 	public ResponseEntity<LeavingInfo> savedata(@RequestBody LeavingInfoDto leavingInfoDto)
 	{
 		LeavingInfo leavingInfo=new LeavingInfo();
-		leavingInfo.setStudentRegisterNo(studentService.getbyid(leavingInfoDto.getStudentRegisterNo()));
+		leavingInfo.setStudentId(studentService.getbyid(leavingInfoDto.getStudentId()));
 		leavingInfo.setProgress(leavingInfoDto.getProgress());
 		leavingInfo.setBehavior(leavingInfoDto.getBehavior());
 		leavingInfo.setDateOfLeavingSchool(leavingInfoDto.getDateOfLeavingSchool());
@@ -76,7 +76,7 @@ public class LeavingInfoController {
 			return new ResponseEntity<LeavingInfo>(HttpStatus.NOT_FOUND);
 		}
 		else {
-			leavingInfo.setStudentRegisterNo(studentService.getbyid(leavingInfoDto.getStudentRegisterNo()));
+			leavingInfo.setStudentId(studentService.getbyid(leavingInfoDto.getStudentId()));
 			leavingInfo.setProgress(leavingInfoDto.getProgress());
 			leavingInfo.setBehavior(leavingInfoDto.getBehavior());
 			leavingInfo.setDateOfLeavingSchool(leavingInfoDto.getDateOfLeavingSchool());

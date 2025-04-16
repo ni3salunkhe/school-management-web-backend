@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.api.dto.StaffDto;
+import com.api.entity.School;
 import com.api.entity.Staff;
 import com.api.service.SchoolService;
 import com.api.service.StaffService;
@@ -66,6 +67,13 @@ public class StaffController {
 	{
 		Staff staff=staffService.getbyid(id);
 		return new ResponseEntity<Staff>(staff,HttpStatus.OK);
+	}
+	
+	@GetMapping("getbyudise/{udiseNo}")
+	public ResponseEntity<List<Staff>> getByUdiseNumber(@PathVariable long udiseNo)
+	{
+		List<Staff> staff=staffService.getaAllDataByUdise(udiseNo);
+		return new ResponseEntity<List<Staff>>(staff,HttpStatus.OK);
 	}
 	
 	@PutMapping("/{id}")
