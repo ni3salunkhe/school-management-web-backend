@@ -10,6 +10,7 @@ import lombok.Data;
 public class SchoolDto {
 
 	private long udiseNo;
+	
 
 	private String schoolSlogan;
 	private String sansthaName;
@@ -38,4 +39,6 @@ public class SchoolDto {
 
 	
 	private MultipartFile logo;
+	
+	
 }

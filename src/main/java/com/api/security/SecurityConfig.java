@@ -10,10 +10,16 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+<<<<<<< HEAD
 
 @Configuration
 public class SecurityConfig {
 	
+=======
+@Configuration
+public class SecurityConfig {
+
+>>>>>>> 6237fb77c5d87fbfea1df0447b31e3c5c9d7d20b
 	@Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -42,5 +48,19 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", configuration); // Apply to all endpoints
         return source;
     }
+<<<<<<< HEAD
+=======
+
+//    @Bean
+//    public PasswordEncoder passwordEncoder() {
+//        return new BCryptPasswordEncoder(); // Use BCrypt for password hashing
+//    }
+//
+//    @Bean
+//    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+//        return authenticationConfiguration.getAuthenticationManager(); // Expose AuthenticationManager as a bean
+//    }
+
+>>>>>>> 6237fb77c5d87fbfea1df0447b31e3c5c9d7d20b
 	
 }

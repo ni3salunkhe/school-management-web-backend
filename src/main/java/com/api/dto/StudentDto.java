@@ -2,6 +2,8 @@ package com.api.dto;
 
 import java.sql.Date;
 
+import com.api.entity.Student;
+
 import lombok.Data;
 
 @Data
