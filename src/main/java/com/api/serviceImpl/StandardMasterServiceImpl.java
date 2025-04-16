@@ -29,5 +29,23 @@ public class StandardMasterServiceImpl implements StandardMasterService{
                 .stream()
                 .map(StandardMaster::getStandard) // Extracting only standard values
                 .collect(Collectors.toList());	}
+
+	@Override
+	public StandardMaster getbyid(long id) {
+		// TODO Auto-generated method stub
+		return standardMasterRepository.findById(id).orElse(null);
+	}
+
+	@Override
+	public List<StandardMaster> getdata() {
+		// TODO Auto-generated method stub
+		return standardMasterRepository.findAll();
+	}
+
+	@Override
+	public List<StandardMaster> getStandardAllDataBySchool(long udiseNo) {
+		// TODO Auto-generated method stub
+		return standardMasterRepository.findStandardsBySchool(udiseNo);
+	}
 	
 }

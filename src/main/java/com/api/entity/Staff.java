@@ -36,7 +36,7 @@ public class Staff {
 	
 	private String level;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	private School school;
 	
 	private Date createdAt;

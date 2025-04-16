@@ -11,11 +11,11 @@ public class StudentDto {
 
 	private long school;
 
-	private long apparId;
+	private String apparId;
 
-	private long studentId;
+	private String studentId;
 
-	private long adhaarNumber;
+	private String adhaarNumber;
 
 	private String gender;
 
@@ -31,6 +31,8 @@ public class StudentDto {
 	private String residentialAddress;
 	private String mobileNo;
 
+	private String birthPlace;
+	
 	private long villageOfBirth;
 
 	private long tehasilOfBirth;
@@ -45,8 +47,8 @@ public class StudentDto {
 	private Date admissionDate;
 	private String whichStandardAdmitted;
 	private Date createdAt;
-	private String currentAcadmicYear;
+	
 	private String ebcInformation;
 	private String minorityInformation;
-
+	private String casteCategory;
 }

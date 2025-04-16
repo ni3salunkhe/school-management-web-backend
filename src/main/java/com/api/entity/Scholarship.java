@@ -20,7 +20,7 @@ public class Scholarship {
 	private long id;
 	
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "studentRegistrationNo" ,referencedColumnName = "registerNumber")
+	@JoinColumn(name = "studentRegistrationNo" ,referencedColumnName = "id")
 	private Student studentRegisterId;
 	
 	private String fatherFullName;

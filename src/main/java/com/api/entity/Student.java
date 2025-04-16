@@ -3,7 +3,8 @@ package com.api.entity;
 import java.sql.Date;
 
 import jakarta.persistence.Entity;
-
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import lombok.Data;
@@ -13,16 +14,19 @@ import lombok.Data;
 public class Student {
 	
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long id;
+	
 	private long registerNumber;
 	
 	@ManyToOne
 	private School school;
 	
-	private long apparId;
+	private String apparId;
 	
-	private long studentId;
+	private String studentId;
 	
-	private long adhaarNumber;
+	private String adhaarNumber;
 	
 	private String gender;
 	
@@ -37,6 +41,8 @@ public class Student {
 	private String subCast;
 	private String residentialAddress;
 	private String mobileNo;
+	private String birthPlace;
+	
 	@ManyToOne
 	private Village villageOfBirth;
 	@ManyToOne
@@ -52,8 +58,8 @@ public class Student {
 	private Date admissionDate;
 	private String whichStandardAdmitted;
 	private Date createdAt;
-	private String currentAcadmicYear;
 	private String ebcInformation;
 	private String minorityInformation;
+	private String casteCategory;
 	
 }
