@@ -36,6 +36,7 @@ public class StaffController {
 		Staff staff=new Staff();
 		
 		staff.setFname(staffDto.getFname());
+		staff.setFathername(staffDto.getFathername());
 		staff.setLname(staffDto.getLname());
 		staff.setUsername(staffDto.getUsername());
 		staff.setEmail(staffDto.getEmail());
@@ -87,6 +88,7 @@ public class StaffController {
 		}
 		else {
 			staff.setFname(staffDto.getFname());
+			staff.setFathername(staffDto.getFathername());
 			staff.setLname(staffDto.getLname());
 			staff.setUsername(staffDto.getUsername());
 			staff.setEmail(staffDto.getEmail());

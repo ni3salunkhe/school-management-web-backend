@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.api.entity.LeavingInfo;
+import com.api.entity.School;
+import com.api.entity.Student;
 import com.api.repository.LeavingInfoRepository;
 import com.api.service.LeavingInfoService;
 
@@ -37,6 +39,12 @@ public class LeavingInfoServiceImpl implements LeavingInfoService{
 	public void deletedata(long id) {
 		// TODO Auto-generated method stub
 		leavingInfoRepository.deleteById(id);
+	}
+
+	@Override
+	public LeavingInfo getdatabystudentId(Student studentId, School schoolUdise) {
+		// TODO Auto-generated method stub
+		return leavingInfoRepository.findByStudentIdAndSchoolUdise(studentId, schoolUdise);
 	}
 
 }

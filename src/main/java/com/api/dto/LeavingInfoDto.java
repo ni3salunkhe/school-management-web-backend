@@ -8,6 +8,8 @@ import lombok.Data;
 public class LeavingInfoDto {
 
 	private long studentId;
+	
+	private long schoolUdise;
 
 	private String reasonOfLeavingSchool;
 

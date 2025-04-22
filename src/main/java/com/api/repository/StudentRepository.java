@@ -4,22 +4,15 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-<<<<<<< HEAD
-import org.springframework.stereotype.Repository;
-
-import com.api.entity.School;
-=======
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-
->>>>>>> daa3f1e132236efd940915c9b3a2134fc7401fc1
+import com.api.entity.School;
 import com.api.entity.Student;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
-<<<<<<< HEAD
 public interface StudentRepository extends JpaRepository<Student, Long> {
     Optional<Student> findByRegisterNumber(Long registerNumber);
     
@@ -30,11 +23,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     List<Student> findByRegisterNumberInAndSchoolUdiseNo(List<Long> registerNumbers, Long udiseNo);
     
     Optional<Student> findByRegisterNumberAndSchool(Long registerNumber, School school);
-    
-    
-    
-=======
-public interface StudentRepository extends JpaRepository<Student, Long>{
+
 	
 	List<Student> findBySchool_UdiseNo(long udiseNo);
 	
@@ -58,5 +47,4 @@ public interface StudentRepository extends JpaRepository<Student, Long>{
 		List<Student> findUnassignedStudentsBySchoolUdise(@Param("udise") Long udise);
 
 	
->>>>>>> daa3f1e132236efd940915c9b3a2134fc7401fc1
 }

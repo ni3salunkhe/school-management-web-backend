@@ -22,7 +22,7 @@ import com.api.entity.Attendance;
 import com.api.service.AttendanceService;
 
 @RestController
-@RequestMapping("/attendance")
+@RequestMapping("/api/attendance")
 public class AttendanceController {
 	
 	@Autowired

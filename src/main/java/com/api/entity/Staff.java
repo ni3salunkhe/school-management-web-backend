@@ -20,6 +20,8 @@ public class Staff {
 	
 	private String fname;
 	
+	private String fathername;
+	
 	private String lname;
 	
 	private String username;

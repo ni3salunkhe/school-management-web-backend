@@ -34,7 +34,7 @@ import com.api.service.TehsilService;
 import com.api.service.VillageService;
 
 @RestController
-@RequestMapping("api/student")
+@RequestMapping("/student")
 public class StudentController {
 
 	@Autowired
@@ -119,6 +119,43 @@ public class StudentController {
 		List<Student> students = studentService.getAllDataByudise(udise);
 		return new ResponseEntity<List<Student>>(students, HttpStatus.OK);
 	}
+	
+	@GetMapping("/byudise/search")
+	public ResponseEntity<List<Student>> searchStudentsByUdise(
+	        @RequestParam Long udise,
+	        @RequestParam(required = false) String surName,
+	        @RequestParam(required = false) String studentName,
+	        @RequestParam(required = false) String fatherName,
+	        @RequestParam(required = false) String motherName) {
+
+	    // Fetch all students by udise
+	    List<Student> students = studentService.getAllDataByudise(udise);
+	    List<Student> filteredStudents = new ArrayList<>();
+
+	    for (Student student : students) {
+	        boolean matches = true;
+
+	        if (surName != null && !student.getSurName().toLowerCase().contains(surName.toLowerCase())) {
+	            matches = false;
+	        }
+	        if (studentName != null && !student.getStudentName().toLowerCase().contains(studentName.toLowerCase())) {
+	            matches = false;
+	        }
+	        if (fatherName != null && !student.getFatherName().toLowerCase().contains(fatherName.toLowerCase())) {
+	            matches = false;
+	        }
+	        if (motherName != null && !student.getMotherName().toLowerCase().contains(motherName.toLowerCase())) {
+	            matches = false;
+	        }
+
+	        if (matches) {
+	            filteredStudents.add(student);
+	        }
+	    }
+
+	    return ResponseEntity.ok(filteredStudents);
+	}
+
 
 //	@GetMapping("/byudise/get/{udise}")
 //	public ResponseEntity<List<Student>> getbyUdiseAndRegisteNo(@PathVariable long udise) {
@@ -221,7 +258,7 @@ public class StudentController {
 		}
 	}
 
-	@GetMapping("/byclass/{teacheId}")
+	@GetMapping("/byclass/{teacherId}")
 	public ResponseEntity<List<Student>> getallStudentsByClass(@PathVariable long teacherId) {
 		ClassTeacher classTeacher = classTeacherService.getByStaffId(teacherId);
 
