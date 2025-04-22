@@ -141,7 +141,6 @@ public class SchoolController {
 	        existingSchool.setVillage(villageService.getbyid(schoolDto.getVillage()));
 	        existingSchool.setPinCode(schoolDto.getPinCode());
 	        existingSchool.setMedium(schoolDto.getMedium());
-	        existingSchool.setHeadMasterUserName(schoolDto.getHeadMasterUserName());
 	        existingSchool.setHeadMasterMobileNo(schoolDto.getHeadMasterMobileNo());
 	        existingSchool.setHeadMasterPassword(passwordEncoder.encode(schoolDto.getHeadMasterPassword()));
 	        existingSchool.setBoard(schoolDto.getBoard());

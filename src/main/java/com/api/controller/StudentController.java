@@ -34,7 +34,7 @@ import com.api.service.TehsilService;
 import com.api.service.VillageService;
 
 @RestController
-@RequestMapping("api/student")
+@RequestMapping("/student")
 public class StudentController {
 
 	@Autowired

@@ -26,6 +26,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     
     Optional<Student> findByRegisterNumberAndSchool(Long registerNumber, School school);
 
+
 	
 	List<Student> findBySchool_UdiseNo(long udiseNo);
 	

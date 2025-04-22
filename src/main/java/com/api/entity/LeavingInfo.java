@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import lombok.Data;
 
@@ -21,10 +22,12 @@ public class LeavingInfo {
 	private long id;
 	
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "studentRegistrationNo" ,referencedColumnName = "id")
+	@JoinColumn(name = "studentId" ,referencedColumnName = "id")
 	private Student studentId;
 	
-	
+	@ManyToOne
+	@JoinColumn(name = "schoolUdiseNo")
+	private School schoolUdise;
 	
 	private String reasonOfLeavingSchool;
 	
@@ -44,5 +47,11 @@ public class LeavingInfo {
 	
 	private Date createdAt;
 	
+	private boolean printed=false;
 	
+	private boolean newlcprinted=false;
+	
+	private int duplicateNewLcCount=0;
+	
+	private int duplicatePrintCount = 0;
 }
