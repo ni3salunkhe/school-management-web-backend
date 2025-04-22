@@ -3,10 +3,7 @@ package com.api.entity;
 import java.sql.Date;
 
 import jakarta.persistence.Entity;
-<<<<<<< HEAD
 import jakarta.persistence.FetchType;
-=======
->>>>>>> daa3f1e132236efd940915c9b3a2134fc7401fc1
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -22,10 +19,6 @@ public class Student {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
-<<<<<<< HEAD
-	
-=======
->>>>>>> daa3f1e132236efd940915c9b3a2134fc7401fc1
 	private long registerNumber;
 	
 	@ManyToOne(fetch = FetchType.LAZY)

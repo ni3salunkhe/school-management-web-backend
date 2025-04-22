@@ -18,4 +18,6 @@ public interface StaffService {
 	public List<Staff> getUnassignedStaff();
 	
 	public List<Staff> getaAllDataByUdise(long udiseNo);
+	
+	public Staff getByUsername(String username);
 }

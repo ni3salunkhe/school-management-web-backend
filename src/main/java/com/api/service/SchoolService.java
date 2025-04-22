@@ -14,4 +14,6 @@ public interface SchoolService {
 	
 	public void deletedata(long id);
 	
+	public School getByUsername(String username);
+	
 }

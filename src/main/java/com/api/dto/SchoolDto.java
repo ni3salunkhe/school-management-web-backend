@@ -35,6 +35,7 @@ public class SchoolDto {
 	private String boardIndexNo;
 	private String schoolEmailId;
 	private String schoolApprovalNo;
+	private String role;
 	private Date createdAt;
 
 	
