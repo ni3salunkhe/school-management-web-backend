@@ -14,7 +14,6 @@ import com.api.service.StudentService;
 @Service
 public class StudentServiceImpl implements StudentService {
     
-    private static final Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
     
     @Autowired
     private StudentRepository studentRepository;
@@ -68,8 +67,6 @@ public class StudentServiceImpl implements StudentService {
 	public List<Student> getStudentsBySchool(long udiseNo) {
 		// TODO Auto-generated method stub
 		return studentRepository.findBySchoolUdiseNo(udiseNo);
-	}
-
-	
+	}	
 
 }
