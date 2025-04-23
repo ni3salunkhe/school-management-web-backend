@@ -48,4 +48,8 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 		       "AND s.id NOT IN (SELECT ac.studentId.id FROM AcademicCurrent ac) " +
 		       "AND s.id NOT IN (SELECT aco.studentId.id FROM AcademicOld aco)")
 		List<Student> findUnassignedStudentsBySchoolUdise(@Param("udise") Long udise);
+
+	 
+
+	
 }

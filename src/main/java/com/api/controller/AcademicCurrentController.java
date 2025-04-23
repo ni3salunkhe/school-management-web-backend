@@ -97,10 +97,12 @@ public class AcademicCurrentController {
         current.setClassTeacher(classTeacherService.getbyid(academicCurrentDto.getClassTeacher()));
         current.setStudentId(studentService.getbyid(academicCurrentDto.getStudentId()));
         current.setDivision(divisionService.getbyid(academicCurrentDto.getDivision()));
+        current.setStandard(standardMasterService.getbyid(academicCurrentDto.getStandardId()));
         current.setStatus("learning");
         current.setCreatedAt(academicCurrentDto.getCreatedAt());
         
-        academicCurrentService.post(current); // Save the updated record back to AcademicCurrent
+        System.out.println(current);
+       academicCurrentService.post(current); // Save the updated record back to AcademicCurrent
 
         return new ResponseEntity<>("Student status updated and data moved.", HttpStatus.OK);
     }
@@ -132,6 +134,7 @@ public class AcademicCurrentController {
                 academicCurrent.setAcademicYear(academicCurrentDto.getAcademicYear());
                 academicCurrent.setClassTeacher(classTeacherService.getbyid(academicCurrentDto.getClassTeacher()));
                 academicCurrent.setDivision(divisionService.getbyid(academicCurrentDto.getDivision()));
+                academicCurrent.setStandard(standardMasterService.getbyid(academicCurrentDto.getStandardId()));
                 academicCurrent.setStatus("learning");
                 academicCurrent.setCreatedAt(academicCurrentDto.getCreatedAt());
 
