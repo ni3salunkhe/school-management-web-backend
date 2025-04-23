@@ -7,5 +7,5 @@ import com.api.entity.School;
 
 @Repository
 public interface SchoolRepository extends JpaRepository<School, Long>{
-
+	School findByHeadMasterUserName(String username);
 }

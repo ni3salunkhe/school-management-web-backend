@@ -23,6 +23,7 @@ public interface StudentService {
 			String motherName);
 
 	public List<Student> getUnassignedStudents(Long udise);
-
+	
 	List<Student> getStudentsBySchool(long udiseNo);
+	
 }

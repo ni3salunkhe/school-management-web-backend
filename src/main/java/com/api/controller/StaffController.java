@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +31,9 @@ public class StaffController {
 	@Autowired
 	private SchoolService schoolService;
 	
+	@Autowired
+	PasswordEncoder passwordEncoder;
+	
 	@PostMapping("/")
 	public ResponseEntity<Staff> savedata(@RequestBody StaffDto staffDto)
 	{
@@ -41,7 +45,7 @@ public class StaffController {
 		staff.setUsername(staffDto.getUsername());
 		staff.setEmail(staffDto.getEmail());
 		staff.setMobile(staffDto.getMobile());
-		staff.setPassword(staffDto.getPassword());
+		staff.setPassword(passwordEncoder.encode(staffDto.getPassword()));
 		staff.setStandard(staffDto.getStandard());
 		staff.setRole(staffDto.getRole());
 		staff.setLevel(staffDto.getLevel());
@@ -93,7 +97,7 @@ public class StaffController {
 			staff.setUsername(staffDto.getUsername());
 			staff.setEmail(staffDto.getEmail());
 			staff.setMobile(staffDto.getMobile());
-			staff.setPassword(staffDto.getPassword());
+			staff.setPassword(passwordEncoder.encode(staffDto.getPassword()));
 			staff.setStandard(staffDto.getStandard());
 			staff.setRole(staffDto.getRole());
 			staff.setLevel(staffDto.getLevel());

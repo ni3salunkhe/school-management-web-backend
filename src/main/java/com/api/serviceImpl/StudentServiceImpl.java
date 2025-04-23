@@ -62,11 +62,11 @@ public class StudentServiceImpl implements StudentService {
 		// TODO Auto-generated method stub
 		return studentRepository.findUnassignedStudentsBySchoolUdise(udise);
 	}
-
-	@Override
-	public List<Student> getStudentsBySchool(long udiseNo) {
-		// TODO Auto-generated method stub
-		return studentRepository.findBySchoolUdiseNo(udiseNo);
-	}	
+	
+	   @Override
+	     public List<Student> getStudentsBySchool(long udiseNo) {
+	         return studentRepository.findBySchoolUdiseNo(udiseNo);
+	     }
+	
 
 }

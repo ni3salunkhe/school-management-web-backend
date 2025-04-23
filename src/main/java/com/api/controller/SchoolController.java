@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,6 +46,9 @@ public class SchoolController {
 
 	@Autowired
 	private VillageService villageService;
+	
+	@Autowired
+	PasswordEncoder passwordEncoder;
 
 	@PostMapping(value = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ResponseEntity<School> savedata(@RequestPart("schoolDto") String schoolDtoJson,
@@ -70,12 +74,13 @@ public class SchoolController {
 			school.setMedium(schoolDto.getMedium());
 			school.setHeadMasterUserName(schoolDto.getHeadMasterUserName());
 			school.setHeadMasterMobileNo(schoolDto.getHeadMasterMobileNo());
-			school.setHeadMasterPassword(schoolDto.getHeadMasterPassword());
+			school.setHeadMasterPassword(passwordEncoder.encode(schoolDto.getHeadMasterPassword()));
 			school.setBoard(schoolDto.getBoard());
 			school.setBoardDivision(schoolDto.getBoardDivision());
 			school.setBoardIndexNo(schoolDto.getBoardIndexNo());
 			school.setSchoolEmailId(schoolDto.getSchoolEmailId());
 			school.setSchoolApprovalNo(schoolDto.getSchoolApprovalNo());
+			school.setRole(schoolDto.getRole());
 
 			// Handle logo content
 			if (schoolDto.getLogo() != null && !schoolDto.getLogo().isEmpty()) {
@@ -137,11 +142,13 @@ public class SchoolController {
 	        existingSchool.setPinCode(schoolDto.getPinCode());
 	        existingSchool.setMedium(schoolDto.getMedium());
 	        existingSchool.setHeadMasterMobileNo(schoolDto.getHeadMasterMobileNo());
+	        existingSchool.setHeadMasterPassword(passwordEncoder.encode(schoolDto.getHeadMasterPassword()));
 	        existingSchool.setBoard(schoolDto.getBoard());
 	        existingSchool.setBoardDivision(schoolDto.getBoardDivision());
 	        existingSchool.setBoardIndexNo(schoolDto.getBoardIndexNo());
 	        existingSchool.setSchoolEmailId(schoolDto.getSchoolEmailId());
 	        existingSchool.setSchoolApprovalNo(schoolDto.getSchoolApprovalNo());
+	        existingSchool.setRole(schoolDto.getRole());
 
 	        if (schoolDto.getLogo() != null && !schoolDto.getLogo().isEmpty()) {
 	            MultipartFile logo = schoolDto.getLogo();
@@ -158,7 +165,7 @@ public class SchoolController {
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-	    }
+	    }	
 	}
 
 	@DeleteMapping("{id}")

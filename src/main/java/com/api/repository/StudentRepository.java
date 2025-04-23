@@ -4,10 +4,12 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+
+import com.api.entity.School;
+
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.api.entity.School;
 import com.api.entity.Student;
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +25,7 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     List<Student> findByRegisterNumberInAndSchoolUdiseNo(List<Long> registerNumbers, Long udiseNo);
     
     Optional<Student> findByRegisterNumberAndSchool(Long registerNumber, School school);
+
 
 	
 	List<Student> findBySchool_UdiseNo(long udiseNo);

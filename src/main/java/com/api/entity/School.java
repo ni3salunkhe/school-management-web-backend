@@ -42,6 +42,7 @@ public class School {
 	private String headMasterPassword;
 	private String schoolPlace;
 	private String board;
+	private String role;
 	private String boardDivision;
 	private String boardIndexNo;
 	private String schoolEmailId;

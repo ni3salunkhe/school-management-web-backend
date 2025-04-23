@@ -119,60 +119,7 @@ public class StudentController {
 		List<Student> students = studentService.getAllDataByudise(udise);
 		return new ResponseEntity<List<Student>>(students, HttpStatus.OK);
 	}
-	
-	@GetMapping("/byudise/search")
-	public ResponseEntity<List<Student>> searchStudentsByUdise(
-	        @RequestParam Long udise,
-	        @RequestParam(required = false) String surName,
-	        @RequestParam(required = false) String studentName,
-	        @RequestParam(required = false) String fatherName,
-	        @RequestParam(required = false) String motherName) {
 
-	    // Fetch all students by udise
-	    List<Student> students = studentService.getAllDataByudise(udise);
-	    List<Student> filteredStudents = new ArrayList<>();
-
-	    for (Student student : students) {
-	        boolean matches = true;
-
-	        if (surName != null && !student.getSurName().toLowerCase().contains(surName.toLowerCase())) {
-	            matches = false;
-	        }
-	        if (studentName != null && !student.getStudentName().toLowerCase().contains(studentName.toLowerCase())) {
-	            matches = false;
-	        }
-	        if (fatherName != null && !student.getFatherName().toLowerCase().contains(fatherName.toLowerCase())) {
-	            matches = false;
-	        }
-	        if (motherName != null && !student.getMotherName().toLowerCase().contains(motherName.toLowerCase())) {
-	            matches = false;
-	        }
-
-	        if (matches) {
-	            filteredStudents.add(student);
-	        }
-	    }
-
-	    return ResponseEntity.ok(filteredStudents);
-	}
-
-
-//	@GetMapping("/byudise/get/{udise}")
-//	public ResponseEntity<List<Student>> getbyUdiseAndRegisteNo(@PathVariable long udise) {
-//
-//		List<Student> students = studentService.getAllDataByudise(udise);
-//
-//		// Search for register number from the list
-//		for (Student s : students) {
-//			if (s.getId() == studentId) {
-//				return new ResponseEntity<>(s, HttpStatus.OK);
-//			}
-//		}
-//
-//		return new ResponseEntity<>(students,HttpStatus.OK); // If not found
-//	}
-
-	// API for searching students
 	@GetMapping("/search")
 	public ResponseEntity<List<Student>> searchStudents(@RequestParam(required = false) String surName,
 			@RequestParam(required = false) String studentName, @RequestParam(required = false) String fatherName,
@@ -259,7 +206,7 @@ public class StudentController {
 	}
 
 	@GetMapping("/byclass/{teacherId}")
-	public ResponseEntity<List<Student>> getallStudentsByClass(@PathVariable long teacherId) {
+	public ResponseEntity<List<Student>> getallStudentsByClass(@PathVariable("teacherId") long teacherId) {
 		ClassTeacher classTeacher = classTeacherService.getByStaffId(teacherId);
 
 		List<AcademicCurrent> academicCurrents = academicCurrentService.getByClassTeacheId(classTeacher.getId());

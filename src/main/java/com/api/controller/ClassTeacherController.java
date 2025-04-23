@@ -74,7 +74,7 @@ public class ClassTeacherController {
 	// Get by ID (specific assignment)
 	@GetMapping("/getbyid/{id}")
 	public ResponseEntity<ClassTeacher> getbyiddata(@PathVariable long id) {
-	    ClassTeacher classTeacher = classTeacherService.getbyid(id);
+	    ClassTeacher classTeacher = classTeacherService.getByStaffId(id);
 	    return new ResponseEntity<>(classTeacher, HttpStatus.OK);
 	}
 	

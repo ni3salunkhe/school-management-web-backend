@@ -7,7 +7,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.api.entity.AcademicCurrent;
+import com.api.entity.Attendance;
 import com.api.entity.School;
+import com.api.entity.StandardMaster;
 import com.api.entity.Student;
 
 @Repository
@@ -24,7 +26,5 @@ public interface AcademicCurrentRepository extends JpaRepository<AcademicCurrent
     // Find all records for a specific school
     List<AcademicCurrent> findBySchoolUdiseNo(School schoolUdiseNo);
     
-    //AcademicCurrent findbystudentbyschooludise(long studentId,long schoolId);
-	
-    
+
 }
