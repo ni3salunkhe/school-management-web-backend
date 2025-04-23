@@ -132,5 +132,11 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 		return subscription.map(this::convertToDto).orElse(null);
 	}
 
+	@Override
+	public Subscription getExpiringTomorrowByUdise(long udiseNo) {
+	    LocalDate tomorrow = LocalDate.now().plusDays(1);
+	    return subscriptionRepository.findByUdiseNoAndEndDate(udiseNo, tomorrow);
+	}
+
 
 }

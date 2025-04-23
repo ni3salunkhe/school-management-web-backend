@@ -33,5 +33,7 @@ public interface AttendanceRepository extends JpaRepository<Attendance, Long> {
 
 	List<Attendance> findBySchool(School school);
 	
+	boolean existsByRegisterNumberAndMonthnyearAndSchool_UdiseNo(Long registerNumber, YearMonth monthnyear, Long udiseNo);
+
 
 }

@@ -60,6 +60,13 @@ public class AttendanceServiceImpl implements AttendanceService {
 	    
 	    // Process each register number in the array
 	    for (Long registerNumber : attendanceDTO.getStudentRegisterId()) {
+	    	boolean alreadyExists = attendanceRepository.existsByRegisterNumberAndMonthnyearAndSchool_UdiseNo(
+	    	        registerNumber, monthYear, attendanceDTO.getUdiseNo());
+	    	if (alreadyExists) {
+	            // Skip saving duplicate
+	            System.out.println("Attendance already exists for register number: " + registerNumber);
+	            continue;
+	        }
 	        // Find student by register number and school
 	        Student student = studentRepository.findByRegisterNumberAndSchool(registerNumber, school)
 	                .orElseThrow(() -> new RuntimeException("Student with register number " + registerNumber + " not found in school with UDISE " + attendanceDTO.getUdiseNo()));
@@ -97,13 +104,20 @@ public class AttendanceServiceImpl implements AttendanceService {
 	        
 	        // Mark Sundays as 'S'
 	        markSundaysForAttendance(attendance, monthYear);
-	        
+	        List<Long> skippedRegisterNumbers = new ArrayList<>();
+
+	        if (alreadyExists) {
+	            skippedRegisterNumbers.add(registerNumber);
+	            continue;
+	        }
 	        // Save and add to the result list
 	        savedAttendances.add(attendanceRepository.save(attendance));
 	    }
 	    
 	    return savedAttendances;
 	}
+	
+	
 	private int countSundays(YearMonth monthYear) {
         int year = monthYear.getYear();
         int month = monthYear.getMonthValue();

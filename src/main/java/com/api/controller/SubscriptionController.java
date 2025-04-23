@@ -150,4 +150,11 @@ public class SubscriptionController {
                     .body("Error creating subscription: " + e.getMessage());
         }
     }
+    
+    @GetMapping("/expiring-tomorrow/{udiseNo}")
+    public ResponseEntity<?> getExpiringSubscriptionsByUdise(@PathVariable long udiseNo) {
+    	Subscription subscription=subscriptionService.getExpiringTomorrowByUdise(udiseNo);
+        return ResponseEntity.ok(subscription);
+    }
+
 }
