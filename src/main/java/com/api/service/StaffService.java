@@ -20,4 +20,6 @@ public interface StaffService {
 	public List<Staff> getaAllDataByUdise(long udiseNo);
 	
 	public Staff getByUsername(String username);
+	
+	public Staff getByUsernameAndUdise(long udiseNo,String username);
 }

@@ -146,7 +146,7 @@ public class SchoolController {
 	        existingSchool.setBoard(schoolDto.getBoard());
 	        existingSchool.setBoardDivision(schoolDto.getBoardDivision());
 	        existingSchool.setBoardIndexNo(schoolDto.getBoardIndexNo());
-	        existingSchool.setSchoolEmailId(schoolDto.getSchoolEmailId());
+//	        existingSchool.setSchoolEmailId(schoolDto.getSchoolEmailId());
 	        existingSchool.setSchoolApprovalNo(schoolDto.getSchoolApprovalNo());
 	        existingSchool.setRole(schoolDto.getRole());
 

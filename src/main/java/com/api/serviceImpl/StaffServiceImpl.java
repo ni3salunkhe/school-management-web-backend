@@ -83,4 +83,10 @@ public class StaffServiceImpl implements StaffService, UserDetailsService{
 		return staffRepository.findByUsername(username);
 	}
 
+	@Override
+	public Staff getByUsernameAndUdise(long udiseNo, String username) {
+		// TODO Auto-generated method stub
+		return staffRepository.findBySchoolUdiseNoAndUsername(udiseNo, username);
+	}
+
 }

@@ -22,4 +22,7 @@ public interface StaffRepository extends JpaRepository<Staff, Long> {
 	
 	@Query("SELECT s FROM Staff s JOIN FETCH s.school WHERE s.username = :username")
 	Staff findByUsernameWithSchool(@Param("username") String username);
+	
+	@Query("SELECT s FROM Staff s WHERE s.school.udiseNo = :udiseNo AND s.username = :username")
+    Staff findBySchoolUdiseNoAndUsername(long udiseNo, String username);
 }

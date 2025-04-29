@@ -1,5 +1,7 @@
 package com.api.dto;
 
+import java.util.List;
+
 import lombok.Data;
 
 @Data
@@ -7,7 +9,7 @@ public class DivisionDto {
 	
 	private long schoolUdiseNo;
 	
-	private String divisionName;
+	private List<String> divisionName;
 	
 	
 }

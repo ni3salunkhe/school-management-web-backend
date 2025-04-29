@@ -81,6 +81,13 @@ public class StaffController {
 		return new ResponseEntity<List<Staff>>(staff,HttpStatus.OK);
 	}
 	
+	@GetMapping("getbyudiseandusername/{udise}/{username}")
+	public ResponseEntity<Staff> getByUdiseAndUsername(@PathVariable long udise,@PathVariable String username)
+	{
+		Staff staff=staffService.getByUsernameAndUdise(udise, username);
+		return new ResponseEntity<Staff>(staff,HttpStatus.OK);
+	}
+	
 	@PutMapping("/{id}")
 	public ResponseEntity<Staff> editdata(@PathVariable long id ,@RequestBody StaffDto staffDto)
 	{
