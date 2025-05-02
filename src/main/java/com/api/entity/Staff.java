@@ -41,6 +41,8 @@ public class Staff {
 	@ManyToOne
 	private School school;
 	
+	private String status;
+	
 	private Date createdAt;
 	
 }

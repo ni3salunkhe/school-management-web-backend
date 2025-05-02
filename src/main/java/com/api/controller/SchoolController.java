@@ -142,6 +142,7 @@ public class SchoolController {
 	        existingSchool.setPinCode(schoolDto.getPinCode());
 	        existingSchool.setMedium(schoolDto.getMedium());
 	        existingSchool.setHeadMasterMobileNo(schoolDto.getHeadMasterMobileNo());
+	        existingSchool.setHeadMasterPassword(schoolDto.getHeadMasterPassword());
 	        existingSchool.setBoard(schoolDto.getBoard());
 	        existingSchool.setBoardDivision(schoolDto.getBoardDivision());
 	        existingSchool.setBoardIndexNo(schoolDto.getBoardIndexNo());

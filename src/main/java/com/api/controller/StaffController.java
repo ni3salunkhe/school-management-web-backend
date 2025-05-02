@@ -50,6 +50,7 @@ public class StaffController {
 		staff.setRole(staffDto.getRole());
 		staff.setLevel(staffDto.getLevel());
 		staff.setSchool(schoolService.getbyid(staffDto.getSchool()));
+		staff.setStatus(staffDto.getStatus());
 		staff.setCreatedAt(staffDto.getCreatedAt());
 		
 		Staff saveStaff=staffService.post(staff);
@@ -109,6 +110,7 @@ public class StaffController {
 			staff.setRole(staffDto.getRole());
 			staff.setLevel(staffDto.getLevel());
 			staff.setSchool(schoolService.getbyid(staffDto.getSchool()));
+			staff.setStatus(staffDto.getStatus());
 			staff.setCreatedAt(staffDto.getCreatedAt());
 			
 			Staff saveStaff=staffService.post(staff);
@@ -117,6 +119,15 @@ public class StaffController {
 			return new ResponseEntity<Staff>(saveStaff,HttpStatus.CREATED);
 		}
 		
+	}
+	
+	@GetMapping("/status/{id}")
+	public ResponseEntity<Staff> updateStatus (@PathVariable long id)
+	{
+		Staff staff=staffService.getbyid(id);
+		staff.setStatus("left");		
+		Staff saveStaff=staffService.post(staff);
+		return new ResponseEntity<Staff>(saveStaff,HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/{id}")

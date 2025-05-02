@@ -28,6 +28,8 @@ public class StaffDto {
 	private String level;
 	
 	private long school;
+	
+	private String status;
 
 	private Date createdAt;
 }

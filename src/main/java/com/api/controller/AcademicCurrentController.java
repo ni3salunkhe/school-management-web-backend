@@ -24,162 +24,189 @@ import com.api.service.StudentService;
 @RestController
 @RequestMapping("/academic")
 public class AcademicCurrentController {
-	
-    @Autowired
-    private AcademicCurrentService academicCurrentService;
 
-    @Autowired
-    private ClassTeacherService classTeacherService;
+	@Autowired
+	private AcademicCurrentService academicCurrentService;
 
-    @Autowired
-    private DivisionService divisionService;
+	@Autowired
+	private ClassTeacherService classTeacherService;
 
-    @Autowired
-    private SchoolService schoolService;
+	@Autowired
+	private DivisionService divisionService;
 
-    @Autowired
-    private StudentService studentService;
+	@Autowired
+	private SchoolService schoolService;
 
-    @Autowired
-    private AcademicOldService academicOldService;
-    
-    @Autowired
-    private StandardMasterService standardMasterService;
+	@Autowired
+	private StudentService studentService;
 
-    // Save Academic Current Data
-    @PostMapping("/")
-    public ResponseEntity<AcademicCurrent> savedata(@RequestBody AcademicCurrentDto academicCurrentDto) {
-        AcademicCurrent academicCurrent = new AcademicCurrent();
-        academicCurrent.setAcademicYear(academicCurrentDto.getAcademicYear());
-        academicCurrent.setClassTeacher(classTeacherService.getbyid(academicCurrentDto.getClassTeacher()));
-        academicCurrent.setDivision(divisionService.getbyid(academicCurrentDto.getDivision()));
-        academicCurrent.setStudentId(studentService.getbyid(academicCurrentDto.getStudentId()));
-        academicCurrent.setSchoolUdiseNo(schoolService.getbyid(academicCurrentDto.getSchoolUdiseNo()));
-        academicCurrent.setStandard(standardMasterService.getbyid(academicCurrentDto.getStandardId()));
-        academicCurrent.setCreatedAt(academicCurrentDto.getCreatedAt());
-        academicCurrent.setStatus("learning");
+	@Autowired
+	private AcademicOldService academicOldService;
 
-        AcademicCurrent saveAcademicCurrent = academicCurrentService.post(academicCurrent);
-        return new ResponseEntity<>(saveAcademicCurrent, HttpStatus.CREATED);
-    }
+	@Autowired
+	private StandardMasterService standardMasterService;
 
-    @PutMapping("/update-status/{id}")
-    public ResponseEntity<String> updateStudentStatus(@PathVariable long id, @RequestBody AcademicCurrentDto academicCurrentDto) {
-        AcademicCurrent current = academicCurrentService.getbyid(id);
+	// Save Academic Current Data
+	@PostMapping("/")
+	public ResponseEntity<AcademicCurrent> savedata(@RequestBody AcademicCurrentDto academicCurrentDto) {
+		AcademicCurrent academicCurrent = new AcademicCurrent();
+		academicCurrent.setAcademicYear(academicCurrentDto.getAcademicYear());
+		academicCurrent.setClassTeacher(classTeacherService.getbyid(academicCurrentDto.getClassTeacher()));
+		academicCurrent.setDivision(divisionService.getbyid(academicCurrentDto.getDivision()));
+		academicCurrent.setStudentId(studentService.getbyid(academicCurrentDto.getStudentId()));
+		academicCurrent.setSchoolUdiseNo(schoolService.getbyid(academicCurrentDto.getSchoolUdiseNo()));
+		academicCurrent.setStandard(standardMasterService.getbyid(academicCurrentDto.getStandardId()));
+		academicCurrent.setCreatedAt(academicCurrentDto.getCreatedAt());
+		academicCurrent.setStatus("learning");
 
-        // Move to AcademicOld
-        AcademicOld old = new AcademicOld();
-        old.setAcademicYear(current.getAcademicYear());
-        old.setClassTeacher(current.getClassTeacher());
-        old.setDivision(current.getDivision());
-        old.setStudentId(current.getStudentId());
-        old.setSchoolUdiseNo(current.getSchoolUdiseNo());
-        old.setStatus(academicCurrentDto.getStatus());
-        old.setCreatedAt(current.getCreatedAt());
-        
-        if ("left".equalsIgnoreCase(academicCurrentDto.getStatus())) {
-            // If the status is "left", move the student to AcademicOld and delete from AcademicCurrent
-            old.setStatus("left");  // Status set to "left"
-            
-            // Save the student in AcademicOld table
-            academicOldService.post(old);
+		AcademicCurrent saveAcademicCurrent = academicCurrentService.post(academicCurrent);
+		return new ResponseEntity<>(saveAcademicCurrent, HttpStatus.CREATED);
+	}
 
-            // Remove the student record from AcademicCurrent (no need to save anything back)
-            academicCurrentService.deletedata(current.getId()); // Assuming you have a delete method
-            
-            return new ResponseEntity<>("Student status updated to 'left' and moved to AcademicOld.", HttpStatus.OK);
-        }
+	@PutMapping("/update-status/{id}")
+	public ResponseEntity<String> updateStudentStatus(@PathVariable long id,
+			@RequestBody AcademicCurrentDto academicCurrentDto) {
+		AcademicCurrent current = academicCurrentService.getbyid(id);
 
-        // For other statuses, just update the AcademicCurrent record
-        academicOldService.post(old); // Move to AcademicOld as well if status is not "left"
-        
-        current.setAcademicYear(academicCurrentDto.getAcademicYear());
-        current.setClassTeacher(classTeacherService.getbyid(academicCurrentDto.getClassTeacher()));
-        current.setStudentId(studentService.getbyid(academicCurrentDto.getStudentId()));
-        current.setDivision(divisionService.getbyid(academicCurrentDto.getDivision()));
-        current.setStandard(standardMasterService.getbyid(academicCurrentDto.getStandardId()));
-        current.setStatus("learning");
-        current.setCreatedAt(academicCurrentDto.getCreatedAt());
-        
-        System.out.println(current);
-       academicCurrentService.post(current); // Save the updated record back to AcademicCurrent
+		// Move to AcademicOld
+		AcademicOld old = new AcademicOld();
+		old.setAcademicYear(current.getAcademicYear());
+		old.setClassTeacher(current.getClassTeacher());
+		old.setDivision(current.getDivision());
+		old.setStudentId(current.getStudentId());
+		old.setSchoolUdiseNo(current.getSchoolUdiseNo());
+//		old.setStatus(academicCurrentDto.getStatus());
+		old.setCreatedAt(current.getCreatedAt());
 
-        return new ResponseEntity<>("Student status updated and data moved.", HttpStatus.OK);
-    }
-    
-    @PutMapping("/update-student/bulk")
-    public ResponseEntity<String> promotePassedStudents(@RequestBody AcademicCurrentDto academicCurrentDto) {
-        System.out.println("Received DTO: " + academicCurrentDto);
+		if ("left".equalsIgnoreCase(academicCurrentDto.getStatus())) {
+			// If the status is "left", move the student to AcademicOld and delete from
+			// AcademicCurrent
+			old.setStatus("left"); // Status set to "left"
 
-        for (Long id : academicCurrentDto.getStudentIds()) {
-            Optional<AcademicCurrent> optionalAcademicCurrent = academicCurrentService.getAcademicCurrentByStudentAndSchool(id, academicCurrentDto.getSchoolUdiseNo());
+			// Save the student in AcademicOld table
+			academicOldService.post(old);
 
-            if (optionalAcademicCurrent.isPresent()) {
-                AcademicCurrent academicCurrent = optionalAcademicCurrent.get();
-                System.out.println("Found academic current for student ID: " + id);
+			// Remove the student record from AcademicCurrent (no need to save anything
+			// back)
+			academicCurrentService.deletedata(current.getId()); // Assuming you have a delete method
 
-                // Move old data to AcademicOld
-                AcademicOld old = new AcademicOld();
-                old.setAcademicYear(academicCurrent.getAcademicYear());
-                old.setClassTeacher(academicCurrent.getClassTeacher());
-                old.setDivision(academicCurrent.getDivision());
-                old.setStudentId(academicCurrent.getStudentId());
-                old.setSchoolUdiseNo(academicCurrent.getSchoolUdiseNo());
-                old.setStatus(academicCurrentDto.getStatus());
-                old.setCreatedAt(academicCurrent.getCreatedAt());
+			return new ResponseEntity<>("Student status updated to 'left' and moved to AcademicOld.", HttpStatus.OK);
+		}
 
-                academicOldService.post(old); // Save to AcademicOld
+		if ("Pass".equalsIgnoreCase(academicCurrentDto.getStatus())) {
+			old.setStatus("Pass");
 
-                // Update AcademicCurrent
-                academicCurrent.setAcademicYear(academicCurrentDto.getAcademicYear());
-                academicCurrent.setClassTeacher(classTeacherService.getbyid(academicCurrentDto.getClassTeacher()));
-                academicCurrent.setDivision(divisionService.getbyid(academicCurrentDto.getDivision()));
-                academicCurrent.setStandard(standardMasterService.getbyid(academicCurrentDto.getStandardId()));
-                academicCurrent.setStatus("learning");
-                academicCurrent.setCreatedAt(academicCurrentDto.getCreatedAt());
+			academicOldService.post(old);
+		}
 
-                academicCurrentService.post(academicCurrent); // Save updated current
+		if ("fail".equalsIgnoreCase(academicCurrentDto.getStatus())) {
+			old.setStatus("fail");
+			academicOldService.post(old); // Move to AcademicOld as well if status is not "left"
+		}
 
-            } else {
-                System.out.println("Academic current not found for student ID: " + id);
-            }
-        }
+		current.setAcademicYear(academicCurrentDto.getAcademicYear());
+		current.setClassTeacher(classTeacherService.getbyid(academicCurrentDto.getClassTeacher()));
+		current.setStudentId(studentService.getbyid(academicCurrentDto.getStudentId()));
+		current.setDivision(divisionService.getbyid(academicCurrentDto.getDivision()));
+		current.setStandard(standardMasterService.getbyid(academicCurrentDto.getStandardId()));
+		current.setStatus("learning");
+		current.setCreatedAt(academicCurrentDto.getCreatedAt());
 
-        return new ResponseEntity<>("Selected students promoted successfully.", HttpStatus.OK);
-    }
-    
-    
-    @GetMapping("/student-school")
-    public ResponseEntity<?> getAcademicCurrentByStudentAndSchool(
-            @RequestParam("studentId") Long studentId,
-            @RequestParam("schoolUdiseNo") long schoolUdiseNo) {
-        
-        Optional<AcademicCurrent> academicCurrent = 
-            academicCurrentService.getAcademicCurrentByStudentAndSchool(studentId, schoolUdiseNo);
-        
-        if (academicCurrent.isPresent()) {
-            return ResponseEntity.ok(academicCurrent.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-    
+		System.out.println(current);
+		academicCurrentService.post(current); // Save the updated record back to AcademicCurrent
 
-    @GetMapping("/")
-    public ResponseEntity<List<AcademicCurrent>> getdata() {
-        List<AcademicCurrent> academicCurrent = academicCurrentService.getdata();
-        return new ResponseEntity<>(academicCurrent, HttpStatus.OK);
-    }
+		return new ResponseEntity<>("Student status updated and data moved.", HttpStatus.OK);
+	}
 
-    @GetMapping("/{id}")
-    public ResponseEntity<AcademicCurrent> getbyiddata(@PathVariable long id) {
-        AcademicCurrent academicCurrent = academicCurrentService.getbyid(id);
-        return new ResponseEntity<>(academicCurrent, HttpStatus.OK);
-    }
+	@PutMapping("/update-student/bulk")
+	public ResponseEntity<String> promotePassedStudents(@RequestBody AcademicCurrentDto academicCurrentDto) {
+		System.out.println("Received DTO: " + academicCurrentDto);
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletedata(@PathVariable long id) {
-        academicCurrentService.deletedata(id);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+		for (Long id : academicCurrentDto.getStudentIds()) {
+			Optional<AcademicCurrent> optionalAcademicCurrent = academicCurrentService
+					.getAcademicCurrentByStudentAndSchool(id, academicCurrentDto.getSchoolUdiseNo());
+
+			if (optionalAcademicCurrent.isPresent()) {
+				AcademicCurrent academicCurrent = optionalAcademicCurrent.get();
+				System.out.println("Found academic current for student ID: " + id);
+
+				// Move old data to AcademicOld
+				AcademicOld old = new AcademicOld();
+				old.setAcademicYear(academicCurrent.getAcademicYear());
+				old.setClassTeacher(academicCurrent.getClassTeacher());
+				old.setDivision(academicCurrent.getDivision());
+				old.setStudentId(academicCurrent.getStudentId());
+				old.setSchoolUdiseNo(academicCurrent.getSchoolUdiseNo());
+//				old.setStatus(academicCurrentDto.getStatus());
+				old.setCreatedAt(academicCurrent.getCreatedAt());
+				
+				if("fail".equalsIgnoreCase(academicCurrentDto.getStatus()))
+				{
+					old.setStatus("fail");
+					academicOldService.post(old);
+				}
+				
+				if("left".equalsIgnoreCase(academicCurrentDto.getStatus()))
+				{
+					old.setStatus("left");
+					academicOldService.post(old);
+					academicCurrentService.deletedata(academicCurrent.getId());
+				}
+				
+				if("Pass".equalsIgnoreCase(academicCurrentDto.getStatus()))
+				{
+					old.setStatus("Pass");
+					academicOldService.post(old);
+				}
+
+
+				// Update AcademicCurrent
+				academicCurrent.setAcademicYear(academicCurrentDto.getAcademicYear());
+				academicCurrent.setClassTeacher(classTeacherService.getbyid(academicCurrentDto.getClassTeacher()));
+				academicCurrent.setDivision(divisionService.getbyid(academicCurrentDto.getDivision()));
+				academicCurrent.setStandard(standardMasterService.getbyid(academicCurrentDto.getStandardId()));
+				academicCurrent.setStatus("learning");
+				academicCurrent.setCreatedAt(academicCurrentDto.getCreatedAt());
+
+				academicCurrentService.post(academicCurrent); // Save updated current
+
+			} else {
+				System.out.println("Academic current not found for student ID: " + id);
+			}
+		}
+
+		return new ResponseEntity<>("Selected students promoted successfully.", HttpStatus.OK);
+	}
+
+	@GetMapping("/student-school")
+	public ResponseEntity<?> getAcademicCurrentByStudentAndSchool(@RequestParam("studentId") Long studentId,
+			@RequestParam("schoolUdiseNo") long schoolUdiseNo) {
+
+		Optional<AcademicCurrent> academicCurrent = academicCurrentService
+				.getAcademicCurrentByStudentAndSchool(studentId, schoolUdiseNo);
+
+		if (academicCurrent.isPresent()) {
+			return ResponseEntity.ok(academicCurrent.get());
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+
+	@GetMapping("/")
+	public ResponseEntity<List<AcademicCurrent>> getdata() {
+		List<AcademicCurrent> academicCurrent = academicCurrentService.getdata();
+		return new ResponseEntity<>(academicCurrent, HttpStatus.OK);
+	}
+
+	@GetMapping("/{id}")
+	public ResponseEntity<AcademicCurrent> getbyiddata(@PathVariable long id) {
+		AcademicCurrent academicCurrent = academicCurrentService.getbyid(id);
+		return new ResponseEntity<>(academicCurrent, HttpStatus.OK);
+	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> deletedata(@PathVariable long id) {
+		academicCurrentService.deletedata(id);
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
 }
