@@ -28,6 +28,7 @@ import com.api.service.AcademicCurrentService;
 import com.api.service.ClassTeacherService;
 import com.api.service.DistrictService;
 import com.api.service.SchoolService;
+import com.api.service.StandardMasterService;
 import com.api.service.StateService;
 import com.api.service.StudentService;
 import com.api.service.TehsilService;
@@ -60,6 +61,9 @@ public class StudentController {
 
 	@Autowired
 	private AcademicCurrentService academicCurrentService;
+	
+	@Autowired
+	private StandardMasterService standardMasterService;
 
 	@PostMapping("/")
 	public ResponseEntity<Student> savedata(@RequestBody StudentDto studentDto) {
@@ -88,7 +92,7 @@ public class StudentController {
 		student.setDateOfBirthInWord(studentDto.getDateOfBirthInWord());
 		student.setLastSchoolUdiseNo(studentDto.getLastSchoolUdiseNo());
 		student.setAdmissionDate(studentDto.getAdmissionDate());
-		student.setWhichStandardAdmitted(studentDto.getWhichStandardAdmitted());
+		student.setWhichStandardAdmitted(standardMasterService.getbyid(studentDto.getWhichStandardAdmitted()));
 		student.setCreatedAt(studentDto.getCreatedAt());
 		student.setBirthPlace(studentDto.getBirthPlace());
 		student.setCasteCategory(studentDto.getCasteCategory());
@@ -189,7 +193,7 @@ public class StudentController {
 			student.setDateOfBirthInWord(studentDto.getDateOfBirthInWord());
 			student.setLastSchoolUdiseNo(studentDto.getLastSchoolUdiseNo());
 			student.setAdmissionDate(studentDto.getAdmissionDate());
-			student.setWhichStandardAdmitted(studentDto.getWhichStandardAdmitted());
+			student.setWhichStandardAdmitted(standardMasterService.getbyid(studentDto.getWhichStandardAdmitted()));
 			student.setCreatedAt(studentDto.getCreatedAt());
 			student.setBirthPlace(studentDto.getBirthPlace());
 			student.setCasteCategory(studentDto.getCasteCategory());

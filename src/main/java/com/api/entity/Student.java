@@ -59,7 +59,9 @@ public class Student {
 	private String dateOfBirthInWord;
 	private String lastSchoolUdiseNo;
 	private Date admissionDate;
-	private String whichStandardAdmitted;
+	
+	@ManyToOne
+	private StandardMaster whichStandardAdmitted;
 	private Date createdAt;
 	private String ebcInformation;
 	private String minorityInformation;

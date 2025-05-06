@@ -47,7 +47,7 @@ public class StudentDto {
 	private String dateOfBirthInWord;
 	private String lastSchoolUdiseNo;
 	private Date admissionDate;
-	private String whichStandardAdmitted;
+	private long whichStandardAdmitted;
 	private Date createdAt;
 	
 	private String ebcInformation;

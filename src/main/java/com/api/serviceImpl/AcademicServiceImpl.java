@@ -13,6 +13,7 @@ import com.api.repository.AcademicCurrentRepository;
 import com.api.repository.SchoolRepository;
 import com.api.repository.StudentRepository;
 import com.api.service.AcademicCurrentService;
+import com.api.service.SchoolService;
 
 @Service
 public class AcademicServiceImpl implements AcademicCurrentService{
@@ -25,6 +26,9 @@ public class AcademicServiceImpl implements AcademicCurrentService{
 	
 	@Autowired
 	private SchoolRepository schoolRepository;
+	
+	@Autowired
+	private SchoolService schoolService;
 	
 	@Override
 	public AcademicCurrent post(AcademicCurrent academicCurrent) {
@@ -67,5 +71,14 @@ public class AcademicServiceImpl implements AcademicCurrentService{
 	        
 	        return Optional.empty();
 	    }
+
+	@Override
+	public List<AcademicCurrent> getBySchool(long schoolUdiseNo) {
+		// TODO Auto-generated method stub
+		School school=schoolService.getbyid(schoolUdiseNo);
+		
+		return academicCurrentRepository.findBySchoolUdiseNo(school);
+		
+	}
 
 }
