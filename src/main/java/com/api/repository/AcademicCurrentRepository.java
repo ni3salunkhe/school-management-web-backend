@@ -26,5 +26,6 @@ public interface AcademicCurrentRepository extends JpaRepository<AcademicCurrent
     // Find all records for a specific school
     List<AcademicCurrent> findBySchoolUdiseNo(School schoolUdiseNo);
     
-
+    List<AcademicCurrent> findBySchoolUdiseNoAndClassTeacherId(Optional<School> school, Long teacherId);
+    
 }

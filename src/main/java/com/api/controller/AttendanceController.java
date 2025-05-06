@@ -72,4 +72,11 @@ public class AttendanceController {
 		 List<Attendance> attendances=attendanceService.getBySchoolStdMonthnyear(udiseNo, std, monthnyear);
 		 return ResponseEntity.ok(attendances);
 	 }
+	 
+	 @GetMapping("/by-udise-monthnyear/{studId}/{udiseNo}/{monthnyear}/{monthnyearend}")
+	 	public ResponseEntity<?> getDataWithinMonth(@PathVariable long studId, @PathVariable long udiseNo, @PathVariable YearMonth monthnyear, @PathVariable YearMonth monthnyearend ){
+		 List<Attendance> attendance=attendanceService.getAttendanceBetween(studId,udiseNo, monthnyear, monthnyearend);
+		 
+		 return ResponseEntity.ok(attendance);
+	 }
 }

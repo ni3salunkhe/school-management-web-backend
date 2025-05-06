@@ -68,4 +68,12 @@ public class AcademicServiceImpl implements AcademicCurrentService{
 	        return Optional.empty();
 	    }
 
+	@Override
+	public List<AcademicCurrent> getAcademicsByUdiseAndTeacherId(long udiseNo, long teacherId) {
+		// TODO Auto-generated method stub
+		Optional<School> school = schoolRepository.findById(udiseNo);
+		
+		return academicCurrentRepository.findBySchoolUdiseNoAndClassTeacherId(school, teacherId);
+	}
+
 }

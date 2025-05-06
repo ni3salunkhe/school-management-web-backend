@@ -277,8 +277,6 @@ public class AttendanceServiceImpl implements AttendanceService {
         }
     }
     
-    
-	 
 	@Override
 	public List<Attendance> markStudentsAbsent(List<Long> registerNumbers, Long udiseNo, LocalDate date) {
 	    List<Attendance> updatedAttendances = new ArrayList<>();
@@ -394,8 +392,15 @@ public class AttendanceServiceImpl implements AttendanceService {
 	            .orElseThrow(() -> new RuntimeException("School not found"));
 		return attendanceRepository.findBySchoolAndStdAndMonthnyear(school, std, monthnyear);
 	}
-	
-	
-	
+
+
+	@Override
+	public List<Attendance> getAttendanceBetween(long studId,long udiseNo, YearMonth monthYear, YearMonth monthYearEnd) {
+		// TODO Auto-generated method stub
+		School school = schoolRepository.findById(udiseNo)
+	            .orElseThrow(() -> new RuntimeException("School not found"));
+		Student student = studentRepository.findById(studId).orElseThrow(()->new RuntimeException("Student not found"));
+		return attendanceRepository.findByStudIdAndSchoolAndMonthnyearBetween(student,school, monthYear, monthYearEnd);
+	}
 	
 }

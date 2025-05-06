@@ -2,6 +2,7 @@ package com.api.repository;
 
 import com.api.entity.Attendance;
 import com.api.entity.School;
+import com.api.entity.Staff;
 import com.api.entity.Student;
 
 import java.time.YearMonth;
@@ -35,5 +36,6 @@ public interface AttendanceRepository extends JpaRepository<Attendance, Long> {
 	
 	boolean existsByRegisterNumberAndMonthnyearAndSchool_UdiseNo(Long registerNumber, YearMonth monthnyear, Long udiseNo);
 
+	List<Attendance> findByStudIdAndSchoolAndMonthnyearBetween(Student studId, School udiseNo, YearMonth monthnyear, YearMonth monthnyearend);
 
 }

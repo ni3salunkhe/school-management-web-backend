@@ -13,4 +13,6 @@ public interface AttendanceService {
 	public void recalculateAttendanceStatistics(Long udiseNo, YearMonth monthYear);
 	public List<Attendance> getAttendance();
 	public List<Attendance> getBySchoolStdMonthnyear(long udiseNo, int std, YearMonth monthnyear);
+	public List<Attendance> getAttendanceBetween(long studId,long udiseNo, YearMonth monthYear, YearMonth monthYearEnd);
+	
 }
