@@ -75,14 +75,14 @@ public class StaffController {
 		return new ResponseEntity<Staff>(staff,HttpStatus.OK);
 	}
 	
-	@GetMapping("getbyudise/{udiseNo}")
+	@GetMapping("/getbyudise/{udiseNo}")
 	public ResponseEntity<List<Staff>> getByUdiseNumber(@PathVariable long udiseNo)
 	{
 		List<Staff> staff=staffService.getaAllDataByUdise(udiseNo);
 		return new ResponseEntity<List<Staff>>(staff,HttpStatus.OK);
 	}
 	
-	@GetMapping("getbyudiseandusername/{udise}/{username}")
+	@GetMapping("/getbyudiseandusername/{udise}/{username}")
 	public ResponseEntity<Staff> getByUdiseAndUsername(@PathVariable long udise,@PathVariable String username)
 	{
 		Staff staff=staffService.getByUsernameAndUdise(udise, username);

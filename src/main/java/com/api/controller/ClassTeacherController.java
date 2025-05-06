@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -57,6 +58,18 @@ public class ClassTeacherController {
 		return new ResponseEntity<ClassTeacher>(saveClassTeacher,HttpStatus.CREATED);
 	}
 	
+	@PutMapping("/editclassteacher/{id}")
+	public ResponseEntity<ClassTeacher> editclassteacher(@PathVariable long id,@RequestBody ClassTeacherDto classTeacherDto)
+	{
+		ClassTeacher classTeacher=classTeacherService.getbyid(id);
+		
+		classTeacher.setStaff(staffService.getbyid(classTeacherDto.getStaff()));
+		
+		ClassTeacher saveClassTeacher=classTeacherService.post(classTeacher);
+		
+		return new ResponseEntity<ClassTeacher>(saveClassTeacher,HttpStatus.OK);
+	}
+	
 	// Reserved staff (not assigned to any class)
 	@GetMapping("/reservedstaff")
 	public ResponseEntity<List<Staff>> getReservedStaff() {
@@ -76,6 +89,13 @@ public class ClassTeacherController {
 	public ResponseEntity<ClassTeacher> getbyiddata(@PathVariable long id) {
 	    ClassTeacher classTeacher = classTeacherService.getByStaffId(id);
 	    return new ResponseEntity<>(classTeacher, HttpStatus.OK);
+	}
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<ClassTeacher> getbyclassTeacherId(@PathVariable long id)
+	{
+		ClassTeacher classTeacher=classTeacherService.getbyid(id);
+		return new ResponseEntity<ClassTeacher>(classTeacher,HttpStatus.OK);
 	}
 	
 	

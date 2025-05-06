@@ -22,4 +22,6 @@ public interface AcademicCurrentService {
 	public Optional<AcademicCurrent> getAcademicCurrentByStudentAndSchool(Long studentId, long schoolUdiseNo);
 	
 	public List<AcademicCurrent> getAcademicsByUdiseAndTeacherId(long udiseNo, long teacherId);
+	
+	public List<AcademicCurrent> getBySchool(long schoolUdiseNo);
 }
