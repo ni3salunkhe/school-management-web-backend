@@ -34,10 +34,10 @@ public class AttendanceController {
         return ResponseEntity.ok(attendances);
     }
 	
-	@PostMapping("/mark-holiday/school/{udiseNo}")
+	@PostMapping("/mark-holiday/school/{udiseNo}/{date}")
     public ResponseEntity<String> markHolidayForSchool(
             @PathVariable Long udiseNo,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+            @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
         
         attendanceService.markHolidayForSchool(udiseNo, date);
         return ResponseEntity.ok("Day marked as Holiday for school UDISE: " + udiseNo + " on " + date);
