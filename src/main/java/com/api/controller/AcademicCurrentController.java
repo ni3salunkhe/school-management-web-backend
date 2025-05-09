@@ -78,10 +78,10 @@ public class AcademicCurrentController {
 //		old.setStatus(academicCurrentDto.getStatus());
 		old.setCreatedAt(current.getCreatedAt());
 
-		if ("left".equalsIgnoreCase(academicCurrentDto.getStatus())) {
+		if ("PassAndLeft".equalsIgnoreCase(academicCurrentDto.getStatus())) {
 			// If the status is "left", move the student to AcademicOld and delete from
 			// AcademicCurrent
-			old.setStatus("left"); // Status set to "left"
+			old.setStatus("PassAndLeft"); // Status set to "left"
 
 			// Save the student in AcademicOld table
 			academicOldService.post(old);
@@ -120,62 +120,57 @@ public class AcademicCurrentController {
 
 	@PutMapping("/update-student/bulk")
 	public ResponseEntity<String> promotePassedStudents(@RequestBody AcademicCurrentDto academicCurrentDto) {
-		System.out.println("Received DTO: " + academicCurrentDto);
+	    System.out.println("Received DTO: " + academicCurrentDto);
 
-		for (Long id : academicCurrentDto.getStudentIds()) {
-			Optional<AcademicCurrent> optionalAcademicCurrent = academicCurrentService
-					.getAcademicCurrentByStudentAndSchool(id, academicCurrentDto.getSchoolUdiseNo());
+	    for (Long id : academicCurrentDto.getStudentIds()) {
+	        Optional<AcademicCurrent> optionalAcademicCurrent = academicCurrentService
+	                .getAcademicCurrentByStudentAndSchool(id, academicCurrentDto.getSchoolUdiseNo());
 
-			if (optionalAcademicCurrent.isPresent()) {
-				AcademicCurrent academicCurrent = optionalAcademicCurrent.get();
-				System.out.println("Found academic current for student ID: " + id);
+	        if (optionalAcademicCurrent.isPresent()) {
+	            AcademicCurrent academicCurrent = optionalAcademicCurrent.get();
+	            System.out.println("Found academic current for student ID: " + id);
 
-				// Move old data to AcademicOld
-				AcademicOld old = new AcademicOld();
-				old.setAcademicYear(academicCurrent.getAcademicYear());
-				old.setClassTeacher(academicCurrent.getClassTeacher());
-				old.setDivision(academicCurrent.getDivision());
-				old.setStudentId(academicCurrent.getStudentId());
-				old.setSchoolUdiseNo(academicCurrent.getSchoolUdiseNo());
-//				old.setStatus(academicCurrentDto.getStatus());
-				old.setCreatedAt(academicCurrent.getCreatedAt());
-				
-				if("fail".equalsIgnoreCase(academicCurrentDto.getStatus()))
-				{
-					old.setStatus("fail");
-					academicOldService.post(old);
-				}
-				
-				if("left".equalsIgnoreCase(academicCurrentDto.getStatus()))
-				{
-					old.setStatus("left");
-					academicOldService.post(old);
-					academicCurrentService.deletedata(academicCurrent.getId());
-				}
-				
-				if("Pass".equalsIgnoreCase(academicCurrentDto.getStatus()))
-				{
-					old.setStatus("Pass");
-					academicOldService.post(old);
-				}
+	            // Move current data to AcademicOld
+	            AcademicOld old = new AcademicOld();
+	            old.setAcademicYear(academicCurrent.getAcademicYear());
+	            old.setClassTeacher(academicCurrent.getClassTeacher());
+	            old.setDivision(academicCurrent.getDivision());
+//	            old.setStandard(academicCurrent.getStandard());
+	            old.setStudentId(academicCurrent.getStudentId());
+	            old.setSchoolUdiseNo(academicCurrent.getSchoolUdiseNo());
+	            old.setCreatedAt(academicCurrent.getCreatedAt());
 
+	            // Handle based on status
+	            String status = academicCurrentDto.getStatus();
+	            if ("fail".equalsIgnoreCase(status)) {
+	                old.setStatus("fail");
+	                academicOldService.post(old); // Save to AcademicOld, student remains in current
+	            } else if ("PassAndLeft".equalsIgnoreCase(status)) {
+	                old.setStatus("PassAndLeft");
+	                academicOldService.post(old); // Save to AcademicOld
 
-				// Update AcademicCurrent
-				academicCurrent.setAcademicYear(academicCurrentDto.getAcademicYear());
-				academicCurrent.setClassTeacher(classTeacherService.getbyid(academicCurrentDto.getClassTeacher()));
-				academicCurrent.setDivision(divisionService.getbyid(academicCurrentDto.getDivision()));
-				academicCurrent.setStandard(standardMasterService.getbyid(academicCurrentDto.getStandardId()));
-				academicCurrent.setStatus("learning");
-				academicCurrent.setCreatedAt(academicCurrentDto.getCreatedAt());
+	                academicCurrentService.deletedata(academicCurrent.getId()); // Delete from current
+	                continue; // Skip update below
+	            } else if ("Pass".equalsIgnoreCase(status)) {
+	                old.setStatus("Pass");
+	                academicOldService.post(old); // Save to AcademicOld and promote below
+	            }
 
-				academicCurrentService.post(academicCurrent); // Save updated current
+	            // Promote student: update AcademicCurrent with new details
+	            academicCurrent.setAcademicYear(academicCurrentDto.getAcademicYear());
+	            academicCurrent.setClassTeacher(classTeacherService.getbyid(academicCurrentDto.getClassTeacher()));
+	            academicCurrent.setDivision(divisionService.getbyid(academicCurrentDto.getDivision()));
+	            academicCurrent.setStandard(standardMasterService.getbyid(academicCurrentDto.getStandardId()));
+	            academicCurrent.setStatus("learning");
+	            academicCurrent.setCreatedAt(academicCurrentDto.getCreatedAt());
 
-			} else {
-				System.out.println("Academic current not found for student ID: " + id);
-			}
-		}
+	            academicCurrentService.post(academicCurrent); // Save updated current
+	        } else {
+	            System.out.println("Academic current not found for student ID: " + id);
+	        }
+	    }
 
-		return new ResponseEntity<>("Selected students promoted successfully.", HttpStatus.OK);
+	    return new ResponseEntity<>("Selected students promoted successfully.", HttpStatus.OK);
 	}
 
 	@GetMapping("/student-school")
@@ -208,11 +203,5 @@ public class AcademicCurrentController {
 	public ResponseEntity<Void> deletedata(@PathVariable long id) {
 		academicCurrentService.deletedata(id);
 		return new ResponseEntity<>(HttpStatus.OK);
-	}
-	
-	@GetMapping("/{udiseNo}/{teacherId}")
-	public ResponseEntity<?> getAcdemicData(@PathVariable long udiseNo, @PathVariable long teacherId){
-		List<AcademicCurrent> academicCurrent= academicCurrentService.getAcademicsByUdiseAndTeacherId(udiseNo, teacherId);
-		return new ResponseEntity<>(academicCurrent, HttpStatus.OK);
 	}
 }
