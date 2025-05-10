@@ -7,12 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.api.entity.AcademicCurrent;
+import com.api.entity.ClassTeacher;
 import com.api.entity.School;
 import com.api.entity.Student;
 import com.api.repository.AcademicCurrentRepository;
 import com.api.repository.SchoolRepository;
 import com.api.repository.StudentRepository;
 import com.api.service.AcademicCurrentService;
+import com.api.service.ClassTeacherService;
 import com.api.service.SchoolService;
 
 @Service
@@ -30,6 +32,8 @@ public class AcademicServiceImpl implements AcademicCurrentService{
 	@Autowired
 	private SchoolService schoolService;
 	
+	@Autowired
+	private ClassTeacherService classTeacherService;
 	@Override
 	public AcademicCurrent post(AcademicCurrent academicCurrent) {
 		// TODO Auto-generated method stub
@@ -84,9 +88,10 @@ public class AcademicServiceImpl implements AcademicCurrentService{
 	@Override
 	public List<AcademicCurrent> getAcademicsByUdiseAndTeacherId(long udiseNo, long teacherId) {
 		// TODO Auto-generated method stub
-		Optional<School> school = schoolRepository.findById(udiseNo);
+		School school = schoolService.getbyid(udiseNo);
+		ClassTeacher classTeacher=classTeacherService.getByStaffId(teacherId);
 		
-		return academicCurrentRepository.findBySchoolUdiseNoAndClassTeacherId(school, teacherId);
+		return academicCurrentRepository.findByClassTeacherIdAndSchoolUdiseNo(classTeacher.getId(), school);
 	}
 
 }
