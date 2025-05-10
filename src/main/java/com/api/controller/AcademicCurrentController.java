@@ -198,6 +198,12 @@ public class AcademicCurrentController {
 		AcademicCurrent academicCurrent = academicCurrentService.getbyid(id);
 		return new ResponseEntity<>(academicCurrent, HttpStatus.OK);
 	}
+	
+	@GetMapping("/{udiseNo}/{teacherId}")
+	public ResponseEntity<?> getAcdemicData(@PathVariable long udiseNo, @PathVariable long teacherId){
+		List<AcademicCurrent> academicCurrent= academicCurrentService.getAcademicsByUdiseAndTeacherId(udiseNo, teacherId);
+		return new ResponseEntity<>(academicCurrent, HttpStatus.OK);
+	}
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deletedata(@PathVariable long id) {
