@@ -89,4 +89,10 @@ public class StaffServiceImpl implements StaffService, UserDetailsService{
 		return staffRepository.findBySchoolUdiseNoAndUsername(udiseNo, username);
 	}
 
+	@Override
+	public Staff getByMobileAndEmail(String mobile, String email) {
+		// TODO Auto-generated method stub
+		return staffRepository.findByMobileAndEmail(mobile, email);
+	}
+
 }

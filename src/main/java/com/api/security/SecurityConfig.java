@@ -51,6 +51,10 @@ public class SecurityConfig {
             .and()
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/public/**").permitAll()
+                .requestMatchers("/staff/checkmobileamdemail").permitAll()
+                .requestMatchers("/staff/resetpassword/**").permitAll()
+                .requestMatchers("/school/checkmobileamdemail").permitAll()
+                .requestMatchers("/school/resetpassword/**").permitAll()
                 .anyRequest().authenticated()
             )
             .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

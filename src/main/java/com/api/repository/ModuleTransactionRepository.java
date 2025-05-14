@@ -5,13 +5,12 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.api.entity.Division;
+import com.api.entity.ModuleTransaction;
 import com.api.entity.School;
 
 @Repository
-public interface DivisionRepository extends JpaRepository<Division, Long>{
+public interface ModuleTransactionRepository extends JpaRepository<ModuleTransaction, Long> {
 	
-	Division findByName(String name);
+	List<ModuleTransaction> findByschool(School school);
 	
-	List<Division> findBySchoolUdiseNo(School school);
 }

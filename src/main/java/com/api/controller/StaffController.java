@@ -1,6 +1,8 @@
 package com.api.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -120,6 +122,34 @@ public class StaffController {
 		}
 		
 	}
+	
+	@PutMapping("/resetpassword/{id}")
+	public ResponseEntity<Staff> resetPassword(@PathVariable long id,@RequestBody StaffDto staffDto)
+	{
+		Staff staff=staffService.getbyid(id);
+		staff.setPassword(passwordEncoder.encode(staffDto.getPassword()));
+		
+		Staff saveStaff=staffService.post(staff);
+		
+		return new ResponseEntity<Staff>(saveStaff,HttpStatus.OK);
+	}
+	
+	@PostMapping("/checkmobileamdemail")
+	public ResponseEntity<Map<String, Object>> checkMobileAndEmail(@RequestBody StaffDto staffDto) {
+	    Staff staff = staffService.getByMobileAndEmail(staffDto.getMobile(), staffDto.getEmail());
+
+	    if (staff != null) {
+	        Map<String, Object> response = new HashMap<>();
+	        response.put("id", staff.getId());
+	        response.put("Available", true);
+	        return new ResponseEntity<>(response, HttpStatus.OK);
+	    } else {
+	        Map<String, Object> error = new HashMap<>();
+	        error.put("Available", false);
+	        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+	    }
+	}
+
 	
 	@GetMapping("/status/{id}")
 	public ResponseEntity<Staff> updateStatus (@PathVariable long id)

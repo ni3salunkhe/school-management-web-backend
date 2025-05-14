@@ -1,7 +1,11 @@
 package com.api.controller;
 
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -46,7 +51,7 @@ public class SchoolController {
 
 	@Autowired
 	private VillageService villageService;
-	
+
 	@Autowired
 	PasswordEncoder passwordEncoder;
 
@@ -74,6 +79,7 @@ public class SchoolController {
 			school.setMedium(schoolDto.getMedium());
 			school.setHeadMasterUserName(schoolDto.getHeadMasterUserName());
 			school.setHeadMasterMobileNo(schoolDto.getHeadMasterMobileNo());
+			school.setHeadMasterEmailId(schoolDto.getHeadMasterEmailId());
 			school.setHeadMasterPassword(passwordEncoder.encode(schoolDto.getHeadMasterPassword()));
 			school.setBoard(schoolDto.getBoard());
 			school.setBoardDivision(schoolDto.getBoardDivision());
@@ -114,58 +120,88 @@ public class SchoolController {
 		return new ResponseEntity<School>(school, HttpStatus.OK);
 	}
 
+	@PostMapping("/checkmobileamdemail")
+	public ResponseEntity<Map<String, Object>> checkmobileamdemail(@RequestBody SchoolDto schoolDto) {
+		School school = schoolService.getByHeadMasterEmailAndMobileNo(schoolDto.getHeadMasterEmailId(),
+				schoolDto.getHeadMasterMobileNo());
+
+		if (school != null) {
+			Map<String, Object> response = new HashMap<>();
+			response.put("id", school.getUdiseNo());
+			response.put("Available", true);
+			return new ResponseEntity<>(response, HttpStatus.OK);
+		}
+
+		else {
+			Map<String, Object> error = new HashMap<>();
+			error.put("Available", false);
+			return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+		}
+	}
+	
+	@PutMapping("/resetpassword/{id}")
+	public ResponseEntity<School> resetHeadMasterPassword(@RequestBody SchoolDto schoolDto,@PathVariable long id)
+	{
+		School school=schoolService.getbyid(id);
+		school.setHeadMasterPassword(schoolDto.getHeadMasterPassword());
+		
+		School saveSchool=schoolService.post(school);
+		return new ResponseEntity<School>(saveSchool,HttpStatus.OK);
+		
+	}
+
 	@PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public ResponseEntity<School> editdata(@PathVariable long id,
-	                                       @RequestPart("schoolDto") String schoolDtoJson,
-	                                       @RequestPart(value = "logo", required = false) MultipartFile logoFile) {
-	    try {
-	        School existingSchool = schoolService.getbyid(id);
-	        if (existingSchool == null) {
-	            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-	        }
+	public ResponseEntity<School> editdata(@PathVariable long id, @RequestPart("schoolDto") String schoolDtoJson,
+			@RequestPart(value = "logo", required = false) MultipartFile logoFile) {
+		try {
+			School existingSchool = schoolService.getbyid(id);
+			if (existingSchool == null) {
+				return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			}
 
-	        ObjectMapper objectMapper = new ObjectMapper();
-	        SchoolDto schoolDto = objectMapper.readValue(schoolDtoJson, SchoolDto.class);
+			ObjectMapper objectMapper = new ObjectMapper();
+			SchoolDto schoolDto = objectMapper.readValue(schoolDtoJson, SchoolDto.class);
 
-	        if (logoFile != null && !logoFile.isEmpty()) {
-	            schoolDto.setLogo(logoFile);
-	        }
+			if (logoFile != null && !logoFile.isEmpty()) {
+				schoolDto.setLogo(logoFile);
+			}
 
-	        existingSchool.setUdiseNo(schoolDto.getUdiseNo());
-	        existingSchool.setSchoolSlogan(schoolDto.getSchoolSlogan());
-	        existingSchool.setSansthaName(schoolDto.getSansthaName());
-	        existingSchool.setSchoolName(schoolDto.getSchoolName());
-	        existingSchool.setTehsil(tehsilService.getbyid(schoolDto.getTehsil()));
-	        existingSchool.setDistrict(districtService.getbyid(schoolDto.getDistrict()));
-	        existingSchool.setState(stateService.getbyid(schoolDto.getState()));
-	        existingSchool.setVillage(villageService.getbyid(schoolDto.getVillage()));
-	        existingSchool.setPinCode(schoolDto.getPinCode());
-	        existingSchool.setMedium(schoolDto.getMedium());
-	        existingSchool.setHeadMasterMobileNo(schoolDto.getHeadMasterMobileNo());
-	        existingSchool.setHeadMasterPassword(schoolDto.getHeadMasterPassword());
-	        existingSchool.setBoard(schoolDto.getBoard());
-	        existingSchool.setBoardDivision(schoolDto.getBoardDivision());
-	        existingSchool.setBoardIndexNo(schoolDto.getBoardIndexNo());
+			existingSchool.setUdiseNo(schoolDto.getUdiseNo());
+			existingSchool.setSchoolSlogan(schoolDto.getSchoolSlogan());
+			existingSchool.setSansthaName(schoolDto.getSansthaName());
+			existingSchool.setSchoolName(schoolDto.getSchoolName());
+			existingSchool.setTehsil(tehsilService.getbyid(schoolDto.getTehsil()));
+			existingSchool.setDistrict(districtService.getbyid(schoolDto.getDistrict()));
+			existingSchool.setState(stateService.getbyid(schoolDto.getState()));
+			existingSchool.setVillage(villageService.getbyid(schoolDto.getVillage()));
+			existingSchool.setPinCode(schoolDto.getPinCode());
+			existingSchool.setMedium(schoolDto.getMedium());
+			existingSchool.setHeadMasterMobileNo(schoolDto.getHeadMasterMobileNo());
+			existingSchool.setHeadMasterPassword(schoolDto.getHeadMasterPassword());
+			existingSchool.setHeadMasterEmailId(schoolDto.getHeadMasterEmailId());
+			existingSchool.setBoard(schoolDto.getBoard());
+			existingSchool.setBoardDivision(schoolDto.getBoardDivision());
+			existingSchool.setBoardIndexNo(schoolDto.getBoardIndexNo());
 //	        existingSchool.setSchoolEmailId(schoolDto.getSchoolEmailId());
-	        existingSchool.setSchoolApprovalNo(schoolDto.getSchoolApprovalNo());
-	        existingSchool.setRole(schoolDto.getRole());
+			existingSchool.setSchoolApprovalNo(schoolDto.getSchoolApprovalNo());
+			existingSchool.setRole(schoolDto.getRole());
 
-	        if (schoolDto.getLogo() != null && !schoolDto.getLogo().isEmpty()) {
-	            MultipartFile logo = schoolDto.getLogo();
-	            if (!logo.getContentType().startsWith("image/")) {
-	                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-	            }
-	            existingSchool.setLogo(logo.getBytes());
-	        }
+			if (schoolDto.getLogo() != null && !schoolDto.getLogo().isEmpty()) {
+				MultipartFile logo = schoolDto.getLogo();
+				if (!logo.getContentType().startsWith("image/")) {
+					return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+				}
+				existingSchool.setLogo(logo.getBytes());
+			}
 
-	        existingSchool.setCreatedAt(schoolDto.getCreatedAt());
+			existingSchool.setCreatedAt(schoolDto.getCreatedAt());
 
-	        School updatedSchool = schoolService.post(existingSchool);
-	        return new ResponseEntity<>(updatedSchool, HttpStatus.CREATED);
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-	    }	
+			School updatedSchool = schoolService.post(existingSchool);
+			return new ResponseEntity<>(updatedSchool, HttpStatus.CREATED);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 	}
 
 	@DeleteMapping("{id}")

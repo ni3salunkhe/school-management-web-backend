@@ -22,4 +22,6 @@ public interface StaffService {
 	public Staff getByUsername(String username);
 	
 	public Staff getByUsernameAndUdise(long udiseNo,String username);
+	
+	public Staff getByMobileAndEmail(String mobile,String email);
 }

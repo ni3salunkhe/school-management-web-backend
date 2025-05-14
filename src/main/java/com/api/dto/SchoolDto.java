@@ -28,6 +28,7 @@ public class SchoolDto {
 	private String medium;
 	private String headMasterUserName;
 	private String headMasterMobileNo;
+	private String headMasterEmailId;
 	private String headMasterPassword;
 	private String schoolPlace;
 	private String board;

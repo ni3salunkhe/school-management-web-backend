@@ -16,4 +16,6 @@ public interface SchoolService {
 	
 	public School getByUsername(String username);
 	
+	public School getByHeadMasterEmailAndMobileNo(String email,String mobile);
+	
 }

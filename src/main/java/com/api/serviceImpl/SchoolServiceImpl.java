@@ -72,4 +72,10 @@ public class SchoolServiceImpl implements SchoolService, UserDetailsService{
 		return schoolRepository.findByHeadMasterUserName(username);
 	}
 
+	@Override
+	public School getByHeadMasterEmailAndMobileNo(String email, String mobile) {
+		// TODO Auto-generated method stub
+		return schoolRepository.findByHeadMasterEmailIdAndHeadMasterMobileNo(email, mobile);
+	}
+
 }
