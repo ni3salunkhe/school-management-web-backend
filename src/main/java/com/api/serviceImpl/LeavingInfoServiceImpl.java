@@ -47,4 +47,10 @@ public class LeavingInfoServiceImpl implements LeavingInfoService{
 		return leavingInfoRepository.findByStudentIdAndSchoolUdise(studentId, schoolUdise);
 	}
 
+	@Override
+	public List<LeavingInfo> getDataByUdise(School school) {
+		// TODO Auto-generated method stub
+		return leavingInfoRepository.findBySchoolUdise(school);
+	}
+
 }
