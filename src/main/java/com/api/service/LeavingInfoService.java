@@ -16,4 +16,6 @@ public interface LeavingInfoService {
 	public void deletedata(long id);
 	
 	public LeavingInfo getdatabystudentId(Student studentId,School schoolUdise);
+	
+	public List<LeavingInfo> getDataByUdise(School school);
 }

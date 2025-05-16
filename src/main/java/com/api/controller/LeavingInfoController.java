@@ -93,6 +93,16 @@ public class LeavingInfoController {
 		}
 	}
 
+	// get by all data based on udise
+	@GetMapping("/getbyudise/{udise}")
+	public ResponseEntity<List<LeavingInfo>> getbyudiseOnly(@PathVariable long udise) {
+		School school = schoolService.getbyid(udise);
+
+		List<LeavingInfo> leavingInfos = leavingInfoService.getDataByUdise(school);
+
+		return new ResponseEntity<List<LeavingInfo>>(leavingInfos, HttpStatus.OK);
+	}
+
 	@GetMapping("/getbystudentId/{studentId}/udise/{udise}")
 	public ResponseEntity<LeavingInfo> getDataByStudentAndUdise(@PathVariable long studentId,
 			@PathVariable long udise) {
@@ -119,6 +129,7 @@ public class LeavingInfoController {
 			return ResponseEntity.ok(false);
 		}
 	}
+
 //save flag of original printed or not
 	@PutMapping("/markprinted/{studentId}/udise/{udise}")
 	public ResponseEntity<String> markAsPrinted(@PathVariable long studentId, @PathVariable long udise) {
@@ -135,7 +146,6 @@ public class LeavingInfoController {
 		System.out.println(saveLeavingInfo);
 		return ResponseEntity.ok("Marked as printed.");
 	}
-	
 
 	@PutMapping("/marknewlcprinted/{studentId}/udise/{udise}")
 	public ResponseEntity<String> markAsLcNewPrinted(@PathVariable long studentId, @PathVariable long udise) {
@@ -152,8 +162,6 @@ public class LeavingInfoController {
 //		System.out.println(saveLeavingInfo);
 		return ResponseEntity.ok("Marked as printed.");
 	}
-	
-
 
 //	@PutMapping("/markprint/{studentId}/{udise}")
 //	public ResponseEntity<String> markprinted(@PathVariable long studentId,@PathVariable long udise)
@@ -188,7 +196,7 @@ public class LeavingInfoController {
 
 		return new ResponseEntity<LeavingInfo>(leavingInfo, HttpStatus.OK);
 	}
-	
+
 	@PutMapping("/newlc/duplicate-count/{studentId}/udise/{udise}")
 	public ResponseEntity<LeavingInfo> duplicateNewLcCount(@PathVariable long studentId, @PathVariable long udise) {
 		Student student = studentService.getbyid(studentId);
@@ -200,7 +208,6 @@ public class LeavingInfoController {
 
 		return new ResponseEntity<LeavingInfo>(leavingInfo, HttpStatus.OK);
 	}
-
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deletedat(@PathVariable long id) {
