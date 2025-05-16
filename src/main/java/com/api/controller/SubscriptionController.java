@@ -39,7 +39,7 @@ public class SubscriptionController {
         
         if (!subscription.isPresent()) {
             return ResponseEntity.status(HttpStatus.OK)
-                    .body("Subscription not purchased yet for UDISE number: " + udiseNumber);
+                    .body("UDISE क्रमांकासाठी अद्याप सदस्यता खरेदी केलेली नाही.: " + udiseNumber);
         }
             boolean isExpired = subscriptionService.isSubscriptionExpired(Long.parseLong(udiseNumber));
             return ResponseEntity.ok(isExpired);
