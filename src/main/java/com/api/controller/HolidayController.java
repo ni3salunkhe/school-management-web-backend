@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.api.dto.HolidayDto;
@@ -19,7 +20,8 @@ import com.api.entity.School;
 import com.api.service.HolidayService;
 import com.api.service.SchoolService;
 import com.api.service.StaffService;
-@RestController("/holiday")
+@RestController
+@RequestMapping("/holiday")
 public class HolidayController {
 	
 	@Autowired
@@ -45,8 +47,14 @@ public class HolidayController {
 		return new ResponseEntity<Holiday>(holiday,HttpStatus.OK);
 	}
 	
+	@GetMapping("/byudise/{udiseNo}")
+	public ResponseEntity<List<Holiday>> getByUdise(@PathVariable long udiseNo){
+		List<Holiday> holiday=holidayService.getByUdise(udiseNo);
+		return new ResponseEntity<List<Holiday>>(holiday, HttpStatus.OK);
+	}
+	
 	@PostMapping("/")
-	public ResponseEntity<Holiday> postData(@PathVariable HolidayDto holidayDto )
+	public ResponseEntity<Holiday> postData(@RequestBody HolidayDto holidayDto )
 	{
 		Holiday holiday=new Holiday();
 		

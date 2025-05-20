@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.api.entity.Holiday;
+import com.api.entity.School;
 import com.api.repository.HolidayRepository;
+import com.api.repository.SchoolRepository;
 import com.api.service.HolidayService;
 
 @Service
@@ -14,6 +16,9 @@ public class HolidayServiceImpl implements HolidayService{
 	
 	@Autowired
 	private HolidayRepository holidayRepository;
+	
+	@Autowired
+	private SchoolRepository schoolRepository;
 
 	@Override
 	public List<Holiday> getallData() {
@@ -37,6 +42,15 @@ public class HolidayServiceImpl implements HolidayService{
 	public void deleteData(long id) {
 		// TODO Auto-generated method stub
 		holidayRepository.deleteById(id);
+	}
+
+	@Override
+	public List<Holiday> getByUdise(long udiseNo) {
+		// TODO Auto-generated method stub
+		School school = schoolRepository.findById(udiseNo)
+	            .orElseThrow(() -> new RuntimeException("School not found"));
+		return holidayRepository.findByUdise(school);
+		
 	}
 
 }
