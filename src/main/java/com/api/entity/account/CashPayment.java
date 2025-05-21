@@ -17,55 +17,56 @@ import lombok.Data;
 
 @Entity
 @Data
-public class BankPayment {
-	
+public class CashPayment {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long entryNo;
-	
+
 	private Date entryDate;
-	
+
 	@ManyToOne
+	@JoinColumn(name = "cust_id")
 	private CustomerMaster custId;
-	
+
 	private String tranType;
-	
+
 	private double Amount;
-	
+
 	private String narr;
-	
+
 	@ManyToOne
+	@JoinColumn(name = "school_udise")
 	private School schoolUdise;
-	
-	private Date year;
-	
+
+	private String year;
+
 	@ManyToOne
+	@JoinColumn(name = "head_id")
 	private HeadMaster headId;
-	
+
 	@ManyToOne
+	@JoinColumn(name = "subhead_id")
 	private SubHeadMaster subheadId;
-	
+
 //	user_id
-	
+
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "staff_id")
 	private Staff staffId;
-	
+
 	private Date createDate;
-	
+
 	private Date modifieDate;
-	
-	private String paymentType;
-	
-//	img
-	
-//	bank head id
-	
-//	bank sub id
-	
+
 	private long billNo;
+
+	private String billType;
 	
 	private String status;
-	
-	
+
+//  per id
+
+//	per head
+
 }

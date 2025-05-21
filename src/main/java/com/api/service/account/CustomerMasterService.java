@@ -2,6 +2,7 @@ package com.api.service.account;
 
 import java.util.List;
 
+import com.api.entity.School;
 import com.api.entity.account.CustomerMaster;
 
 public interface CustomerMasterService {
@@ -13,5 +14,7 @@ public interface CustomerMasterService {
 	public CustomerMaster postData(CustomerMaster customerMaster);
 	
 	public void deleteData(long id);
+	
+	public List<CustomerMaster> getByUdise(School school);
 	
 }

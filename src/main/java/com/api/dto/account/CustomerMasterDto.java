@@ -1,4 +1,5 @@
 package com.api.dto.account;
+
 import lombok.Data;
 
 @Data
@@ -14,10 +15,12 @@ public class CustomerMasterDto {
 
 	private String custMob2;
 
-	private long crAmt;
+	private double crAmt;
 
-	private long drAmt;
+	private double drAmt;
 
 	private long  headId;
+	
+	private long schoolUdise;
 
 }
