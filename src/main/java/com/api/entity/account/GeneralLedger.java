@@ -1,0 +1,76 @@
+package com.api.entity.account;
+
+import java.sql.Date;
+import java.util.Currency;
+
+import com.api.entity.School;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import lombok.Data;
+
+@Entity
+@Data
+public class GeneralLedger {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int entryNo;
+	
+	private Date entrydate;
+	
+	@ManyToOne
+	@JoinColumn(name = "SchoolUdiseNo")
+	private School shopId;
+	
+	@ManyToOne
+	@JoinColumn(name="Id")
+	EntryType entryType;
+	
+	@ManyToOne
+	@JoinColumn(name="CustId")
+	private CustomerMaster custId;
+	
+	private Double Cr_Amt;
+	
+	private Double Dr_Amt;
+	
+	private int year;
+	
+	private String narr;
+	
+	@ManyToOne
+	@JoinColumn(name="HeadId")
+	private HeadMaster head_id;
+	
+	private String daybookname;
+	
+	private Date salepaydate;
+	
+	@ManyToOne
+	@JoinColumn(name="SubHeadId")
+	private SubHeadMaster subhead;
+	
+	private String entrynochar;
+	
+	private long billno;
+	
+	private long maxno;
+	
+	//perid
+	
+	//perhead
+	
+	//daybookid;
+	
+	//daybookheadid;
+	
+	private String saledup;
+	
+//	private int siteid;
+		
+}
