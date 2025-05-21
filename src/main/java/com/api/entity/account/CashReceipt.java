@@ -3,69 +3,61 @@ package com.api.entity.account;
 import java.sql.Date;
 
 import com.api.entity.School;
-import com.api.entity.Staff;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import lombok.Data;
 
 @Entity
 @Data
-public class BankPayment {
-	
+public class CashReceipt {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long entryNo;
-	
+
 	private Date entryDate;
-	
-	@ManyToOne
-	private CustomerMaster custId;
-	
-	private String tranType;
-	
-	private double Amount;
-	
+
+	// party id
+
+	private String tranType; //create table
+
+	private double amount;
+
 	private String narr;
-	
+
 	@ManyToOne
+	@JoinColumn(name = "school_udise")
 	private School schoolUdise;
-	
-	private Date year;
-	
+
+	private long year;
+
 	@ManyToOne
+	@JoinColumn(name = "head_id")
 	private HeadMaster headId;
-	
+
 	@ManyToOne
+	@JoinColumn(name = "subhead_id")
 	private SubHeadMaster subheadId;
-	
-//	user_id
-	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "staff_id")
-	private Staff staffId;
-	
+
+	// user id
+
 	private Date createDate;
-	
+
 	private Date modifieDate;
-	
-	private String paymentType;
-	
-//	img
-	
-//	bank head id
-	
-//	bank sub id
-	
-	private long billNo;
+
+	private String billNo;
+
+	private String billType;
+
+	private String saleDup;
 	
 	private String status;
 	
-	
+	//site id
+
 }

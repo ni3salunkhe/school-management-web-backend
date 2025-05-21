@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.api.entity.School;
 import com.api.entity.account.CustomerMaster;
 import com.api.repository.account.CustomerMasterRepository;
 import com.api.service.account.CustomerMasterService;
@@ -37,6 +38,12 @@ public class CustomerMasterServiceImpl implements CustomerMasterService {
 	public void deleteData(long id) {
 		// TODO Auto-generated method stub
 		customerMasterRepository.deleteById(id);
+	}
+
+	@Override
+	public List<CustomerMaster> getByUdise(School school) {
+		// TODO Auto-generated method stub
+		return customerMasterRepository.findBySchoolUdise(school);
 	}
 
 }

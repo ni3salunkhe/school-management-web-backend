@@ -6,11 +6,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.api.entity.School;
-import com.api.entity.account.CustomerMaster;
+import com.api.entity.account.BankReceipt;
 
 @Repository
-public interface CustomerMasterRepository extends JpaRepository<CustomerMaster, Long>{
-
-	List<CustomerMaster> findBySchoolUdise(School school);
+public interface BankReceiptRepository extends JpaRepository<BankReceipt, Long>{
 	
+	List<BankReceipt> findByschoolUdise(School school);
 }
+

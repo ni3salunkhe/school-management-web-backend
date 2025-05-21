@@ -3,21 +3,18 @@ package com.api.entity.account;
 import java.sql.Date;
 
 import com.api.entity.School;
-import com.api.entity.Staff;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import lombok.Data;
 
 @Entity
 @Data
-public class BankPayment {
+public class BankReceipt {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,31 +22,31 @@ public class BankPayment {
 	
 	private Date entryDate;
 	
-	@ManyToOne
-	private CustomerMaster custId;
+	//party id
 	
 	private String tranType;
 	
-	private double Amount;
+	private double amount;
 	
 	private String narr;
 	
+	//bank id
+	
+	private long year;
+	
 	@ManyToOne
+	@JoinColumn(name = "school_udise")
 	private School schoolUdise;
 	
-	private Date year;
-	
 	@ManyToOne
+	@JoinColumn(name = "head_id")
 	private HeadMaster headId;
 	
 	@ManyToOne
+	@JoinColumn(name ="subhead_id")
 	private SubHeadMaster subheadId;
 	
-//	user_id
-	
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "staff_id")
-	private Staff staffId;
+	//user id
 	
 	private Date createDate;
 	
@@ -57,15 +54,17 @@ public class BankPayment {
 	
 	private String paymentType;
 	
-//	img
+	//img
 	
-//	bank head id
+	//bank head id
 	
-//	bank sub id
+	//bank sub head id
 	
-	private long billNo;
+	private String billNo;
+	
+	private String billType;
 	
 	private String status;
 	
-	
+	//site id
 }

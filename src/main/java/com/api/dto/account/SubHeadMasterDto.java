@@ -9,5 +9,8 @@ public class SubHeadMasterDto {
 	private String subHeadName;
 
 	private long headId;
+	
+	private long schoolUdise;
+
 
 }

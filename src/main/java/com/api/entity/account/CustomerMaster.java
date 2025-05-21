@@ -1,5 +1,8 @@
 package com.api.entity.account;
 
+import com.api.entity.School;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,11 +27,15 @@ public class CustomerMaster {
 	
 	private String custMob2;
 	
-	private long crAmt;
+	private double crAmt;
 	
-	private long drAmt;
+	private double drAmt;
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "school_udise")
+	private School schoolUdise;
+	
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "head_id")
 	private HeadMaster headId;
 }

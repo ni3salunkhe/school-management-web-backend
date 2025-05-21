@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.api.dto.account.CustomerMasterDto;
+import com.api.entity.School;
 import com.api.entity.account.CustomerMaster;
+import com.api.service.SchoolService;
 import com.api.service.account.CustomerMasterService;
 import com.api.service.account.HeadMasterService;
 
@@ -28,6 +30,9 @@ public class CustomerMasterController {
 	
 	@Autowired
 	private HeadMasterService headMasterService;
+	
+	@Autowired
+	private SchoolService schoolService;
 	
 	@GetMapping("/")
 	public ResponseEntity<List<CustomerMaster>> getAllCustomerMasterData()
@@ -45,6 +50,16 @@ public class CustomerMasterController {
 		return new ResponseEntity<CustomerMaster>(customerMaster,HttpStatus.OK);
 	}
 	
+	@GetMapping("/getbyudise/{udise}")
+	public ResponseEntity<List<CustomerMaster>> getCustomerMasterByUdise(@PathVariable long udise)
+	{
+		School school=schoolService.getbyid(udise);
+		
+		List<CustomerMaster> customerMasters=customerMasterService.getByUdise(school);
+		
+		return new ResponseEntity<List<CustomerMaster>>(customerMasters,HttpStatus.OK);
+	}
+	
 	@PostMapping("/")
 	public ResponseEntity<CustomerMaster> saveCustomerMasterData(@RequestBody CustomerMasterDto customerMasterDto){
 		CustomerMaster customerMaster=new CustomerMaster();
@@ -56,6 +71,7 @@ public class CustomerMasterController {
 		customerMaster.setCrAmt(customerMasterDto.getCrAmt());
 		customerMaster.setDrAmt(customerMasterDto.getDrAmt());
 		customerMaster.setHeadId(headMasterService.getById(customerMasterDto.getHeadId()));
+		customerMaster.setSchoolUdise(schoolService.getbyid(customerMasterDto.getSchoolUdise()));
 		
 		CustomerMaster saveCustomerMaster=customerMasterService.postData(customerMaster);
 		
@@ -76,6 +92,7 @@ public class CustomerMasterController {
 			customerMaster.setCrAmt(customerMasterDto.getCrAmt());
 			customerMaster.setDrAmt(customerMasterDto.getDrAmt());
 			customerMaster.setHeadId(headMasterService.getById(customerMasterDto.getHeadId()));
+			customerMaster.setSchoolUdise(schoolService.getbyid(customerMasterDto.getSchoolUdise()));
 			
 			CustomerMaster saveCustomerMaster=customerMasterService.postData(customerMaster);
 			

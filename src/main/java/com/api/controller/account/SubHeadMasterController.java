@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.api.dto.account.SubHeadMasterDto;
 import com.api.entity.account.SubHeadMaster;
+import com.api.service.SchoolService;
 import com.api.service.account.HeadMasterService;
 import com.api.service.account.SubHeadMasterService;
 
@@ -28,6 +29,9 @@ public class SubHeadMasterController {
 
 	@Autowired
 	private HeadMasterService headMasterService;
+	
+	@Autowired
+	private SchoolService schoolService;
 
 	@GetMapping("/")
 	public ResponseEntity<List<SubHeadMaster>> getAllSubHeadMasterData() {
@@ -49,6 +53,7 @@ public class SubHeadMasterController {
 		subHeadMaster.setSubHeadId(subHeadMasterDto.getSubHeadId());
 		subHeadMaster.setSubHeadName(subHeadMasterDto.getSubHeadName());
 		subHeadMaster.setHeadId(headMasterService.getById(subHeadMasterDto.getHeadId()));
+		subHeadMaster.setSchoolUdise(schoolService.getbyid(subHeadMasterDto.getSchoolUdise()));
 
 		SubHeadMaster saveHeadMaster = subHeadMasterService.postData(subHeadMaster);
 

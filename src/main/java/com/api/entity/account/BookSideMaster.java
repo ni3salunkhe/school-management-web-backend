@@ -1,26 +1,31 @@
 package com.api.entity.account;
 
+import java.sql.Date;
+
 import com.api.entity.School;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.ManyToOne;
 import lombok.Data;
 
 @Entity
-@Table(name = "head_master")
 @Data
-public class HeadMaster {
-	
+public class BookSideMaster {
+
 	@Id
-	private long headId;
+	private long booksideId;
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	private String booksideName;
+	
+	@ManyToOne
 	@JoinColumn(name = "school_udise")
 	private School schoolUdise;
 	
-	private String head_name;
+	@ManyToOne
+	@JoinColumn(name = "booktype_id")
+	private BookTypeMaster booktypeId;
+	
+	private Date entryDate;
 }

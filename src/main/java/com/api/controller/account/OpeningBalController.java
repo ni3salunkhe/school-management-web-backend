@@ -19,6 +19,7 @@ import com.api.entity.account.OpeningBal;
 import com.api.service.account.CustomerMasterService;
 import com.api.service.account.HeadMasterService;
 import com.api.service.account.OpeningBalService;
+import com.api.service.account.SubHeadMasterService;
 
 @RestController
 @RequestMapping("/openingbal")
@@ -32,6 +33,9 @@ public class OpeningBalController {
 	
 	@Autowired
 	private HeadMasterService headMasterService;
+	
+	@Autowired
+	private SubHeadMasterService subHeadMasterService;
 
 	@GetMapping("/")
 	public ResponseEntity<List<OpeningBal>> getAllOpeningBalData() {
@@ -58,6 +62,7 @@ public class OpeningBalController {
 		openingBal.setAmount(openingBalDto.getAmount());
 		openingBal.setYear(openingBalDto.getYear());
 		openingBal.setHeadId(headMasterService.getById(openingBalDto.getHeadId()));
+		openingBal.setSubHeadId(subHeadMasterService.getById(openingBalDto.getSubHeadId()));
 		
 		OpeningBal saveOpeningBal=openingBalService.postData(openingBal);
 		
@@ -77,6 +82,8 @@ public class OpeningBalController {
 			openingBal.setAmount(openingBalDto.getAmount());
 			openingBal.setYear(openingBalDto.getYear());
 			openingBal.setHeadId(headMasterService.getById(openingBalDto.getHeadId()));
+			openingBal.setSubHeadId(subHeadMasterService.getById(openingBalDto.getSubHeadId()));
+
 			
 			OpeningBal saveOpeningBal=openingBalService.postData(openingBal);
 			
