@@ -14,4 +14,6 @@ public interface HolidayService {
 	
 	public void deleteData(long id);
 	
+	public List<Holiday> getByUdise(long udiseNo);
+	
 }
