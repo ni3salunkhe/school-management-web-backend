@@ -17,10 +17,8 @@ import org.springframework.web.service.annotation.DeleteExchange;
 
 import com.api.dto.account.BankMasterDto;
 import com.api.entity.School;
-import com.api.entity.account.AccountType;
 import com.api.entity.account.BankMaster;
 import com.api.service.SchoolService;
-import com.api.service.account.AccountTypeService;
 import com.api.service.account.BankMasterService;
 
 @RestController
@@ -32,24 +30,20 @@ public class BankMasterController {
 
 	@Autowired
 	private SchoolService schoolService;
-	
-	@Autowired
-	private AccountTypeService accountTypeService;
 
 	@PostMapping("/")
 	public ResponseEntity<BankMaster> savebankdata(@RequestBody BankMasterDto bankDto) {
 
 		BankMaster bankMaster = new BankMaster();
 		School school = schoolService.getbyid(bankDto.getUdiseNo());
-		AccountType accountType= accountTypeService.getbyid(bankDto.getAccounttype());
+
 		if (school != null) {
 			bankMaster.setBankname(bankDto.getBankname());
 			bankMaster.setIfsccode(bankDto.getIfsccode());
 			bankMaster.setBranch(bankDto.getBranch());
 			bankMaster.setAddress(bankDto.getAddress());
 			bankMaster.setSchoolUdiseNo(school);
-			bankMaster.setAccounttype(accountType);
-			bankMaster.setAccountno(bankDto.getAccountno());
+
 			BankMaster saveBankMaster = bankMasterService.post(bankMaster);
 
 			return new ResponseEntity<BankMaster>(saveBankMaster, HttpStatus.OK);
@@ -64,7 +58,7 @@ public class BankMasterController {
 	public ResponseEntity<BankMaster> putbyid(@PathVariable long id, @RequestBody BankMasterDto bankDto) {
 
 		BankMaster bankMaster = bankMasterService.getbyid(id);
-		AccountType accountType= accountTypeService.getbyid(bankDto.getAccounttype());
+
 		if (bankMaster != null) {
 
 			bankMaster.setBankname(bankDto.getBankname());
@@ -72,8 +66,6 @@ public class BankMasterController {
 			bankMaster.setAddress(bankDto.getAddress());
 			bankMaster.setIfsccode(bankDto.getIfsccode());
 			bankMaster.setSchoolUdiseNo(schoolService.getbyid(bankDto.getUdiseNo()));
-			bankMaster.setAccounttype(accountType);
-			bankMaster.setAccountno(bankDto.getAccountno());
 			BankMaster saveBankMaster = bankMasterService.post(bankMaster);
 
 			return new ResponseEntity<BankMaster>(saveBankMaster, HttpStatus.OK);
@@ -86,13 +78,13 @@ public class BankMasterController {
 
 	}
 
-	@GetMapping("/byudiseno/{udiseNo}")
+	@GetMapping("/{udiseNo}")
 	public ResponseEntity<List<BankMaster>> getbanksbyudise(@PathVariable long udiseNo) {
 		List<BankMaster> bankMaster = bankMasterService.getbyudiseno(udiseNo);
 		return new ResponseEntity<>(bankMaster, HttpStatus.OK);
 	}
 
-	@GetMapping("/")
+	@GetMapping
 	public ResponseEntity<List<BankMaster>> getalldata() {
 
 		List<BankMaster> bankMaster = bankMasterService.getdata();

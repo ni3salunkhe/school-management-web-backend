@@ -2,7 +2,6 @@ package com.api.entity.account;
 
 import com.api.entity.School;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -31,10 +30,5 @@ public class BankMaster {
 	
 	private String address;
 	
-	private String accountno;
-	
-	@ManyToOne
-	@JoinColumn(name="AccountTypeId")
-	private AccountType accounttype;
 	
 }

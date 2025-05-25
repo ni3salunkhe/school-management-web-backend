@@ -16,9 +16,5 @@ public class BankMasterDto {
 	private String branch;
 	
 	private String address;
-	
-	private String accountno;
-	
-	private int accounttype;
 		
 }

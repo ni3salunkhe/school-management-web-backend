@@ -51,7 +51,7 @@ public class BankPayment {
 	
 //	user_id
 	
-	@ManyToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "staff_id")
 	private Staff staffId;
 	

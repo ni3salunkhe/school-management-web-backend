@@ -43,7 +43,7 @@ public class GeneralLedgerController {
 	@Autowired
 	private SchoolService schoolService;
 	
-	@PostMapping("/")
+	@PostMapping
 	public ResponseEntity<GeneralLedger> savealldata(@RequestBody GeneralLedgerDto generalLedgerDto){
 		GeneralLedger generalLedger = new GeneralLedger();
 		
@@ -65,7 +65,7 @@ public class GeneralLedgerController {
 		generalLedger.setSalepaydate(generalLedgerDto.getSalepaydate());
 		
 		GeneralLedger savedData=generalLedgerService.post(generalLedger);
-		return new ResponseEntity<GeneralLedger>(savedData,HttpStatus.OK);
+		return new ResponseEntity<GeneralLedger>(generalLedger,HttpStatus.OK);
 		
 	}
 	
