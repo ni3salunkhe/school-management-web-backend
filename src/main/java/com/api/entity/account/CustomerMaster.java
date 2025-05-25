@@ -35,24 +35,12 @@ public class CustomerMaster {
 	private double crAmt;
 
 	private double drAmt;
-
-	@ManyToOne(cascade = CascadeType.ALL)
+	
+	@ManyToOne
 	@JoinColumn(name = "school_udise")
 	private School schoolUdise;
 	
 	@ManyToOne
-	@JoinColumn(name = "custtype_id")
-	private CustomerTypeMaster custTypeID;
-
-	private String status;
-
-	private long pinCode;
-
-	@Column(length = 15, nullable = false, unique = true)
-	private String gstin;
-
-	private String panNo;
-//	@ManyToOne(cascade = CascadeType.ALL)
-//	@JoinColumn(name = "head_id")
-//	private HeadMaster headId;
+	@JoinColumn(name = "head_id")
+	private HeadMaster headId;
 }

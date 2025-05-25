@@ -2,11 +2,10 @@ package com.api.entity.account;
 
 import com.api.entity.School;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -18,7 +17,7 @@ public class HeadMaster {
 	@Id
 	private long headId;
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name = "school_udise")
 	private School schoolUdise;
 	
