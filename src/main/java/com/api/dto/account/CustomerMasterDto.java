@@ -10,6 +10,10 @@ public class CustomerMasterDto {
 	private String custName;
 
 	private String custAddress;
+	
+	private String contactPerson;
+
+	private String eMail;
 
 	private String custMob1;
 
@@ -19,8 +23,16 @@ public class CustomerMasterDto {
 
 	private double drAmt;
 
-	private long  headId;
-	
 	private long schoolUdise;
+
+	private long custTypeID;
+
+	private String status;
+
+	private long pinCode;
+
+	private String gstin;
+
+	private String panNo;
 
 }

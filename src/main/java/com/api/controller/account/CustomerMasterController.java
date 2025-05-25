@@ -19,7 +19,7 @@ import com.api.entity.School;
 import com.api.entity.account.CustomerMaster;
 import com.api.service.SchoolService;
 import com.api.service.account.CustomerMasterService;
-import com.api.service.account.HeadMasterService;
+import com.api.service.account.CustomerTypeMasterService;
 
 @RestController
 @RequestMapping("/customermaster")
@@ -27,89 +27,100 @@ public class CustomerMasterController {
 
 	@Autowired
 	private CustomerMasterService customerMasterService;
-	
-	@Autowired
-	private HeadMasterService headMasterService;
-	
+
+//	@Autowired
+//	private HeadMasterService headMasterService;
+
 	@Autowired
 	private SchoolService schoolService;
-	
+
+	@Autowired
+	private CustomerTypeMasterService customerTypeMasterService;
+
 	@GetMapping("/")
-	public ResponseEntity<List<CustomerMaster>> getAllCustomerMasterData()
-	{
-		List<CustomerMaster> customerMaster=customerMasterService.getAllMasters();
-		
-		return new ResponseEntity<List<CustomerMaster>>(customerMaster,HttpStatus.OK);
+	public ResponseEntity<List<CustomerMaster>> getAllCustomerMasterData() {
+		List<CustomerMaster> customerMaster = customerMasterService.getAllMasters();
+
+		return new ResponseEntity<List<CustomerMaster>>(customerMaster, HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/{id}")
-	public ResponseEntity<CustomerMaster> getByCustomerMasterIdData(@PathVariable long id)
-	{
-		CustomerMaster customerMaster=customerMasterService.getById(id);
-		
-		return new ResponseEntity<CustomerMaster>(customerMaster,HttpStatus.OK);
+	public ResponseEntity<CustomerMaster> getByCustomerMasterIdData(@PathVariable long id) {
+		CustomerMaster customerMaster = customerMasterService.getById(id);
+
+		return new ResponseEntity<CustomerMaster>(customerMaster, HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/getbyudise/{udise}")
-	public ResponseEntity<List<CustomerMaster>> getCustomerMasterByUdise(@PathVariable long udise)
-	{
-		School school=schoolService.getbyid(udise);
-		
-		List<CustomerMaster> customerMasters=customerMasterService.getByUdise(school);
-		
-		return new ResponseEntity<List<CustomerMaster>>(customerMasters,HttpStatus.OK);
+	public ResponseEntity<List<CustomerMaster>> getCustomerMasterByUdise(@PathVariable long udise) {
+		School school = schoolService.getbyid(udise);
+
+		List<CustomerMaster> customerMasters = customerMasterService.getByUdise(school);
+
+		return new ResponseEntity<List<CustomerMaster>>(customerMasters, HttpStatus.OK);
 	}
-	
+
 	@PostMapping("/")
-	public ResponseEntity<CustomerMaster> saveCustomerMasterData(@RequestBody CustomerMasterDto customerMasterDto){
-		CustomerMaster customerMaster=new CustomerMaster();
-		
+	public ResponseEntity<CustomerMaster> saveCustomerMasterData(@RequestBody CustomerMasterDto customerMasterDto) {
+		CustomerMaster customerMaster = new CustomerMaster();
+
 		customerMaster.setCustName(customerMasterDto.getCustName());
 		customerMaster.setCustAddress(customerMasterDto.getCustAddress());
+		customerMaster.setContactPerson(customerMasterDto.getContactPerson());
 		customerMaster.setCustMob1(customerMasterDto.getCustMob1());
 		customerMaster.setCustMob2(customerMasterDto.getCustMob2());
 		customerMaster.setCrAmt(customerMasterDto.getCrAmt());
 		customerMaster.setDrAmt(customerMasterDto.getDrAmt());
-		customerMaster.setHeadId(headMasterService.getById(customerMasterDto.getHeadId()));
+//		customerMaster.setHeadId(headMasterService.getById(customerMasterDto.getHeadId()));
+		customerMaster.setCustTypeID(customerTypeMasterService.getById(customerMasterDto.getCustTypeID()));
+		customerMaster.setEMail(customerMasterDto.getEMail());
+		customerMaster.setGstin(customerMasterDto.getGstin());
+		customerMaster.setPanNo(customerMasterDto.getPanNo());
+		customerMaster.setPinCode(customerMasterDto.getPinCode());
+		customerMaster.setStatus(customerMasterDto.getStatus());
 		customerMaster.setSchoolUdise(schoolService.getbyid(customerMasterDto.getSchoolUdise()));
-		
-		CustomerMaster saveCustomerMaster=customerMasterService.postData(customerMaster);
-		
-		return new ResponseEntity<CustomerMaster>(saveCustomerMaster,HttpStatus.OK);
+
+		CustomerMaster saveCustomerMaster = customerMasterService.postData(customerMaster);
+
+		return new ResponseEntity<CustomerMaster>(saveCustomerMaster, HttpStatus.OK);
+
 	}
-	
+
 	@PutMapping("/{id}")
-	public ResponseEntity<CustomerMaster> putCustomerMasterData(@RequestBody CustomerMasterDto customerMasterDto,@PathVariable long id)
-	{
-		CustomerMaster customerMaster=customerMasterService.getById(id);
-		
-		if(customerMaster != null)
-		{
+	public ResponseEntity<CustomerMaster> putCustomerMasterData(@RequestBody CustomerMasterDto customerMasterDto,
+			@PathVariable long id) {
+		CustomerMaster customerMaster = customerMasterService.getById(id);
+
+		if (customerMaster != null) {
 			customerMaster.setCustName(customerMasterDto.getCustName());
 			customerMaster.setCustAddress(customerMasterDto.getCustAddress());
+			customerMaster.setContactPerson(customerMasterDto.getContactPerson());
 			customerMaster.setCustMob1(customerMasterDto.getCustMob1());
 			customerMaster.setCustMob2(customerMasterDto.getCustMob2());
 			customerMaster.setCrAmt(customerMasterDto.getCrAmt());
 			customerMaster.setDrAmt(customerMasterDto.getDrAmt());
-			customerMaster.setHeadId(headMasterService.getById(customerMasterDto.getHeadId()));
+//			customerMaster.setHeadId(headMasterService.getById(customerMasterDto.getHeadId()));
+			customerMaster.setCustTypeID(customerTypeMasterService.getById(customerMasterDto.getCustTypeID()));
+			customerMaster.setEMail(customerMasterDto.getEMail());
+			customerMaster.setGstin(customerMasterDto.getGstin());
+			customerMaster.setPanNo(customerMasterDto.getPanNo());
+			customerMaster.setPinCode(customerMasterDto.getPinCode());
+			customerMaster.setStatus(customerMasterDto.getStatus());
 			customerMaster.setSchoolUdise(schoolService.getbyid(customerMasterDto.getSchoolUdise()));
-			
-			CustomerMaster saveCustomerMaster=customerMasterService.postData(customerMaster);
-			
-			return new ResponseEntity<CustomerMaster>(saveCustomerMaster,HttpStatus.OK);
-		}
-		else
-		{
+
+			CustomerMaster saveCustomerMaster = customerMasterService.postData(customerMaster);
+
+			return new ResponseEntity<CustomerMaster>(saveCustomerMaster, HttpStatus.OK);
+		} else {
 			return new ResponseEntity<CustomerMaster>(HttpStatus.NOT_FOUND);
 		}
 	}
-	
+
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deleteData(@PathVariable long id)
-	{
+	public ResponseEntity<Void> deleteData(@PathVariable long id) {
 		customerMasterService.deleteData(id);
-		
+
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
-	
+
 }

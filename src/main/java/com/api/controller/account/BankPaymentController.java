@@ -61,6 +61,15 @@ public class BankPaymentController {
 	@PostMapping("/")
 	public ResponseEntity<BankPayment> saveBankPaymentData(@RequestBody BankPaymentDto bankPaymentDto)
 	{
+		
+		BankPayment bankPayment=new BankPayment();
+		
+		bankPayment.setEntryDate(bankPaymentDto.getEntryDate());
+//		bankPayment party id
+		bankPayment.setTranType(bankPaymentDto.getTranType());
+		bankPayment.setAmount(bankPaymentDto.getAmount());
+		bankPayment.setNarr(bankPaymentDto.getNarr());
+		
 		return null;
 	}
 	
