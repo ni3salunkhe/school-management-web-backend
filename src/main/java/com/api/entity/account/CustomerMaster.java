@@ -31,11 +31,11 @@ public class CustomerMaster {
 	
 	private double drAmt;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name = "school_udise")
 	private School schoolUdise;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name = "head_id")
 	private HeadMaster headId;
 }
