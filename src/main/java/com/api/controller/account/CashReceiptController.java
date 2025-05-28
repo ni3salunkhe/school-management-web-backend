@@ -19,6 +19,7 @@ import com.api.entity.account.CashPayment;
 import com.api.entity.account.CashReceipt;
 import com.api.service.SchoolService;
 import com.api.service.account.CashReceiptService;
+import com.api.service.account.CustomerMasterService;
 
 @RestController
 @RequestMapping("/cashreceipt")
@@ -29,6 +30,9 @@ public class CashReceiptController {
 	
 	@Autowired
 	private SchoolService schoolService;
+	
+	@Autowired
+	private CustomerMasterService customerMasterService;
 
 	@GetMapping("/")
 	public ResponseEntity<List<CashReceipt>> getAllCashReceiptData() {
@@ -56,6 +60,13 @@ public class CashReceiptController {
 
 	@PostMapping("/")
 	public ResponseEntity<CashPayment> saveCashReceiptData(@RequestBody CashReceiptDto cashReceiptDto) {
+		
+		CashReceipt cashReceipt=new CashReceipt();
+		cashReceipt.setEntryDate(cashReceiptDto.getEntryDate());
+		cashReceipt.setCustId(customerMasterService.getById(cashReceiptDto.getCustId()));
+		cashReceipt.setTranType(cashReceiptDto.getTranType());
+		cashReceipt.setAmount(cashReceiptDto.getAmount());
+		
 		return null;
 	}
 

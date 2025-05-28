@@ -20,6 +20,8 @@ import com.api.entity.account.CustomerMaster;
 import com.api.service.SchoolService;
 import com.api.service.account.CustomerMasterService;
 import com.api.service.account.CustomerTypeMasterService;
+import com.api.service.account.HeadMasterService;
+import com.api.service.account.SubHeadMasterService;
 
 @RestController
 @RequestMapping("/customermaster")
@@ -28,8 +30,11 @@ public class CustomerMasterController {
 	@Autowired
 	private CustomerMasterService customerMasterService;
 
-//	@Autowired
-//	private HeadMasterService headMasterService;
+	@Autowired
+	private HeadMasterService headMasterService;
+	
+	@Autowired
+	private SubHeadMasterService subHeadMasterService;
 
 	@Autowired
 	private SchoolService schoolService;
@@ -71,7 +76,8 @@ public class CustomerMasterController {
 		customerMaster.setCustMob2(customerMasterDto.getCustMob2());
 		customerMaster.setCrAmt(customerMasterDto.getCrAmt());
 		customerMaster.setDrAmt(customerMasterDto.getDrAmt());
-//		customerMaster.setHeadId(headMasterService.getById(customerMasterDto.getHeadId()));
+		customerMaster.setHeadId(headMasterService.getById(customerMasterDto.getHeadId()));
+		customerMaster.setSubheadId(subHeadMasterService.getById(customerMasterDto.getSubheadId()));
 		customerMaster.setCustTypeID(customerTypeMasterService.getById(customerMasterDto.getCustTypeID()));
 		customerMaster.setEMail(customerMasterDto.getEMail());
 		customerMaster.setGstin(customerMasterDto.getGstin());
@@ -99,7 +105,8 @@ public class CustomerMasterController {
 			customerMaster.setCustMob2(customerMasterDto.getCustMob2());
 			customerMaster.setCrAmt(customerMasterDto.getCrAmt());
 			customerMaster.setDrAmt(customerMasterDto.getDrAmt());
-//			customerMaster.setHeadId(headMasterService.getById(customerMasterDto.getHeadId()));
+			customerMaster.setHeadId(headMasterService.getById(customerMasterDto.getHeadId()));
+			customerMaster.setSubheadId(subHeadMasterService.getById(customerMasterDto.getSubheadId()));
 			customerMaster.setCustTypeID(customerTypeMasterService.getById(customerMasterDto.getCustTypeID()));
 			customerMaster.setEMail(customerMasterDto.getEMail());
 			customerMaster.setGstin(customerMasterDto.getGstin());

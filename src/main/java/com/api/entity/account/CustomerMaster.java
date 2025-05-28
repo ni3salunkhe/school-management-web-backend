@@ -2,8 +2,6 @@ package com.api.entity.account;
 
 import com.api.entity.School;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,7 +21,7 @@ public class CustomerMaster {
 	private String custName;
 
 	private String custAddress;
-	
+
 	private String contactPerson;
 
 	private String eMail;
@@ -39,7 +37,7 @@ public class CustomerMaster {
 	@ManyToOne
 	@JoinColumn(name = "school_udise")
 	private School schoolUdise;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "custtype_id")
 	private CustomerTypeMaster custTypeID;
@@ -48,11 +46,15 @@ public class CustomerMaster {
 
 	private long pinCode;
 
-	@Column(length = 15, nullable = false, unique = true)
 	private String gstin;
 
 	private String panNo;
-	// @ManyToOne(cascade = CascadeType.ALL)
-	// @JoinColumn(name = "head_id")
-	// private HeadMaster headId;
+
+	@ManyToOne
+	@JoinColumn(name = "head_id")
+	private HeadMaster headId;
+
+	@ManyToOne
+	@JoinColumn(name = "subhead_id")
+	private SubHeadMaster subheadId;
 }

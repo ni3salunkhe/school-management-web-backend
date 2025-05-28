@@ -22,9 +22,11 @@ public class CashReceipt {
 
 	private Date entryDate;
 
-	// party id
+	@ManyToOne
+	@JoinColumn(name = "cust_id")
+	private CustomerMaster custId;
 
-	private String tranType; //create table
+	private String tranType;
 
 	private double amount;
 
@@ -55,9 +57,9 @@ public class CashReceipt {
 	private String billType;
 
 	private String saleDup;
-	
+
 	private String status;
-	
-	//site id
+
+	// site id
 
 }
