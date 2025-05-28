@@ -24,6 +24,10 @@ public class CustomerMasterDto {
 	private double drAmt;
 
 	private long schoolUdise;
+	
+	private long headId;
+	
+	private long subheadId;
 
 	private long custTypeID;
 
