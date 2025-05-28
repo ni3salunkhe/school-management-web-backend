@@ -23,7 +23,7 @@ public class SubHeadMaster {
 	@JoinColumn(name = "head_id")
 	private HeadMaster headId;
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name = "school_udise")
 	private School schoolUdise;
 	

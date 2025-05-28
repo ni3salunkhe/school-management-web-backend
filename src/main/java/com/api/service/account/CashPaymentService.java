@@ -15,5 +15,5 @@ public interface CashPaymentService {
 	
 	public void deleteData(long id);
 	
-	public List<CashPayment> getbySchoolUdise(School school);
+	public List<CashPayment> getbySchoolUdise(long udise);
 }

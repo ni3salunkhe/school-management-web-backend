@@ -1,4 +1,4 @@
-package com.api.controller.account;
+ package com.api.controller.account;
 
 import java.util.List;
 
@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.api.dto.account.BookSideMasterDto;
 import com.api.entity.account.BookSideMaster;
@@ -21,8 +23,8 @@ import com.api.service.account.BookTypeMasterService;
 import jakarta.persistence.Entity;
 import lombok.Data;
 
-@Entity
-@Data
+@RestController
+@RequestMapping("/booksidemaster")
 public class BookSideMasterController {
 
 	@Autowired

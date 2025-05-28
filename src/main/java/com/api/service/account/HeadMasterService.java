@@ -14,4 +14,6 @@ public interface HeadMasterService {
 	
 	public void deleteData(long id);
 	
+	public List<HeadMaster> getByUdiseNo(long udiseNo);
+	
 }

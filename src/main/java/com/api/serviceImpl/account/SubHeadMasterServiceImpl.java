@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.api.entity.School;
 import com.api.entity.account.SubHeadMaster;
 import com.api.repository.account.SubHeadMasterRepository;
+import com.api.service.SchoolService;
 import com.api.service.account.SubHeadMasterService;
 
 @Service
@@ -15,6 +17,9 @@ public class SubHeadMasterServiceImpl implements SubHeadMasterService{
 	
 	@Autowired
 	private SubHeadMasterRepository subHeadMasterRepository;
+	
+	@Autowired
+	private SchoolService schoolService;
 	
 	@Override
 	public List<SubHeadMaster> getAllData() {
@@ -38,6 +43,13 @@ public class SubHeadMasterServiceImpl implements SubHeadMasterService{
 	public void deleteData(long id) {
 		// TODO Auto-generated method stub
 		subHeadMasterRepository.deleteById(id);
+	}
+
+	@Override
+	public List<SubHeadMaster> getbyudiseno(long udiseNo) {
+		// TODO Auto-generated method stub
+		School school = schoolService.getbyid(udiseNo);
+		return subHeadMasterRepository.findBySchoolUdise(school);
 	}
 
 }

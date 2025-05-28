@@ -33,6 +33,12 @@ public class SubHeadMasterController {
 	@Autowired
 	private SchoolService schoolService;
 
+	@GetMapping("/getbyudise/{udiseNo}")
+	public ResponseEntity<List<SubHeadMaster>> getdatabyudise(@PathVariable long udiseNo){
+		List<SubHeadMaster> subHeadMasters = subHeadMasterService.getbyudiseno(udiseNo);
+		return new ResponseEntity<List<SubHeadMaster>>(subHeadMasters, HttpStatus.OK);
+	}
+	
 	@GetMapping("/")
 	public ResponseEntity<List<SubHeadMaster>> getAllSubHeadMasterData() {
 		List<SubHeadMaster> subHeadMasters = subHeadMasterService.getAllData();

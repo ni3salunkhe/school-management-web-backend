@@ -1,5 +1,6 @@
 package com.api.controller.account;
 
+import java.net.ResponseCache;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,6 +75,12 @@ public class HeadMasterController {
 		else {
 			return new ResponseEntity<HeadMaster>(HttpStatus.NOT_FOUND);
 		}
+	}
+	
+	@GetMapping("/getbyudise/{udiseNo}")
+	public ResponseEntity<List<HeadMaster>> getbyudiseno(@PathVariable long udiseNo){
+		List<HeadMaster> headMaster=headMasterService.getByUdiseNo(udiseNo);
+		return new ResponseEntity<List<HeadMaster>>(headMaster,HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{id}")

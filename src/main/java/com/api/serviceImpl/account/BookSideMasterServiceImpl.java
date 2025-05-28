@@ -3,11 +3,13 @@ package com.api.serviceImpl.account;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.api.entity.account.BookSideMaster;
 import com.api.repository.account.BookSideMasterRepository;
 import com.api.service.account.BookSideMasterService;
 
+@Service
 public class BookSideMasterServiceImpl implements BookSideMasterService{
 
 	@Autowired
