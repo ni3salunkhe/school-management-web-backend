@@ -1,6 +1,6 @@
 package com.api.controller.account;
 
-import java.net.ResponseCache;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.api.dto.account.HeadMasterDto;
 import com.api.entity.account.HeadMaster;
 import com.api.service.SchoolService;
+import com.api.service.account.BookSideMasterService;
+import com.api.service.account.BookTypeMasterService;
 import com.api.service.account.HeadMasterService;
 
 @RestController
@@ -29,6 +31,12 @@ public class HeadMasterController {
 	
 	@Autowired
 	private SchoolService schoolService;
+	
+	@Autowired
+	private BookSideMasterService bookSideMasterService;
+	
+	@Autowired 
+	private BookTypeMasterService bookTypeMasterService;
 
 	@GetMapping("/")
 	public ResponseEntity<List<HeadMaster>> getAllHeadMaster() {
@@ -51,9 +59,10 @@ public class HeadMasterController {
 		headMaster.setHeadId(headMasterDto.getHeadId());
 		headMaster.setSchoolUdise(schoolService.getbyid(headMasterDto.getSchoolUdise()));
 		headMaster.setHead_name(headMasterDto.getHead_name());
-
+		headMaster.setBookSideMaster(bookSideMasterService.getById(headMasterDto.getBookSideMaster()));
+		headMaster.setBookTypeMaster(bookTypeMasterService.getById(headMasterDto.getBookTypeMaster()));
+		
 		HeadMaster saveHeadMaster = headMasterService.postData(headMaster);
-
 		return new ResponseEntity<HeadMaster>(saveHeadMaster, HttpStatus.OK);
 	}
 
@@ -66,7 +75,9 @@ public class HeadMasterController {
 
 			headMaster.setHeadId(headMasterDto.getHeadId());
 			headMaster.setHead_name(headMasterDto.getHead_name());
-
+			headMaster.setBookSideMaster(bookSideMasterService.getById(headMasterDto.getBookSideMaster()));
+			headMaster.setBookTypeMaster(bookTypeMasterService.getById(headMasterDto.getBookTypeMaster()));
+			
 			HeadMaster saveHeadMaster = headMasterService.postData(headMaster);
 
 			return new ResponseEntity<HeadMaster>(saveHeadMaster, HttpStatus.OK);

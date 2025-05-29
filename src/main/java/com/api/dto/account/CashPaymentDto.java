@@ -1,8 +1,6 @@
 package com.api.dto.account;
 
 import java.sql.Date;
-
-import com.api.entity.School;
 import lombok.Data;
 
 @Data

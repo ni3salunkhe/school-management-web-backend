@@ -22,4 +22,13 @@ public class HeadMaster {
 	private School schoolUdise;
 	
 	private String head_name;
+	
+	@ManyToOne
+	@JoinColumn(name = "BooksideId")
+	private BookSideMaster bookSideMaster;
+	
+	@ManyToOne
+	@JoinColumn(name = "BooktypeId")
+	private BookTypeMaster bookTypeMaster;
+	
 }

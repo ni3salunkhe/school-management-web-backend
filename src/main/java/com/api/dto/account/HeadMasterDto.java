@@ -11,4 +11,9 @@ public class HeadMasterDto {
 	private String head_name;
 	
 	private long schoolUdise;
+	
+	private long bookSideMaster;
+	
+	private long bookTypeMaster;
+	
 }
