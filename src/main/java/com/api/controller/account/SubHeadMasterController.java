@@ -56,8 +56,8 @@ public class SubHeadMasterController {
 	public ResponseEntity<SubHeadMaster> saveSubHeadMasterData(@RequestBody SubHeadMasterDto subHeadMasterDto) {
 		SubHeadMaster subHeadMaster = new SubHeadMaster();
 
-		subHeadMaster.setSubHeadId(subHeadMasterDto.getSubHeadId());
-		subHeadMaster.setSubHeadName(subHeadMasterDto.getSubHeadName());
+		subHeadMaster.setSubheadId(subHeadMasterDto.getSubheadId());
+		subHeadMaster.setSubheadName(subHeadMasterDto.getSubheadName());
 		subHeadMaster.setHeadId(headMasterService.getById(subHeadMasterDto.getHeadId()));
 		subHeadMaster.setSchoolUdise(schoolService.getbyid(subHeadMasterDto.getSchoolUdise()));
 
@@ -73,8 +73,8 @@ public class SubHeadMasterController {
 
 		if (subHeadMaster != null) {
 
-			subHeadMaster.setSubHeadId(subHeadMasterDto.getSubHeadId());
-			subHeadMaster.setSubHeadName(subHeadMasterDto.getSubHeadName());
+			subHeadMaster.setSubheadId(subHeadMasterDto.getSubheadId());
+			subHeadMaster.setSubheadName(subHeadMasterDto.getSubheadName());
 			subHeadMaster.setHeadId(headMasterService.getById(subHeadMasterDto.getHeadId()));
 
 			SubHeadMaster saveHeadMaster = subHeadMasterService.postData(subHeadMaster);

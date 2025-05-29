@@ -3,9 +3,12 @@ package com.api.entity.account;
 import com.api.entity.School;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -15,12 +18,14 @@ import lombok.Data;
 public class HeadMaster {
 	
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long headId;
 	
 	@ManyToOne
 	@JoinColumn(name = "school_udise")
 	private School schoolUdise;
 	
+<<<<<<< HEAD
 	private String head_name;
 	
 	@ManyToOne
@@ -31,4 +36,7 @@ public class HeadMaster {
 	@JoinColumn(name = "BooktypeId")
 	private BookTypeMaster bookTypeMaster;
 	
+=======
+	private String headName;
+>>>>>>> aa8a35b49d592d46db947786671b7c1e692907ba
 }
