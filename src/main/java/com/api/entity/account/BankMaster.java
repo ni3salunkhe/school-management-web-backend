@@ -2,6 +2,7 @@ package com.api.entity.account;
 
 import com.api.entity.School;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

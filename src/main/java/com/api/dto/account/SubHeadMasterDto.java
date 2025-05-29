@@ -4,9 +4,9 @@ import lombok.Data;
 @Data
 public class SubHeadMasterDto {
 
-	private long subheadId;
+	private long subHeadId;
 
-	private String subheadName;
+	private String subHeadName;
 
 	private long headId;
 	

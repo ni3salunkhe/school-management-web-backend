@@ -2,12 +2,12 @@ package com.api.entity.account;
 
 import com.api.entity.School;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import lombok.Data;
 
 @Entity
@@ -15,10 +15,9 @@ import lombok.Data;
 public class SubHeadMaster {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long subheadId;
+	private long subHeadId;
 	
-	private String subheadName;
+	private String subHeadName;
 	
 	@ManyToOne
 	@JoinColumn(name = "head_id")
