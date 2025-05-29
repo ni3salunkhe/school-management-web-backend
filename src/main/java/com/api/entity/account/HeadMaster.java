@@ -25,7 +25,6 @@ public class HeadMaster {
 	@JoinColumn(name = "school_udise")
 	private School schoolUdise;
 	
-<<<<<<< HEAD
 	private String head_name;
 	
 	@ManyToOne
@@ -36,7 +35,4 @@ public class HeadMaster {
 	@JoinColumn(name = "BooktypeId")
 	private BookTypeMaster bookTypeMaster;
 	
-=======
-	private String headName;
->>>>>>> aa8a35b49d592d46db947786671b7c1e692907ba
 }
