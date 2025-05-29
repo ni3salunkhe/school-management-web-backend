@@ -50,7 +50,7 @@ public class HeadMasterController {
 
 		headMaster.setHeadId(headMasterDto.getHeadId());
 		headMaster.setSchoolUdise(schoolService.getbyid(headMasterDto.getSchoolUdise()));
-		headMaster.setHead_name(headMasterDto.getHead_name());
+		headMaster.setHeadName(headMasterDto.getHeadName());
 
 		HeadMaster saveHeadMaster = headMasterService.postData(headMaster);
 
@@ -65,7 +65,7 @@ public class HeadMasterController {
 		if (headMaster != null) {
 
 			headMaster.setHeadId(headMasterDto.getHeadId());
-			headMaster.setHead_name(headMasterDto.getHead_name());
+			headMaster.setHeadName(headMasterDto.getHeadName());
 
 			HeadMaster saveHeadMaster = headMasterService.postData(headMaster);
 

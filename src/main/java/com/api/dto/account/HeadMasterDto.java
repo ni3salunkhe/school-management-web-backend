@@ -8,7 +8,7 @@ public class HeadMasterDto {
 
 	private long headId;
 
-	private String head_name;
+	private String headName;
 	
 	private long schoolUdise;
 }
