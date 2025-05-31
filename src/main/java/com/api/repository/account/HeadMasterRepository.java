@@ -12,4 +12,6 @@ import com.api.entity.account.HeadMaster;
 public interface HeadMasterRepository extends JpaRepository<HeadMaster, Long>{
 	
 	List<HeadMaster> findBySchoolUdise(School udiseNo);
+	
+	HeadMaster findByHeadName(String headName);
 }

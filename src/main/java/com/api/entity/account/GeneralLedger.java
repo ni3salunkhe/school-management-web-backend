@@ -1,7 +1,6 @@
 package com.api.entity.account;
 
 import java.sql.Date;
-import java.util.Currency;
 
 import com.api.entity.School;
 

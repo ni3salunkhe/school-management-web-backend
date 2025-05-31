@@ -16,4 +16,6 @@ public interface HeadMasterService {
 	
 	public List<HeadMaster> getByUdiseNo(long udiseNo);
 	
+	public HeadMaster getByHeadName(String headName);
+	
 }

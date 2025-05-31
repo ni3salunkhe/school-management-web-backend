@@ -47,6 +47,7 @@ public class GeneralLedgerController {
 	public ResponseEntity<GeneralLedger> savealldata(@RequestBody GeneralLedgerDto generalLedgerDto){
 		GeneralLedger generalLedger = new GeneralLedger();
 		
+		generalLedger.setEntryNo(generalLedgerDto.getEntryNo());
 		generalLedger.setEntryType(generalLedgerDto.getEntryType());
 		generalLedger.setBillno(generalLedgerDto.getBillno());
 		generalLedger.setCr_Amt(generalLedgerDto.getCr_Amt());

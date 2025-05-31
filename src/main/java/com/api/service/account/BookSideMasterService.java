@@ -14,4 +14,5 @@ public interface BookSideMasterService {
 	
 	public void deleteData(long id);
 	
+	public BookSideMaster getByBookSideName(String bookSideName);
 }

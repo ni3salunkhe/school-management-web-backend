@@ -39,4 +39,10 @@ public class BookSideMasterServiceImpl implements BookSideMasterService{
 		bookSideMasterRepository.deleteById(id);
 	}
 
+	@Override
+	public BookSideMaster getByBookSideName(String bookSideName) {
+		// TODO Auto-generated method stub
+		return bookSideMasterRepository.findByBooksideName(bookSideName);
+	}
+
 }

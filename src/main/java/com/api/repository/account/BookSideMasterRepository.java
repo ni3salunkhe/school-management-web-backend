@@ -7,5 +7,7 @@ import com.api.entity.account.BookSideMaster;
 
 @Repository
 public interface BookSideMasterRepository extends JpaRepository<BookSideMaster, Long>{
-
+	
+	public BookSideMaster findByBooksideName(String bookSideName);
+	
 }

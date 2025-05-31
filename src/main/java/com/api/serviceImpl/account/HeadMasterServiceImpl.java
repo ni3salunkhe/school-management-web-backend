@@ -51,4 +51,10 @@ public class HeadMasterServiceImpl implements HeadMasterService{
 		return headMasterRepository.findBySchoolUdise(school);
 	}
 
+	@Override
+	public HeadMaster getByHeadName(String headName) {
+		// TODO Auto-generated method stub
+		return headMasterRepository.findByHeadName(headName);
+	}
+
 }

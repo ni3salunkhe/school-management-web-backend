@@ -52,7 +52,7 @@ public class CashReceipt {
 
 	private Date modifieDate;
 
-	private String billNo;
+	private long billNo;
 
 	private String billType;
 

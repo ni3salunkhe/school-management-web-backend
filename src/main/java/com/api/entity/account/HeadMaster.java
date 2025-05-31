@@ -25,7 +25,7 @@ public class HeadMaster {
 	@JoinColumn(name = "school_udise")
 	private School schoolUdise;
 	
-	private String head_name;
+	private String headName;
 	
 	@ManyToOne
 	@JoinColumn(name = "BooksideId")
