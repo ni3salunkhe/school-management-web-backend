@@ -10,6 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.persistence.Version;
 import lombok.Data;
 
 @Entity
@@ -18,7 +19,6 @@ import lombok.Data;
 public class HeadMaster {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long headId;
 	
 	@ManyToOne
@@ -34,5 +34,8 @@ public class HeadMaster {
 	@ManyToOne
 	@JoinColumn(name = "BooktypeId")
 	private BookTypeMaster bookTypeMaster;
+	
+	@Version
+    private Integer version;
 	
 }

@@ -47,7 +47,7 @@ public class GeneralLedgerController {
 	public ResponseEntity<GeneralLedger> savealldata(@RequestBody GeneralLedgerDto generalLedgerDto){
 		GeneralLedger generalLedger = new GeneralLedger();
 		
-		generalLedger.setEntryType(entryTypeService.getById(generalLedgerDto.getEntryType()));
+		generalLedger.setEntryType(generalLedgerDto.getEntryType());
 		generalLedger.setBillno(generalLedgerDto.getBillno());
 		generalLedger.setCr_Amt(generalLedgerDto.getCr_Amt());
 		generalLedger.setCustId(customerMasterService.getById(generalLedgerDto.getCustid()));
@@ -55,7 +55,7 @@ public class GeneralLedgerController {
 		generalLedger.setDr_Amt(generalLedgerDto.getDr_Amt());
 		generalLedger.setEntrydate(generalLedgerDto.getEntrydate());
 		generalLedger.setEntrynochar(generalLedgerDto.getEntrynochar());
-		generalLedger.setHead_id(headMasterService.getById(generalLedgerDto.getHeadid()));
+		generalLedger.setHeadId(headMasterService.getById(generalLedgerDto.getHeadid()));
 		generalLedger.setMaxno(generalLedger.getMaxno());
 		generalLedger.setNarr(generalLedgerDto.getNarr());
 		generalLedger.setSaledup(generalLedgerDto.getSalepaydup());

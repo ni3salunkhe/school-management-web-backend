@@ -19,7 +19,9 @@ public class GeneralLedger {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int entryNo;
+	private int id;
+	
+	private long entryNo;
 	
 	private Date entrydate;
 	
@@ -27,9 +29,7 @@ public class GeneralLedger {
 	@JoinColumn(name = "SchoolUdiseNo")
 	private School shopId;
 	
-	@ManyToOne
-	@JoinColumn(name="Id")
-	EntryType entryType;
+	private String entryType;
 	
 	@ManyToOne
 	@JoinColumn(name="CustId")
@@ -45,7 +45,7 @@ public class GeneralLedger {
 	
 	@ManyToOne
 	@JoinColumn(name="HeadId")
-	private HeadMaster head_id;
+	private HeadMaster headId;
 	
 	private String daybookname;
 	

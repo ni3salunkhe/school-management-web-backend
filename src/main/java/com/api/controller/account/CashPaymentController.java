@@ -17,10 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.api.dto.account.CashPaymentDto;
 import com.api.entity.School;
 import com.api.entity.account.CashPayment;
+import com.api.entity.account.GeneralLedger;
 import com.api.service.SchoolService;
 import com.api.service.StaffService;
 import com.api.service.account.CashPaymentService;
 import com.api.service.account.CustomerMasterService;
+import com.api.service.account.GeneralLedgerService;
 import com.api.service.account.HeadMasterService;
 import com.api.service.account.SubHeadMasterService;
 
@@ -46,6 +48,9 @@ public class CashPaymentController {
 	@Autowired
 	private SubHeadMasterService subHeadMasterService;
 
+	@Autowired
+	private GeneralLedgerService generalLedgerService;
+	
 	@GetMapping("/")
 	public ResponseEntity<List<CashPayment>> getAllCashPaymentData() {
 		List<CashPayment> cashPayments = cashPaymentService.getAllData();
@@ -90,6 +95,32 @@ public class CashPaymentController {
 		cashPayment.setTranType(cashPaymentDto.getTranType());
 		
 		CashPayment savedPayements= cashPaymentService.postData(cashPayment);
+		
+		GeneralLedger drEntry = new GeneralLedger();
+		drEntry.setBillno(savedPayements.getBillNo());
+		drEntry.setDr_Amt(cashPaymentDto.getAmount());
+		drEntry.setCustId(customerMasterService.getById(cashPaymentDto.getCustId()));
+		drEntry.setEntrydate(cashPayment.getEntryDate());
+		drEntry.setEntryNo(savedPayements.getEntryNo());
+		drEntry.setEntryType(cashPaymentDto.getTranType());
+		drEntry.setNarr(cashPaymentDto.getNarr());
+		drEntry.setHeadId(headMasterService.getById(cashPaymentDto.getHeadId()));
+		drEntry.setShopId(school);
+		drEntry.setSubhead(subHeadMasterService.getById(cashPaymentDto.getSubheadId()));
+		generalLedgerService.post(drEntry);
+		
+		GeneralLedger crEntry = new GeneralLedger();
+		crEntry.setBillno(savedPayements.getBillNo());
+		crEntry.setCr_Amt(cashPaymentDto.getAmount());
+		crEntry.setEntrydate(cashPayment.getEntryDate());
+		crEntry.setEntryNo(savedPayements.getEntryNo());
+		crEntry.setEntryType(cashPaymentDto.getTranType());
+		crEntry.setNarr(cashPaymentDto.getNarr());
+//		crEntry.setHeadId(headMasterService.getById(cashPaymentDto.getHeadId()));
+		crEntry.setShopId(school);
+		crEntry.setSubhead(subHeadMasterService.getById(cashPaymentDto.getSubheadId()));
+		generalLedgerService.post(crEntry);
+		
 		return new ResponseEntity<CashPayment>(savedPayements, HttpStatus.OK);
 		
 	}

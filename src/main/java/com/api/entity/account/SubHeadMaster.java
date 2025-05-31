@@ -15,7 +15,6 @@ import lombok.Data;
 public class SubHeadMaster {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long subheadId;
 	
 	private String subheadName;
@@ -27,5 +26,6 @@ public class SubHeadMaster {
 	@ManyToOne
 	@JoinColumn(name = "school_udise")
 	private School schoolUdise;
+	
 	
 }
