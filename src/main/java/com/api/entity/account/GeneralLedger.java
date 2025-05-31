@@ -1,7 +1,6 @@
 package com.api.entity.account;
 
 import java.sql.Date;
-import java.util.Currency;
 
 import com.api.entity.School;
 
@@ -19,7 +18,9 @@ public class GeneralLedger {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int entryNo;
+	private int id;
+	
+	private long entryNo;
 	
 	private Date entrydate;
 	
@@ -27,9 +28,11 @@ public class GeneralLedger {
 	@JoinColumn(name = "SchoolUdiseNo")
 	private School shopId;
 	
-	@ManyToOne
-	@JoinColumn(name="Id")
-	EntryType entryType;
+//	@ManyToOne
+//	@JoinColumn(name="entry_type")
+//	EntryType entryType;
+	
+	private String entryType;
 	
 	@ManyToOne
 	@JoinColumn(name="CustId")

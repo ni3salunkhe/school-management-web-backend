@@ -12,6 +12,8 @@ public interface BookTypeMasterService {
 	
 	public BookTypeMaster postData(BookTypeMaster bookTypeMaster);
 	
+	public BookTypeMaster getByBookTypeName(String bookTypeName);
+	
 	public void deleteData(long id);
 	
 }

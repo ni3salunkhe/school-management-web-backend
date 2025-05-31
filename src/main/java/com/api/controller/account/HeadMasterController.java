@@ -58,7 +58,7 @@ public class HeadMasterController {
 
 		headMaster.setHeadId(headMasterDto.getHeadId());
 		headMaster.setSchoolUdise(schoolService.getbyid(headMasterDto.getSchoolUdise()));
-		headMaster.setHead_name(headMasterDto.getHead_name());
+		headMaster.setHeadName(headMasterDto.getHeadName());
 		headMaster.setBookSideMaster(bookSideMasterService.getById(headMasterDto.getBookSideMaster()));
 		headMaster.setBookTypeMaster(bookTypeMasterService.getById(headMasterDto.getBookTypeMaster()));
 		
@@ -74,7 +74,7 @@ public class HeadMasterController {
 		if (headMaster != null) {
 
 			headMaster.setHeadId(headMasterDto.getHeadId());
-			headMaster.setHead_name(headMasterDto.getHead_name());
+			headMaster.setHeadName(headMasterDto.getHeadName());
 			headMaster.setBookSideMaster(bookSideMasterService.getById(headMasterDto.getBookSideMaster()));
 			headMaster.setBookTypeMaster(bookTypeMasterService.getById(headMasterDto.getBookTypeMaster()));
 			

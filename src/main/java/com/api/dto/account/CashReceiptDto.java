@@ -3,14 +3,14 @@ package com.api.dto.account;
 import java.sql.Date;
 
 import com.api.entity.Staff;
-import com.api.entity.account.HeadMaster;
-import com.api.entity.account.SubHeadMaster;
 
 import lombok.Data;
 
 @Data
 public class CashReceiptDto {
 
+	private int entryNo;
+	
 	private Date entryDate;
 
 	private long custId;
@@ -25,9 +25,9 @@ public class CashReceiptDto {
 
 	private String year;
 
-	private HeadMaster headId;
+	private long headId;
 
-	private SubHeadMaster subheadId;
+	private long subheadId;
 
 //	user_id
 
@@ -40,6 +40,8 @@ public class CashReceiptDto {
 	private long billNo;
 
 	private String billType;
+	
+	private String saleDup;
 
 	private String status;
 

@@ -7,5 +7,7 @@ import com.api.entity.account.BookTypeMaster;
 
 @Repository
 public interface BookTypeMasterRepository extends JpaRepository<BookTypeMaster, Long>{
-
+	
+	public BookTypeMaster findByBooktypeName(String booktypeName);
+	
 }

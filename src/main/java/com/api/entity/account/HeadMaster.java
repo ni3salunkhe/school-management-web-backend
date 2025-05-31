@@ -18,14 +18,13 @@ import lombok.Data;
 public class HeadMaster {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long headId;
 	
 	@ManyToOne
 	@JoinColumn(name = "school_udise")
 	private School schoolUdise;
 	
-	private String head_name;
+	private String headName;
 	
 	@ManyToOne
 	@JoinColumn(name = "BooksideId")

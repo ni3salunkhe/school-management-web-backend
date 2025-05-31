@@ -39,4 +39,10 @@ public class BookTypeMasterServiceImpl implements BookTypeMasterService{
 		bookTypeMasterRepository.deleteById(id);
 	}
 
+	@Override
+	public BookTypeMaster getByBookTypeName(String bookTypeName) {
+		// TODO Auto-generated method stub
+		return bookTypeMasterRepository.findByBooktypeName(bookTypeName);
+	}
+
 }

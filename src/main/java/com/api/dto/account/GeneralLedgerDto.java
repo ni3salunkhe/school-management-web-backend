@@ -12,7 +12,7 @@ public class GeneralLedgerDto {
 	
 	private Date entrydate;
 	
-	private int entryType;
+	private String entryType;
 	
 	private int custid;
 	
