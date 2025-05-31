@@ -16,6 +16,7 @@ import lombok.Data;
 @Entity
 @Table(name = "head_master")
 @Data
+
 public class HeadMaster {
 	
 	@Id
@@ -34,8 +35,5 @@ public class HeadMaster {
 	@ManyToOne
 	@JoinColumn(name = "BooktypeId")
 	private BookTypeMaster bookTypeMaster;
-	
-	@Version
-    private Integer version;
 	
 }
