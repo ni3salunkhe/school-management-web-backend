@@ -6,11 +6,13 @@ import com.api.entity.School;
 import com.api.entity.Staff;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import lombok.Data;
@@ -62,6 +64,10 @@ public class BankPayment {
 	private String paymentType;
 	
 //	img
+	
+	@Lob
+	@Column(name = "img" ,columnDefinition = "LONGBLOB")
+	private byte[] img;
 	
 //	bank head id
 	

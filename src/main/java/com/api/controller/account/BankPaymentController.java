@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -18,7 +19,11 @@ import com.api.dto.account.BankPaymentDto;
 import com.api.entity.School;
 import com.api.entity.account.BankPayment;
 import com.api.service.SchoolService;
+import com.api.service.account.BankMasterService;
 import com.api.service.account.BankPaymentService;
+import com.api.service.account.CustomerMasterService;
+import com.api.service.account.HeadMasterService;
+import com.api.service.account.SubHeadMasterService;
 
 @RestController
 @RequestMapping("/bankpayment")
@@ -30,6 +35,18 @@ public class BankPaymentController {
 	
 	@Autowired
 	private SchoolService schoolService;
+	
+	@Autowired
+	private CustomerMasterService customerMasterService;
+	
+	@Autowired
+	private BankMasterService bankMasterService;
+	
+	@Autowired
+	private HeadMasterService headMasterService;
+	
+	@Autowired
+	private SubHeadMasterService subHeadMasterService;
 	
 	@GetMapping("/")
 	public ResponseEntity<List<BankPayment>> getAllBankPaymentData()
@@ -59,18 +76,35 @@ public class BankPaymentController {
 	}
 	
 	@PostMapping("/")
-	public ResponseEntity<BankPayment> saveBankPaymentData(@RequestBody BankPaymentDto bankPaymentDto)
+	public ResponseEntity<BankPayment> saveBankPaymentData(@ModelAttribute BankPaymentDto bankPaymentDto)
 	{
-		
+		try {
 		BankPayment bankPayment=new BankPayment();
 		
 		bankPayment.setEntryDate(bankPaymentDto.getEntryDate());
-//		bankPayment party id
+		bankPayment.setCustId(customerMasterService.getById(bankPaymentDto.getCustId()));
 		bankPayment.setTranType(bankPaymentDto.getTranType());
 		bankPayment.setAmount(bankPaymentDto.getAmount());
 		bankPayment.setNarr(bankPaymentDto.getNarr());
-		
+		bankPayment.setBankId(bankMasterService.getbyid(bankPaymentDto.getBankId()));
+		bankPayment.setSchoolUdise(schoolService.getbyid(bankPaymentDto.getSchoolUdise()));
+		bankPayment.setYear(bankPaymentDto.getYear());
+		bankPayment.setHeadId(headMasterService.getById(bankPaymentDto.getHeadId()));
+		bankPayment.setSubheadId(subHeadMasterService.getById(bankPaymentDto.getSubheadId()));
+		bankPayment.setCreateDate(bankPaymentDto.getCreateDate());
+		bankPayment.setModifieDate(bankPaymentDto.getModifieDate());
+		bankPayment.setPaymentType(bankPaymentDto.getPaymentType());
+		if(bankPaymentDto.getImg() !=null && !bankPaymentDto.getImg().isEmpty())
+		{
+			bankPayment.setImg(bankPaymentDto.getImg().getBytes());
+		}
+		bankPayment.setBillNo(bankPaymentDto.getBillNo());
+		bankPayment.setStatus(bankPaymentDto.getStatus());
 		return null;
+		}
+		catch (Exception e) {
+	        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
 	}
 	
 	@PutMapping("/{id}")
