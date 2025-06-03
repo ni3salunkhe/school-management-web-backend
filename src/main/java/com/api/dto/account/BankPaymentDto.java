@@ -2,6 +2,8 @@ package com.api.dto.account;
 
 import java.sql.Date;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Data;
 
 @Data
@@ -18,6 +20,8 @@ public class BankPaymentDto {
 	private double Amount;
 
 	private String narr;
+	
+	private long bankId;
 
 	private long schoolUdise;
 
@@ -38,6 +42,8 @@ public class BankPaymentDto {
 	private String paymentType;
 
 //	img
+	
+	private MultipartFile img;
 
 //	bank head id
 
