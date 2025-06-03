@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.api.dto.account.CustomerMasterDto;
 import com.api.entity.School;
 import com.api.entity.account.CustomerMaster;
+import com.api.entity.account.SubHeadMaster;
 import com.api.service.SchoolService;
 import com.api.service.account.CustomerMasterService;
 import com.api.service.account.CustomerTypeMasterService;
@@ -87,6 +88,14 @@ public class CustomerMasterController {
 		customerMaster.setSchoolUdise(schoolService.getbyid(customerMasterDto.getSchoolUdise()));
 
 		CustomerMaster saveCustomerMaster = customerMasterService.postData(customerMaster);
+		
+		SubHeadMaster subHeadMaster = new SubHeadMaster();
+		
+		subHeadMaster.setSubheadId(saveCustomerMaster.getCustId());
+		subHeadMaster.setHeadId(saveCustomerMaster.getHeadId());
+		subHeadMaster.setSubheadName(saveCustomerMaster.getCustName());
+		subHeadMaster.setSchoolUdise(saveCustomerMaster.getSchoolUdise());
+		subHeadMasterService.postData(subHeadMaster);
 
 		return new ResponseEntity<CustomerMaster>(saveCustomerMaster, HttpStatus.OK);
 

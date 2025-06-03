@@ -1,7 +1,7 @@
 package com.api.dto.account;
 
 import java.sql.Date;
-
+import java.util.List;
 
 import lombok.Data;
 
@@ -20,10 +20,20 @@ public class OpeningBalDto {
 
 	private double amount;
 
-	private Date year;
+	private String year;
 
 	private long headId;
 	
 	private long subHeadId;
+	private String financialYear;
+    private List<BalanceEntry> balances;
+	
+	 @Data
+	 public static class BalanceEntry {
+	        private Long headId;
+	        private Long subHeadId;
+	        private Double amount;
+	        private String balanceType;
+	 }
 
 }

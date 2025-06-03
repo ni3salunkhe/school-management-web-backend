@@ -19,7 +19,7 @@ public class OpeningBal {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-
+	
 	@OneToOne
 	@JoinColumn(name =  "cust_id")
 	private CustomerMaster custId;
@@ -32,7 +32,7 @@ public class OpeningBal {
 
 	private double amount;
 
-	private Date year;
+	private String year;
 	
 	@ManyToOne
 	@JoinColumn(name = "head_id")

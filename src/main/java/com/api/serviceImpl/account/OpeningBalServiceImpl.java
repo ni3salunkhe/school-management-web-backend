@@ -1,12 +1,23 @@
 package com.api.serviceImpl.account;
 
+import java.sql.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.api.dto.account.OpeningBalDto;
+import com.api.entity.account.CustomerMaster;
+import com.api.entity.account.HeadMaster;
 import com.api.entity.account.OpeningBal;
+import com.api.entity.account.SubHeadMaster;
+import com.api.repository.account.CustomerMasterRepository;
+import com.api.repository.account.HeadMasterRepository;
 import com.api.repository.account.OpeningBalRepository;
+import com.api.repository.account.SubHeadMasterRepository;
+import com.api.service.account.CustomerMasterService;
 import com.api.service.account.OpeningBalService;
 
 @Service
@@ -14,6 +25,18 @@ public class OpeningBalServiceImpl implements OpeningBalService{
 
 	@Autowired
 	private OpeningBalRepository openingBalRepository;
+	
+	@Autowired
+	private CustomerMasterService customerMasterService;
+	
+	@Autowired
+	private CustomerMasterRepository customerMasterRepository;
+	
+	@Autowired
+	private HeadMasterRepository headMasterRepository;
+	
+	@Autowired
+	private SubHeadMasterRepository subHeadMasterRepository;
 	
 	@Override
 	public List<OpeningBal> getAllData() {
@@ -38,5 +61,60 @@ public class OpeningBalServiceImpl implements OpeningBalService{
 		// TODO Auto-generated method stub
 		openingBalRepository.deleteById(id);
 	}
+
+	@Override
+	public void saveOpeningBalances(OpeningBalDto request) {
+        String financialYear = request.getFinancialYear();
+
+        for (OpeningBalDto.BalanceEntry entry : request.getBalances()) {
+            OpeningBal openingBal = new OpeningBal();
+
+            // Lookup and assign Customer
+            CustomerMaster customer = customerMasterRepository.findById(entry.getSubHeadId())
+                    .orElseThrow(() -> new RuntimeException("Customer not found: " + entry.getSubHeadId()));
+            openingBal.setCustId(customer);
+
+            // Lookup and assign Head
+            HeadMaster head = headMasterRepository.findById(entry.getHeadId())
+                    .orElseThrow(() -> new RuntimeException("Head not found: " + entry.getHeadId()));
+            openingBal.setHeadId(head);
+
+            // Lookup and assign SubHead
+            SubHeadMaster subHead = subHeadMasterRepository.findById(entry.getSubHeadId())
+                    .orElseThrow(() -> new RuntimeException("Subhead not found: " + entry.getSubHeadId()));
+            openingBal.setSubHeadId(subHead);
+
+            // Assign Debit or Credit
+            double amount = entry.getAmount() != null ? entry.getAmount() : 0.0;
+            if ("Credit".equalsIgnoreCase(entry.getBalanceType())) {
+                openingBal.setCrAmt(amount);
+                openingBal.setDrAmt(0.0);
+            } else {
+                openingBal.setDrAmt(amount);
+                openingBal.setCrAmt(0.0);
+            }
+
+            openingBal.setAmount(amount);
+            openingBal.setYear(financialYear);
+
+            // Save entry
+            openingBalRepository.save(openingBal);
+        }
+    }
+
+	@Override
+	public Map<String, Double> getSumCrDr() {
+	    Object[] result = openingBalRepository.getTotalCreditAndDebit();
+
+	    Double totalCr = result[0] != null ? (Double) result[0] : 0.0;
+	    Double totalDr = result[1] != null ? (Double) result[1] : 0.0;
+
+	    Map<String, Double> totals = new HashMap<>();
+	    totals.put("totalCr", totalCr);
+	    totals.put("totalDr", totalDr);
+
+	    return totals;
+	}
+
 
 }

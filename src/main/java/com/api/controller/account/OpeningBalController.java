@@ -1,6 +1,7 @@
 package com.api.controller.account;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -68,6 +69,24 @@ public class OpeningBalController {
 		
 		return new ResponseEntity<OpeningBal>(saveOpeningBal,HttpStatus.OK);
 	}
+	
+	@GetMapping("/sum")
+	public ResponseEntity<Map<String, Double>> getcrdrsum(){
+		Map<String, Double> openingBal = openingBalService.getSumCrDr();
+		
+		return ResponseEntity.ok(openingBalService.getSumCrDr());
+	}
+	
+	@PostMapping("/bulk")
+	public ResponseEntity<String> postOpeningBalances(@RequestBody OpeningBalDto request) {
+	    try {
+	        openingBalService.saveOpeningBalances(request);
+	        return ResponseEntity.ok("Opening balances saved successfully.");
+	    } catch (RuntimeException e) {
+	        return ResponseEntity.badRequest().body("Error: " + e.getMessage());
+	    }
+	}
+
 	
 	@PutMapping("/{id}")
 	public ResponseEntity<OpeningBal> putOpeningBalData(@RequestBody OpeningBalDto openingBalDto,@PathVariable long id)
