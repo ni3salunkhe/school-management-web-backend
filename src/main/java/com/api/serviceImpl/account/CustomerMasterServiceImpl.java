@@ -46,4 +46,10 @@ public class CustomerMasterServiceImpl implements CustomerMasterService {
 		return customerMasterRepository.findBySchoolUdise(school);
 	}
 
+	@Override
+	public List<CustomerMaster> getonlycustomerbyUdise(long udise) {
+		// TODO Auto-generated method stub
+		return customerMasterRepository.findCustomersWithoutBankByUdiseNative(udise);
+	}
+
 }

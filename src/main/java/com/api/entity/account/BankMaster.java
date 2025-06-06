@@ -33,7 +33,14 @@ public class BankMaster {
 	private String accountno;
 	
 	@ManyToOne
+	@JoinColumn(name = "head_id")
+	private HeadMaster headId;
+	
+	@ManyToOne
 	@JoinColumn(name="AccountTypeId")
 	private AccountType accounttype;
 	
+	@ManyToOne
+	@JoinColumn(name = "cust_id")
+	private CustomerMaster custId;
 }

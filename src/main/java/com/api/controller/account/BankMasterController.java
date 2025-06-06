@@ -13,15 +13,19 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.service.annotation.DeleteExchange;
 
 import com.api.dto.account.BankMasterDto;
 import com.api.entity.School;
 import com.api.entity.account.AccountType;
 import com.api.entity.account.BankMaster;
+import com.api.entity.account.CustomerMaster;
+import com.api.entity.account.SubHeadMaster;
 import com.api.service.SchoolService;
 import com.api.service.account.AccountTypeService;
 import com.api.service.account.BankMasterService;
+import com.api.service.account.CustomerMasterService;
+import com.api.service.account.HeadMasterService;
+import com.api.service.account.SubHeadMasterService;
 
 @RestController
 @RequestMapping("/bank")
@@ -35,10 +39,35 @@ public class BankMasterController {
 	
 	@Autowired
 	private AccountTypeService accountTypeService;
+	
+	@Autowired
+	private HeadMasterService headMasterService;
+	
+	@Autowired
+	private CustomerMasterService customerMasterService;
+	
+	@Autowired
+	private SubHeadMasterService subHeadMasterService;
 
 	@PostMapping("/")
 	public ResponseEntity<BankMaster> savebankdata(@RequestBody BankMasterDto bankDto) {
 
+		CustomerMaster customerMaster=new CustomerMaster();
+		customerMaster.setCustName(bankDto.getBankname());
+		customerMaster.setHeadId(headMasterService.getById(bankDto.getHeadId()));
+//		customerMaster.setSubheadId(customerMaster.getSubheadId());
+		customerMaster.setSchoolUdise(schoolService.getbyid(bankDto.getUdiseNo()));
+		
+		CustomerMaster saveCustomerMaster=customerMasterService.postData(customerMaster);
+		
+		SubHeadMaster subHeadMaster=new SubHeadMaster();
+		subHeadMaster.setHeadId(headMasterService.getById(bankDto.getHeadId()));
+		subHeadMaster.setSchoolUdise(schoolService.getbyid(bankDto.getUdiseNo()));
+		subHeadMaster.setSubheadId(customerMaster.getCustId());
+		subHeadMaster.setSubheadName(bankDto.getBankname());
+		
+		SubHeadMaster saveSubHeadMaster= subHeadMasterService.postData(subHeadMaster);
+		
 		BankMaster bankMaster = new BankMaster();
 		School school = schoolService.getbyid(bankDto.getUdiseNo());
 		AccountType accountType= accountTypeService.getbyid(bankDto.getAccounttype());
@@ -50,6 +79,8 @@ public class BankMasterController {
 			bankMaster.setSchoolUdiseNo(school);
 			bankMaster.setAccounttype(accountType);
 			bankMaster.setAccountno(bankDto.getAccountno());
+			bankMaster.setHeadId(headMasterService.getById(bankDto.getHeadId()));
+			bankMaster.setCustId(saveCustomerMaster);
 			BankMaster saveBankMaster = bankMasterService.post(bankMaster);
 
 			return new ResponseEntity<BankMaster>(saveBankMaster, HttpStatus.OK);
@@ -68,12 +99,13 @@ public class BankMasterController {
 		if (bankMaster != null) {
 
 			bankMaster.setBankname(bankDto.getBankname());
-			bankMaster.setBranch(bankDto.getBankname());
+			bankMaster.setBranch(bankDto.getBranch());
 			bankMaster.setAddress(bankDto.getAddress());
 			bankMaster.setIfsccode(bankDto.getIfsccode());
 			bankMaster.setSchoolUdiseNo(schoolService.getbyid(bankDto.getUdiseNo()));
 			bankMaster.setAccounttype(accountType);
 			bankMaster.setAccountno(bankDto.getAccountno());
+			bankMaster.setHeadId(headMasterService.getById(bankDto.getHeadId()));
 			BankMaster saveBankMaster = bankMasterService.post(bankMaster);
 
 			return new ResponseEntity<BankMaster>(saveBankMaster, HttpStatus.OK);

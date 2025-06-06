@@ -20,5 +20,7 @@ public class BankMasterDto {
 	private String accountno;
 	
 	private int accounttype;
+	
+	private long headId;
 		
 }
