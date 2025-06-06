@@ -72,6 +72,15 @@ public class BookTypeConfig {
 
 //			---------------------------------------------------------------------------------------
 //			set heads
+			if (headMasterService.getByHeadName("Bank Accounts") == null) {
+				HeadMaster headMaster = new HeadMaster();
+				headMaster.setHeadName("Bank Accounts");
+				headMaster.setBookTypeMaster(bookTypeMasterService.getByBookTypeName("Balance Sheet"));
+				headMaster.setBookSideMaster(bookSideMasterService.getByBookSideName("Asset"));
+
+				headMasterService.postData(headMaster);
+
+			}
 
 			if (headMasterService.getByHeadName("Bank OCC A/c") == null) {
 				HeadMaster headMaster = new HeadMaster();

@@ -2,6 +2,8 @@ package com.api.dto.account;
 
 import java.sql.Date;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Data;
 
 @Data
@@ -23,7 +25,7 @@ public class GeneralLedgerDto {
 	private int headid;
 	
 	private String daybookname;
-	
+
 	private Date salepaydate;
 	
 	private String salepaydup;
@@ -36,8 +38,10 @@ public class GeneralLedgerDto {
 	
 	private long maxno;
 	
+	@JsonProperty("Cr_Amt")
 	private Double Cr_Amt;
 	
+	@JsonProperty("Dr_Amt")
 	private Double Dr_Amt;
 	
 	//perid
@@ -48,6 +52,5 @@ public class GeneralLedgerDto {
 		
 		//daybookheadid;
 //	private int siteid;
-	
-	
+		
 }

@@ -100,7 +100,7 @@ public class CashReceiptController {
 		drgeneralLedger.setEntrydate(cashReceiptDto.getEntryDate());
 		drgeneralLedger.setShopId(schoolService.getbyid(cashReceiptDto.getSchoolUdise()));
 //		drgeneralLedger.setCustId(customerMasterService.getById(cashReceiptDto.getCustId()));
-		drgeneralLedger.setDr_Amt(cashReceiptDto.getAmount());
+		drgeneralLedger.setDrAmt(cashReceiptDto.getAmount());
 		drgeneralLedger.setNarr(cashReceiptDto.getNarr());
 		drgeneralLedger.setHeadId(headMasterService.getByHeadName("Cash In Hand"));
 		System.out.println(headMasterService.getByHeadName("Cash In Hand"));
@@ -114,7 +114,7 @@ public class CashReceiptController {
 		crgeneralLedger.setEntrydate(cashReceiptDto.getEntryDate());
 		crgeneralLedger.setShopId(schoolService.getbyid(cashReceiptDto.getSchoolUdise()));
 		crgeneralLedger.setCustId(customerMasterService.getById(cashReceiptDto.getCustId()));
-		crgeneralLedger.setCr_Amt(cashReceiptDto.getAmount());
+		crgeneralLedger.setCrAmt(cashReceiptDto.getAmount());
 		crgeneralLedger.setNarr(cashReceiptDto.getNarr());
 		crgeneralLedger.setHeadId(headMasterService.getById(cashReceiptDto.getHeadId()));
 		crgeneralLedger.setSubhead(subHeadMasterService.getById(cashReceiptDto.getSubheadId()));

@@ -1,14 +1,25 @@
 package com.api.serviceImpl.account;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.api.dto.account.OpeningBalDto;
 import com.api.entity.School;
+import com.api.entity.account.CustomerMaster;
 import com.api.entity.account.GeneralLedger;
+import com.api.entity.account.HeadMaster;
+import com.api.entity.account.OpeningBal;
+import com.api.entity.account.SubHeadMaster;
+import com.api.repository.account.CustomerMasterRepository;
 import com.api.repository.account.GeneralLedgerRepository;
+import com.api.repository.account.HeadMasterRepository;
+import com.api.repository.account.OpeningBalRepository;
+import com.api.repository.account.SubHeadMasterRepository;
 import com.api.service.SchoolService;
+import com.api.service.account.CustomerMasterService;
 import com.api.service.account.GeneralLedgerService;
 
 @Service
@@ -19,6 +30,21 @@ public class GeneralLedgerServiceImpl implements GeneralLedgerService {
 	
 	@Autowired
 	private SchoolService schooService;
+	
+	@Autowired
+	private CustomerMasterService customerMasterService;
+	
+	@Autowired 
+	private OpeningBalRepository openingBalRepository;
+	
+	@Autowired
+	private CustomerMasterRepository customerMasterRepository;
+	
+	@Autowired
+	private HeadMasterRepository headMasterRepository;
+	
+	@Autowired
+	private SubHeadMasterRepository subHeadMasterRepository;
 
 	@Override
 	public GeneralLedger post(GeneralLedger generalLedger) {
@@ -45,5 +71,34 @@ public class GeneralLedgerServiceImpl implements GeneralLedgerService {
 		// TODO Auto-generated method stub
 		return generalLedgerRepository.findAll();
 	}
+	
+	@Override
+	public List<GeneralLedger> getbysubhead(long subhead) {
+		// TODO Auto-generated method stub
+		
+		return generalLedgerRepository.findBySubhead(subHeadMasterRepository.findBysubheadId(subhead));
+	}
+	
+	@Override 
+	public BigDecimal getBalanceBySubhead(Long subheadId) {
+	    SubHeadMaster subhead = subHeadMasterRepository.findBysubheadId(subheadId);
+	    List<GeneralLedger> entries = generalLedgerRepository.findBySubhead(subhead);
 
+	    BigDecimal totalDr = BigDecimal.ZERO;
+	    BigDecimal totalCr = BigDecimal.ZERO;
+
+	    for (GeneralLedger entry : entries) {
+	        if (entry.getDrAmt() != null)
+	            totalDr = totalDr.add(BigDecimal.valueOf(entry.getDrAmt()));
+	        if (entry.getCrAmt() != null)
+	            totalCr = totalCr.add(BigDecimal.valueOf(entry.getCrAmt()));
+	    }
+
+	    BigDecimal balance = totalCr.subtract(totalDr); // ✅ Cr - Dr
+
+	    return balance;
+	}
+
+	
+	
 }

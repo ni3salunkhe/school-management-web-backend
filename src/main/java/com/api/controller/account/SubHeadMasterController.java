@@ -85,6 +85,13 @@ public class SubHeadMasterController {
 		}
 	}
 	
+	@GetMapping("/next-id")
+	public ResponseEntity<Long> getNextGeneralLedgerId() {
+	    Long nextId = subHeadMasterService.getNextLedgerId();
+	    return ResponseEntity.ok(nextId);
+	}
+
+	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteSubHeadMasterData(@PathVariable long id)
 	{

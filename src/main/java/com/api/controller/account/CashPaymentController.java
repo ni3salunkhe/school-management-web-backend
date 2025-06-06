@@ -98,7 +98,7 @@ public class CashPaymentController {
 		
 		GeneralLedger drEntry = new GeneralLedger();
 		drEntry.setBillno(savedPayements.getBillNo());
-		drEntry.setDr_Amt(cashPaymentDto.getAmount());
+		drEntry.setDrAmt(cashPaymentDto.getAmount());
 		drEntry.setCustId(customerMasterService.getById(cashPaymentDto.getCustId()));
 		drEntry.setEntrydate(cashPayment.getEntryDate());
 		drEntry.setEntryNo(savedPayements.getEntryNo());
@@ -111,7 +111,7 @@ public class CashPaymentController {
 		
 		GeneralLedger crEntry = new GeneralLedger();
 		crEntry.setBillno(savedPayements.getBillNo());
-		crEntry.setCr_Amt(cashPaymentDto.getAmount());
+		crEntry.setCrAmt(cashPaymentDto.getAmount());
 		crEntry.setEntrydate(cashPayment.getEntryDate());
 		crEntry.setEntryNo(savedPayements.getEntryNo());
 		crEntry.setEntryType(cashPaymentDto.getTranType());

@@ -1,7 +1,11 @@
 package com.api.controller.account;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,17 +17,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.api.dto.account.GeneralLedgerDto;
+import com.api.entity.account.CustomerMaster;
 import com.api.entity.account.GeneralLedger;
+import com.api.entity.account.HeadMaster;
+import com.api.entity.account.SubHeadMaster;
+import com.api.repository.account.CustomerMasterRepository;
 import com.api.service.SchoolService;
 import com.api.service.account.CustomerMasterService;
 import com.api.service.account.EntryTypeService;
 import com.api.service.account.GeneralLedgerService;
 import com.api.service.account.HeadMasterService;
 import com.api.service.account.SubHeadMasterService;
+import com.api.serviceImpl.account.OpeningBalServiceImpl;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @RestController
 @RequestMapping("/generalledger")
 public class GeneralLedgerController {
+
+	private static final Logger log = LoggerFactory.getLogger(GeneralLedgerController.class);
 
 	@Autowired
 	private GeneralLedgerService generalLedgerService;
@@ -43,6 +56,8 @@ public class GeneralLedgerController {
 	@Autowired
 	private SchoolService schoolService;
 	
+	@Autowired
+	private CustomerMasterRepository customerMasterRepository;	
 	@PostMapping("/")
 	public ResponseEntity<GeneralLedger> savealldata(@RequestBody GeneralLedgerDto generalLedgerDto){
 		GeneralLedger generalLedger = new GeneralLedger();
@@ -50,10 +65,10 @@ public class GeneralLedgerController {
 		generalLedger.setEntryNo(generalLedgerDto.getEntryNo());
 		generalLedger.setEntryType(generalLedgerDto.getEntryType());
 		generalLedger.setBillno(generalLedgerDto.getBillno());
-		generalLedger.setCr_Amt(generalLedgerDto.getCr_Amt());
+		generalLedger.setCrAmt(generalLedgerDto.getCr_Amt());
 		generalLedger.setCustId(customerMasterService.getById(generalLedgerDto.getCustid()));
 		generalLedger.setDaybookname(generalLedgerDto.getDaybookname());
-		generalLedger.setDr_Amt(generalLedgerDto.getDr_Amt());
+		generalLedger.setDrAmt(generalLedgerDto.getDr_Amt());
 		generalLedger.setEntrydate(generalLedgerDto.getEntrydate());
 		generalLedger.setEntrynochar(generalLedgerDto.getEntrynochar());
 		generalLedger.setHeadId(headMasterService.getById(generalLedgerDto.getHeadid()));
@@ -77,4 +92,68 @@ public class GeneralLedgerController {
 		return new ResponseEntity<List<GeneralLedger>>(generalLedgers,HttpStatus.OK);
 		
 	}
+	
+	@GetMapping("/balances/{id}")
+	public ResponseEntity<List<GeneralLedger>> getbyid(@PathVariable long id){
+		
+		List<GeneralLedger> generalLedgers=generalLedgerService.getbysubhead(id);
+		return new ResponseEntity<List<GeneralLedger>>(generalLedgers, HttpStatus.OK);
+		
+	}
+	
+	@GetMapping("/ledger/balance/{subheadId}")
+	public ResponseEntity<BigDecimal> getBalanceBySubhead(@PathVariable Long subheadId) {
+	    BigDecimal balance = generalLedgerService.getBalanceBySubhead(subheadId);
+	    return ResponseEntity.ok(balance);
+	}
+
+	
+	@PostMapping("/bulk")
+	public ResponseEntity<?> saveBulkOpeningBalance(@RequestBody List<GeneralLedgerDto> dtoList) {
+	    List<GeneralLedger> savedList = new ArrayList<>();
+
+	    for (GeneralLedgerDto dto : dtoList) {
+	        GeneralLedger ledger = new GeneralLedger();
+
+	        if (dto.getCr_Amt() != null) {
+	            ledger.setCrAmt(dto.getCr_Amt());
+	        } else {
+	            ledger.setCrAmt(0.0); // or leave unset if nullable
+	        }
+
+	        if (dto.getDr_Amt() != null) {
+	            ledger.setDrAmt(dto.getDr_Amt());
+	        } else {
+	            ledger.setDrAmt(0.0); // or leave unset if nullable
+	        }
+	        
+//	        ledger.setAmount(dto.getAmt());
+	        ledger.setEntryType(dto.getEntryType());
+//	        ledger.setYear(Integer.parseInt(dto.getYear()));
+	        ledger.setNarr(dto.getNarr());
+
+	        // Related Entity Mapping
+	        HeadMaster head = headMasterService.getById(dto.getHeadid());
+	        SubHeadMaster subHead = subHeadMasterService.getById(dto.getSubhead());
+	        ledger.setHeadId(head);
+	        ledger.setSubhead(subHead);
+
+	        // Optional Customer
+	        CustomerMaster customer = customerMasterRepository.findById((long) dto.getSubhead()).orElse(null);
+	         // handle null downstream
+		        if (customer == null) {
+		            log.warn("Customer not found: {}", dto.getSubhead());
+		             // maybe skip or handle with fallback values
+		        }
+		        
+		        ledger.setCustId(customer);
+
+	        // Save and collect
+	        savedList.add(generalLedgerService.post(ledger));
+	    }
+
+	    return ResponseEntity.ok(savedList);
+	}
+
+
 }

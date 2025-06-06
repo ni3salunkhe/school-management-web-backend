@@ -67,6 +67,8 @@ public class OpeningBalController {
 		
 		OpeningBal saveOpeningBal=openingBalService.postData(openingBal);
 		
+		
+		
 		return new ResponseEntity<OpeningBal>(saveOpeningBal,HttpStatus.OK);
 	}
 	
@@ -74,7 +76,7 @@ public class OpeningBalController {
 	public ResponseEntity<Map<String, Double>> getcrdrsum(){
 		Map<String, Double> openingBal = openingBalService.getSumCrDr();
 		
-		return ResponseEntity.ok(openingBalService.getSumCrDr());
+		return ResponseEntity.ok(openingBal);
 	}
 	
 	@PostMapping("/bulk")

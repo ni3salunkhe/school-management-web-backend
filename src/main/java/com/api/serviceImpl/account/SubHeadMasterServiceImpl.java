@@ -51,5 +51,10 @@ public class SubHeadMasterServiceImpl implements SubHeadMasterService{
 		School school = schoolService.getbyid(udiseNo);
 		return subHeadMasterRepository.findBySchoolUdise(school);
 	}
+	
+	public Long getNextLedgerId() {
+	    return subHeadMasterRepository.findMaxId() + 1;
+	}
+
 
 }

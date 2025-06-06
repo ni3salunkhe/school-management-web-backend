@@ -1,5 +1,8 @@
 package com.api.serviceImpl.account;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -38,6 +41,8 @@ public class OpeningBalServiceImpl implements OpeningBalService{
 	@Autowired
 	private SubHeadMasterRepository subHeadMasterRepository;
 	
+	private static final Logger log = LoggerFactory.getLogger(OpeningBalServiceImpl.class);
+
 	@Override
 	public List<OpeningBal> getAllData() {
 		// TODO Auto-generated method stub
@@ -65,13 +70,19 @@ public class OpeningBalServiceImpl implements OpeningBalService{
 	@Override
 	public void saveOpeningBalances(OpeningBalDto request) {
         String financialYear = request.getFinancialYear();
+        
+        System.out.println(request);
 
         for (OpeningBalDto.BalanceEntry entry : request.getBalances()) {
             OpeningBal openingBal = new OpeningBal();
 
             // Lookup and assign Customer
-            CustomerMaster customer = customerMasterRepository.findById(entry.getSubHeadId())
-                    .orElseThrow(() -> new RuntimeException("Customer not found: " + entry.getSubHeadId()));
+            CustomerMaster customer = customerMasterRepository.findById(entry.getSubHeadId()).orElse(null);
+         // handle null downstream
+	        if (customer == null) {
+	            log.warn("Customer not found: {}", entry.getSubHeadId());
+	             // maybe skip or handle with fallback values
+	        }
             openingBal.setCustId(customer);
 
             // Lookup and assign Head
@@ -101,20 +112,21 @@ public class OpeningBalServiceImpl implements OpeningBalService{
             openingBalRepository.save(openingBal);
         }
     }
-
+	
 	@Override
 	public Map<String, Double> getSumCrDr() {
-	    Object[] result = openingBalRepository.getTotalCreditAndDebit();
+	    Object result = openingBalRepository.getTotalCreditAndDebit();
+	    
+	    Object[] row = (Object[]) result;
 
-	    Double totalCr = result[0] != null ? (Double) result[0] : 0.0;
-	    Double totalDr = result[1] != null ? (Double) result[1] : 0.0;
+	    Double totalDr = row[0] != null ? ((Number) row[0]).doubleValue() : 0.0;
+	    Double totalCr = row[1] != null ? ((Number) row[1]).doubleValue() : 0.0;
 
 	    Map<String, Double> totals = new HashMap<>();
-	    totals.put("totalCr", totalCr);
 	    totals.put("totalDr", totalDr);
+	    totals.put("totalCr", totalCr);
 
 	    return totals;
 	}
-
 
 }

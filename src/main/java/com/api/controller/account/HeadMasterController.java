@@ -100,4 +100,12 @@ public class HeadMasterController {
 
 		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
+	
+	@GetMapping("/getbyheadname/{headName}")
+	public ResponseEntity<HeadMaster> gethead(@PathVariable String headName){
+		
+		HeadMaster headMaster = headMasterService.getByHeadName(headName);
+		
+		return new ResponseEntity<HeadMaster>(headMaster, HttpStatus.OK);
+	}
 }

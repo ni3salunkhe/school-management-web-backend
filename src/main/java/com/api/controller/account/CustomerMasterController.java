@@ -78,7 +78,6 @@ public class CustomerMasterController {
 		customerMaster.setCrAmt(customerMasterDto.getCrAmt());
 		customerMaster.setDrAmt(customerMasterDto.getDrAmt());
 		customerMaster.setHeadId(headMasterService.getById(customerMasterDto.getHeadId()));
-		customerMaster.setSubheadId(subHeadMasterService.getById(customerMasterDto.getSubheadId()));
 		customerMaster.setCustTypeID(customerTypeMasterService.getById(customerMasterDto.getCustTypeID()));
 		customerMaster.setEMail(customerMasterDto.getEMail());
 		customerMaster.setGstin(customerMasterDto.getGstin());
@@ -95,7 +94,11 @@ public class CustomerMasterController {
 		subHeadMaster.setHeadId(saveCustomerMaster.getHeadId());
 		subHeadMaster.setSubheadName(saveCustomerMaster.getCustName());
 		subHeadMaster.setSchoolUdise(saveCustomerMaster.getSchoolUdise());
-		subHeadMasterService.postData(subHeadMaster);
+		
+	    SubHeadMaster subHeadMaster2 = subHeadMasterService.postData(subHeadMaster);
+		
+		customerMaster.setSubheadId(subHeadMasterService.getById(subHeadMaster2.getSubheadId()));
+		customerMasterService.postData(customerMaster);
 
 		return new ResponseEntity<CustomerMaster>(saveCustomerMaster, HttpStatus.OK);
 

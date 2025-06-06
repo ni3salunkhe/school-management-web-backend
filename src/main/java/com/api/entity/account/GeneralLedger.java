@@ -34,9 +34,9 @@ public class GeneralLedger {
 	@JoinColumn(name="CustId")
 	private CustomerMaster custId;
 	
-	private Double Cr_Amt;
+	private Double crAmt;
 	
-	private Double Dr_Amt;
+	private Double drAmt;
 	
 	private int year;
 	
