@@ -17,4 +17,6 @@ public interface CustomerMasterService {
 	
 	public List<CustomerMaster> getByUdise(School school);
 	
+	public List<CustomerMaster> getonlycustomerbyUdise(long udise);
+	
 }

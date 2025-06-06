@@ -36,7 +36,7 @@ public class BankPayment {
 	
 	private String narr;
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "bank_id")
 	private BankMaster bankId;
 	

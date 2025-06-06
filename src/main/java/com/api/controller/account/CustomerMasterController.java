@@ -65,6 +65,14 @@ public class CustomerMasterController {
 
 		return new ResponseEntity<List<CustomerMaster>>(customerMasters, HttpStatus.OK);
 	}
+	
+	@GetMapping("/getcustomersbyudise/{udise}")
+	public ResponseEntity<List<CustomerMaster>> getCustomersByUdise(@PathVariable long udise){
+		
+		List<CustomerMaster> customerMasters=customerMasterService.getonlycustomerbyUdise(udise);
+		
+		return new ResponseEntity<>(customerMasters,HttpStatus.OK);
+	}
 
 	@PostMapping("/")
 	public ResponseEntity<CustomerMaster> saveCustomerMasterData(@RequestBody CustomerMasterDto customerMasterDto) {
