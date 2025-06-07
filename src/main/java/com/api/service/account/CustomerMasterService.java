@@ -19,4 +19,6 @@ public interface CustomerMasterService {
 	
 	public List<CustomerMaster> getonlycustomerbyUdise(long udise);
 	
+	public CustomerMaster getCashInHandCustomerByUdise(String customer,long udise);
+	
 }

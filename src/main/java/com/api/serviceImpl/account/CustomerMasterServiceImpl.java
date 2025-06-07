@@ -52,4 +52,10 @@ public class CustomerMasterServiceImpl implements CustomerMasterService {
 		return customerMasterRepository.findCustomersWithoutBankByUdiseNative(udise);
 	}
 
+	@Override
+	public CustomerMaster getCashInHandCustomerByUdise(String customer, long udise) {
+		// TODO Auto-generated method stub
+		return customerMasterRepository.findCashInHandByUdise(customer, udise);
+	}
+
 }
