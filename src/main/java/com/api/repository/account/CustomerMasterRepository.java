@@ -23,5 +23,9 @@ public interface CustomerMasterRepository extends JpaRepository<CustomerMaster, 
 		    AND c.school_udise = :udiseNo
 		""", nativeQuery = true)
 		List<CustomerMaster> findCustomersWithoutBankByUdiseNative( long udiseNo);
+	
+	@Query("SELECT c FROM CustomerMaster c WHERE c.custName = :custName AND c.schoolUdise.udiseNo = :udiseNo")
+	CustomerMaster findCashInHandByUdise( String custName, long udiseNo);
+
 
 }

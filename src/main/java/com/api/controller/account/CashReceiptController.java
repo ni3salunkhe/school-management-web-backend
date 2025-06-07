@@ -18,6 +18,7 @@ import com.api.dto.account.CashReceiptDto;
 import com.api.entity.School;
 import com.api.entity.account.CashPayment;
 import com.api.entity.account.CashReceipt;
+import com.api.entity.account.CustomerMaster;
 import com.api.entity.account.GeneralLedger;
 import com.api.service.SchoolService;
 import com.api.service.account.CashReceiptService;
@@ -94,20 +95,23 @@ public class CashReceiptController {
 
 		CashReceipt saveCashReceipt = cashReceiptService.postData(cashReceipt);
 
+		CustomerMaster customerMaster=customerMasterService.getCashInHandCustomerByUdise("Cash In Hand", cashReceiptDto.getSchoolUdise());
+		
 		GeneralLedger drgeneralLedger = new GeneralLedger();
 		drgeneralLedger.setEntryNo(saveCashReceipt.getEntryNo());
 		drgeneralLedger.setEntryType(cashReceiptDto.getTranType());
 		drgeneralLedger.setEntrydate(cashReceiptDto.getEntryDate());
 		drgeneralLedger.setShopId(schoolService.getbyid(cashReceiptDto.getSchoolUdise()));
-//		drgeneralLedger.setCustId(customerMasterService.getById(cashReceiptDto.getCustId()));
+		drgeneralLedger.setCustId(customerMaster);
 		drgeneralLedger.setDrAmt(cashReceiptDto.getAmount());
 		drgeneralLedger.setNarr(cashReceiptDto.getNarr());
-		drgeneralLedger.setHeadId(headMasterService.getByHeadName("Cash In Hand"));
+		drgeneralLedger.setHeadId(customerMaster.getHeadId());
 //		System.out.println(headMasterService.getByHeadName("Cash In Hand"));
 //		drgeneralLedger.setSubhead(subHeadMasterService.getById(cashReceiptDto.getSubheadId()));
 
 		GeneralLedger saveDrGeneralLedger = generalLedgerService.post(drgeneralLedger);
 
+		
 		GeneralLedger crgeneralLedger = new GeneralLedger();
 		crgeneralLedger.setEntryNo(saveCashReceipt.getEntryNo());
 		drgeneralLedger.setEntryType(cashReceiptDto.getTranType());
