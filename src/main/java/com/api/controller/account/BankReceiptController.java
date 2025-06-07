@@ -118,7 +118,7 @@ public class BankReceiptController {
 			BankMaster bankMaster=bankMasterService.getbyid(bankReciptDto.getBankId());
 			
 			GeneralLedger drGeneralLedger=new GeneralLedger();
-			drGeneralLedger.setDr_Amt(bankReciptDto.getAmount());
+			drGeneralLedger.setDrAmt(bankReciptDto.getAmount());
 			drGeneralLedger.setCustId(bankMaster.getCustId());
 			drGeneralLedger.setEntrydate(bankReciptDto.getEntryDate());
 			drGeneralLedger.setEntryNo(saveBankReceipt.getEntryNo());
@@ -131,7 +131,7 @@ public class BankReceiptController {
 			generalLedgerService.post(drGeneralLedger);
 			
 			GeneralLedger crGeneralLedger=new GeneralLedger();
-			crGeneralLedger.setCr_Amt(bankReciptDto.getAmount());
+			crGeneralLedger.setCrAmt(bankReciptDto.getAmount());
 			crGeneralLedger.setCustId(customerMasterService.getById(bankReciptDto.getCustId()));
 			crGeneralLedger.setEntrydate(bankReciptDto.getEntryDate());
 			crGeneralLedger.setEntryNo(bankReciptDto.getEntryNo());

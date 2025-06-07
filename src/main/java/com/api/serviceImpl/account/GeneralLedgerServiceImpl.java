@@ -79,7 +79,7 @@ public class GeneralLedgerServiceImpl implements GeneralLedgerService {
 		return generalLedgerRepository.findBySubhead(subHeadMasterRepository.findBysubheadId(subhead));
 	}
 	
-	@Override 
+	@Override
 	public BigDecimal getBalanceBySubhead(Long subheadId) {
 	    SubHeadMaster subhead = subHeadMasterRepository.findBysubheadId(subheadId);
 	    List<GeneralLedger> entries = generalLedgerRepository.findBySubhead(subhead);
@@ -88,17 +88,35 @@ public class GeneralLedgerServiceImpl implements GeneralLedgerService {
 	    BigDecimal totalCr = BigDecimal.ZERO;
 
 	    for (GeneralLedger entry : entries) {
-	        if (entry.getDrAmt() != null)
-	            totalDr = totalDr.add(BigDecimal.valueOf(entry.getDrAmt()));
-	        if (entry.getCrAmt() != null)
+	        if (entry.getDrAmt() != null) {
+	            totalDr = totalDr.add(BigDecimal.valueOf(entry.getDrAmt()));//8705
+	            System.out.println(totalDr + "dr");
+	        }
+	        if (entry.getCrAmt() != null) {
 	            totalCr = totalCr.add(BigDecimal.valueOf(entry.getCrAmt()));
+	            System.out.println(totalCr + "cr");
+	        }
 	    }
 
-	    BigDecimal balance = totalCr.subtract(totalDr); // ✅ Cr - Dr
+	    // Get the Head Type (e.g., Asset, Liability, Income, Expense)
+	    String headType = subhead.getHeadId().getBookSideMaster().getBooksideName(); // Assumes getHeadId() returns HeadMaster with getHeadType()
+
+	    BigDecimal balance;
+
+	    if (headType.equalsIgnoreCase("Asset") || headType.equalsIgnoreCase("Expense")) {
+	        // Dr - Cr for Assets & Expenses
+	    	System.out.println(headType);
+	        balance = totalDr.subtract(totalCr);
+	    } else if (headType.equalsIgnoreCase("Liabilities") || headType.equalsIgnoreCase("Income")) {
+	        // Cr - Dr for Liabilities & Income
+	    	System.out.println(headType);
+	        balance = totalCr.subtract(totalDr);//8705-0
+	    } else {
+	        // Default fallback in case of unknown type
+	        balance = totalCr.subtract(totalDr);
+	    	System.out.println(headType);
+	    }
 
 	    return balance;
 	}
-
-	
-	
 }

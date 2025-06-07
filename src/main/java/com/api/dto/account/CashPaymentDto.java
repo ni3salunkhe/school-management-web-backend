@@ -38,4 +38,8 @@ public class CashPaymentDto {
 	
 	private String status;
 	
+	private int mainHead;
+	
+	private int mainSubHead;
+	
 }

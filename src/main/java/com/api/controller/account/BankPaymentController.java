@@ -125,7 +125,7 @@ public class BankPaymentController {
 			
 			
 			GeneralLedger crGeneralLedger=new GeneralLedger();
-			crGeneralLedger.setCr_Amt(bankPaymentDto.getAmount());
+			crGeneralLedger.setCrAmt(bankPaymentDto.getAmount());
 			crGeneralLedger.setCustId(bankMaster.getCustId());
 			crGeneralLedger.setEntrydate(bankPaymentDto.getEntryDate());
 			crGeneralLedger.setEntryNo(savedBankPayment.getEntryNo());
@@ -139,7 +139,7 @@ public class BankPaymentController {
 			generalLedgerService.post(crGeneralLedger);
 			
 			GeneralLedger drGeneralLedger=new GeneralLedger();
-			drGeneralLedger.setDr_Amt(bankPaymentDto.getAmount());
+			drGeneralLedger.setDrAmt(bankPaymentDto.getAmount());
 			drGeneralLedger.setCustId(customerMasterService.getById(bankPaymentDto.getCustId()));
 			drGeneralLedger.setEntrydate(bankPaymentDto.getEntryDate());
 			drGeneralLedger.setEntryNo(savedBankPayment.getEntryNo());

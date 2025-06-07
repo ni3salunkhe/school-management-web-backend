@@ -106,8 +106,14 @@ public class GeneralLedgerController {
 	    BigDecimal balance = generalLedgerService.getBalanceBySubhead(subheadId);
 	    return ResponseEntity.ok(balance);
 	}
-
 	
+	@GetMapping("/")
+	public ResponseEntity<List<GeneralLedger>> getall(){
+		
+		List<GeneralLedger> generalLedger = generalLedgerService.getdata();
+		return new ResponseEntity<List<GeneralLedger>>(generalLedger, HttpStatus.OK);
+	}
+
 	@PostMapping("/bulk")
 	public ResponseEntity<?> saveBulkOpeningBalance(@RequestBody List<GeneralLedgerDto> dtoList) {
 	    List<GeneralLedger> savedList = new ArrayList<>();

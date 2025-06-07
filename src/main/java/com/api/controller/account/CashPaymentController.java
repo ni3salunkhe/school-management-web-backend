@@ -116,9 +116,10 @@ public class CashPaymentController {
 		crEntry.setEntryNo(savedPayements.getEntryNo());
 		crEntry.setEntryType(cashPaymentDto.getTranType());
 		crEntry.setNarr(cashPaymentDto.getNarr());
-//		crEntry.setHeadId(headMasterService.getById(cashPaymentDto.getHeadId()));
+		crEntry.setHeadId(headMasterService.getById(cashPaymentDto.getMainHead()));
+		crEntry.setCustId(customerMasterService.getById(cashPaymentDto.getMainSubHead()));
 		crEntry.setShopId(school);
-		crEntry.setSubhead(subHeadMasterService.getById(cashPaymentDto.getSubheadId()));
+		crEntry.setSubhead(subHeadMasterService.getById(cashPaymentDto.getMainSubHead()));
 		generalLedgerService.post(crEntry);
 		
 		return new ResponseEntity<CashPayment>(savedPayements, HttpStatus.OK);
