@@ -93,12 +93,6 @@ public class GeneralLedgerController {
 		
 	}
 	
-	@GetMapping("/")
-	public ResponseEntity<List<GeneralLedger>> getAllData()
-	{
-		List<GeneralLedger> generalLedgers=generalLedgerService.getdata();
-		return new ResponseEntity<>(generalLedgers,HttpStatus.OK);
-	}
 	
 	@GetMapping("/balances/{id}")
 	public ResponseEntity<List<GeneralLedger>> getbyid(@PathVariable long id){

@@ -21,4 +21,6 @@ public interface CustomerMasterService {
 	
 	public CustomerMaster getCashInHandCustomerByUdise(String customer,long udise);
 	
+	public List<CustomerMaster> getDataByHeadNameAndUdise(long udise,String headName);
+	
 }

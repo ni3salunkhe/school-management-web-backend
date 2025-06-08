@@ -58,4 +58,10 @@ public class CustomerMasterServiceImpl implements CustomerMasterService {
 		return customerMasterRepository.findCashInHandByUdise(customer, udise);
 	}
 
+	@Override
+	public List<CustomerMaster> getDataByHeadNameAndUdise(long udise, String headName) {
+		// TODO Auto-generated method stub
+		return customerMasterRepository.findBySchoolUdiseAndHeadName(udise, headName);
+	}
+
 }
