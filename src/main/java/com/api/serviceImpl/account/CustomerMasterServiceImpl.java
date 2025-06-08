@@ -63,6 +63,12 @@ public class CustomerMasterServiceImpl implements CustomerMasterService {
 	}
 
 	@Override
+	public List<CustomerMaster> getDataByHeadNameAndUdise(long udise, String headName) {
+		// TODO Auto-generated method stub
+		return customerMasterRepository.findBySchoolUdiseAndHeadName(udise, headName);
+	}
+
+	@Override
 	public List<CustomerMaster> getbyheadname(String headname, long udiseNo) {
 		// TODO Auto-generated method stub
 		School school = schoolService.getbyid(udiseNo);

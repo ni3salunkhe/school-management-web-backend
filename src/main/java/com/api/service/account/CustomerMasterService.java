@@ -23,4 +23,6 @@ public interface CustomerMasterService {
 	
 	public List<CustomerMaster> getbyheadname(String headname, long udiseNo);
 	
+	public List<CustomerMaster> getDataByHeadNameAndUdise(long udise,String headName);
+	
 }

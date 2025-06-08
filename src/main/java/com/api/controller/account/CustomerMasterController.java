@@ -33,7 +33,7 @@ public class CustomerMasterController {
 
 	@Autowired
 	private HeadMasterService headMasterService;
-	
+
 	@Autowired
 	private SubHeadMasterService subHeadMasterService;
 
@@ -65,13 +65,20 @@ public class CustomerMasterController {
 
 		return new ResponseEntity<List<CustomerMaster>>(customerMasters, HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/getcustomersbyudise/{udise}")
-	public ResponseEntity<List<CustomerMaster>> getCustomersByUdise(@PathVariable long udise){
-		
-		List<CustomerMaster> customerMasters=customerMasterService.getonlycustomerbyUdise(udise);
-		
-		return new ResponseEntity<>(customerMasters,HttpStatus.OK);
+	public ResponseEntity<List<CustomerMaster>> getCustomersByUdise(@PathVariable long udise) {
+
+		List<CustomerMaster> customerMasters = customerMasterService.getonlycustomerbyUdise(udise);
+
+		return new ResponseEntity<>(customerMasters, HttpStatus.OK);
+	}
+
+	@GetMapping("/getcustomerbyheadname/{headname}/{udise}")
+	public ResponseEntity<List<CustomerMaster>> getCustomerByHeadName(@PathVariable String headname,@PathVariable long udise) {
+		List<CustomerMaster> customerMasters = customerMasterService.getDataByHeadNameAndUdise(udise,headname);
+
+		return new ResponseEntity<>(customerMasters, HttpStatus.OK);
 	}
 	
 	@GetMapping("/byheadname/{udiseNo}/{headName}")
@@ -101,16 +108,16 @@ public class CustomerMasterController {
 		customerMaster.setSchoolUdise(schoolService.getbyid(customerMasterDto.getSchoolUdise()));
 
 		CustomerMaster saveCustomerMaster = customerMasterService.postData(customerMaster);
-		
+
 		SubHeadMaster subHeadMaster = new SubHeadMaster();
-		
+
 		subHeadMaster.setSubheadId(saveCustomerMaster.getCustId());
 		subHeadMaster.setHeadId(saveCustomerMaster.getHeadId());
 		subHeadMaster.setSubheadName(saveCustomerMaster.getCustName());
 		subHeadMaster.setSchoolUdise(saveCustomerMaster.getSchoolUdise());
-		
-	    SubHeadMaster subHeadMaster2 = subHeadMasterService.postData(subHeadMaster);
-		
+
+		SubHeadMaster subHeadMaster2 = subHeadMasterService.postData(subHeadMaster);
+
 		customerMaster.setSubheadId(subHeadMasterService.getById(subHeadMaster2.getSubheadId()));
 		customerMasterService.postData(customerMaster);
 

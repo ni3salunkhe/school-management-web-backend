@@ -114,7 +114,7 @@ public class CashReceiptController {
 		
 		GeneralLedger crgeneralLedger = new GeneralLedger();
 		crgeneralLedger.setEntryNo(saveCashReceipt.getEntryNo());
-		drgeneralLedger.setEntryType(cashReceiptDto.getTranType());
+		crgeneralLedger.setEntryType(cashReceiptDto.getTranType());
 		crgeneralLedger.setEntrydate(cashReceiptDto.getEntryDate());
 		crgeneralLedger.setShopId(schoolService.getbyid(cashReceiptDto.getSchoolUdise()));
 		crgeneralLedger.setCustId(customerMasterService.getById(cashReceiptDto.getCustId()));

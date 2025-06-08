@@ -93,6 +93,8 @@ public class GeneralLedgerController {
 		
 	}
 
+	
+	
 	@GetMapping("/balances/{id}")
 	public ResponseEntity<List<GeneralLedger>> getbyid(@PathVariable long id){
 		
