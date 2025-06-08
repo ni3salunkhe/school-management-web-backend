@@ -26,6 +26,8 @@ public interface CustomerMasterRepository extends JpaRepository<CustomerMaster, 
 	
 	@Query("SELECT c FROM CustomerMaster c WHERE c.custName = :custName AND c.schoolUdise.udiseNo = :udiseNo")
 	CustomerMaster findCashInHandByUdise( String custName, long udiseNo);
+	
+	List<CustomerMaster> findByHeadId_HeadNameAndSchoolUdise(String headName, School udiseNo);
 
 
 }

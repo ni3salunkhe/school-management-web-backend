@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.api.entity.School;
 import com.api.entity.account.CustomerMaster;
 import com.api.repository.account.CustomerMasterRepository;
+import com.api.service.SchoolService;
 import com.api.service.account.CustomerMasterService;
 
 @Service
@@ -15,6 +16,9 @@ public class CustomerMasterServiceImpl implements CustomerMasterService {
 
 	@Autowired
 	private CustomerMasterRepository customerMasterRepository;
+	
+	@Autowired
+	private SchoolService schoolService;
 
 	@Override
 	public List<CustomerMaster> getAllMasters() {
@@ -56,6 +60,13 @@ public class CustomerMasterServiceImpl implements CustomerMasterService {
 	public CustomerMaster getCashInHandCustomerByUdise(String customer, long udise) {
 		// TODO Auto-generated method stub
 		return customerMasterRepository.findCashInHandByUdise(customer, udise);
+	}
+
+	@Override
+	public List<CustomerMaster> getbyheadname(String headname, long udiseNo) {
+		// TODO Auto-generated method stub
+		School school = schoolService.getbyid(udiseNo);
+		return customerMasterRepository.findByHeadId_HeadNameAndSchoolUdise(headname, school);
 	}
 
 }
