@@ -109,6 +109,7 @@ public class CashReceiptController {
 		drgeneralLedger.setHeadId(customerMaster.getHeadId());
 //		System.out.println(headMasterService.getByHeadName("Cash In Hand"));
 //		drgeneralLedger.setSubhead(subHeadMasterService.getById(cashReceiptDto.getSubheadId()));
+		drgeneralLedger.setSubhead(customerMaster.getSubheadId());
 
 		GeneralLedger saveDrGeneralLedger = generalLedgerService.post(drgeneralLedger);
 
