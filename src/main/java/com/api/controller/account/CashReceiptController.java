@@ -79,6 +79,7 @@ public class CashReceiptController {
 		CashReceipt cashReceipt = new CashReceipt();
 		cashReceipt.setEntryDate(cashReceiptDto.getEntryDate());
 		cashReceipt.setCustId(customerMasterService.getById(cashReceiptDto.getCustId()));
+		System.out.println(cashReceiptDto.getCustId());
 		cashReceipt.setTranType(cashReceiptDto.getTranType());
 		cashReceipt.setAmount(cashReceiptDto.getAmount());
 		cashReceipt.setNarr(cashReceiptDto.getNarr());
@@ -95,7 +96,7 @@ public class CashReceiptController {
 
 		CashReceipt saveCashReceipt = cashReceiptService.postData(cashReceipt);
 
-		CustomerMaster customerMaster=customerMasterService.getCashInHandCustomerByUdise("Cash In Hand", cashReceiptDto.getSchoolUdise());
+		CustomerMaster customerMaster=customerMasterService.getCashInHandCustomerByUdise("कॅश इन हँड", cashReceiptDto.getSchoolUdise());
 		
 		GeneralLedger drgeneralLedger = new GeneralLedger();
 		drgeneralLedger.setEntryNo(saveCashReceipt.getEntryNo());

@@ -52,5 +52,7 @@ public class BankPaymentDto {
 	private long billNo;
 
 	private String status;
+	
+	private long bankSubheadId;
 
 }

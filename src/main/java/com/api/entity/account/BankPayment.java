@@ -77,5 +77,4 @@ public class BankPayment {
 	
 	private String status;
 	
-	
 }

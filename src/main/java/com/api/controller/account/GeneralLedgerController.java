@@ -135,7 +135,7 @@ public class GeneralLedgerController {
 	            ledger.setDrAmt(0.0); // or leave unset if nullable
 	        }
 	        
-//	        ledger.setAmount(dto.getAmt());
+	        ledger.setShopId(schoolService.getbyid(dto.getUdiseNo()));
 	        ledger.setEntryType(dto.getEntryType());
 //	        ledger.setYear(Integer.parseInt(dto.getYear()));
 	        ledger.setNarr(dto.getNarr());
