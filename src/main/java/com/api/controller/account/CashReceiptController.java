@@ -96,7 +96,7 @@ public class CashReceiptController {
 
 		CashReceipt saveCashReceipt = cashReceiptService.postData(cashReceipt);
 
-		CustomerMaster customerMaster=customerMasterService.getCashInHandCustomerByUdise("कॅश इन हँड", cashReceiptDto.getSchoolUdise());
+		CustomerMaster customerMaster=customerMasterService.getCashInHandCustomerByUdise("Cash In Hand", cashReceiptDto.getSchoolUdise());
 		
 		GeneralLedger drgeneralLedger = new GeneralLedger();
 		drgeneralLedger.setEntryNo(saveCashReceipt.getEntryNo());
