@@ -2,6 +2,8 @@ package com.api.entity.account;
 
 import java.sql.Date;
 
+import com.api.entity.School;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,6 +25,10 @@ public class OpeningBal {
 	@OneToOne
 	@JoinColumn(name =  "cust_id")
 	private CustomerMaster custId;
+	
+	@ManyToOne
+	@JoinColumn(name = "school_udise")
+	private School schoolUdise;
 
 	private Date date;
 

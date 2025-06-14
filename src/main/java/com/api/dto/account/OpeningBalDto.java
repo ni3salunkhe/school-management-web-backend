@@ -25,15 +25,18 @@ public class OpeningBalDto {
 	private long headId;
 	
 	private long subHeadId;
-	private String financialYear;
-    private List<BalanceEntry> balances;
 	
+	private String financialYear;
+    
+	private List<BalanceEntry> balances;
+    	
 	 @Data
 	 public static class BalanceEntry {
 	        private Long headId;
 	        private Long subHeadId;
 	        private Double amount;
 	        private String balanceType;
+	        private long udiseNo;
 	 }
 
 }

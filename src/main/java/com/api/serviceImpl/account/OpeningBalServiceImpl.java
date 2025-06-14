@@ -20,6 +20,7 @@ import com.api.repository.account.CustomerMasterRepository;
 import com.api.repository.account.HeadMasterRepository;
 import com.api.repository.account.OpeningBalRepository;
 import com.api.repository.account.SubHeadMasterRepository;
+import com.api.service.SchoolService;
 import com.api.service.account.CustomerMasterService;
 import com.api.service.account.OpeningBalService;
 
@@ -40,6 +41,9 @@ public class OpeningBalServiceImpl implements OpeningBalService{
 	
 	@Autowired
 	private SubHeadMasterRepository subHeadMasterRepository;
+	
+	@Autowired
+	private SchoolService schoolService;
 	
 	private static final Logger log = LoggerFactory.getLogger(OpeningBalServiceImpl.class);
 
@@ -84,6 +88,7 @@ public class OpeningBalServiceImpl implements OpeningBalService{
 	             // maybe skip or handle with fallback values
 	        }
             openingBal.setCustId(customer);
+            openingBal.setSchoolUdise(schoolService.getbyid(entry.getUdiseNo()));
 
             // Lookup and assign Head
             HeadMaster head = headMasterRepository.findById(entry.getHeadId())
