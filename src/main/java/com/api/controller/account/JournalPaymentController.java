@@ -45,24 +45,38 @@ public class JournalPaymentController {
 		return new ResponseEntity<>(journalPayments, HttpStatus.OK);
 	}
 
+	@GetMapping("/transactionkey")
+	public ResponseEntity<Long> getTransactionKey() {
+
+		Long latestKey = journalPaymentService.getTrasactionKey();
+
+		long nextKey = (latestKey != null) ? latestKey + 1 : 1L;
+		return ResponseEntity.ok(nextKey);
+	}
+
 	@PostMapping("/")
 	public ResponseEntity<JournalPayment> saveJournalPayment(@RequestBody JournalPaymentDto journalPaymentDto) {
 
-		JournalPayment credit = new JournalPayment();
-		credit.setEntryDate(journalPaymentDto.getEntryDate());
-		credit.setNarr(journalPaymentDto.getNarr());
-		credit.setSchoolUdise(schoolService.getbyid(journalPaymentDto.getSchoolUdise()));
-		credit.setSubheadId(subHeadMasterService.getById(journalPaymentDto.getCreditAccount()));
-		credit.setHeadId(subHeadMasterService.getById(journalPaymentDto.getCreditAccount()).getHeadId());
-		credit.setAmount(journalPaymentDto.getCramount());
-		credit.setTranType(journalPaymentDto.getTranType());
-		journalPaymentService.postData(credit);
+//		JournalPayment credit = new JournalPayment();
+//		credit.setEntryDate(journalPaymentDto.getEntryDate());
+//		credit.setNarr(journalPaymentDto.getNarr());
+//		credit.setSchoolUdise(schoolService.getbyid(journalPaymentDto.getSchoolUdise()));
+//		credit.setSubheadId(subHeadMasterService.getById(journalPaymentDto.getCreditAccount()));
+//		credit.setHeadId(subHeadMasterService.getById(journalPaymentDto.getCreditAccount()).getHeadId());
+//		credit.setAmount(journalPaymentDto.getCramount());
+//		credit.setTranType(journalPaymentDto.getTranType());
+//		journalPaymentService.postData(credit);
+
+		Long latestKey = journalPaymentService.getTrasactionKey();
+
+		long nextKey = (latestKey != null) ? latestKey + 1 : 1L;
 
 		// Save Debit Entries
 		for (Entry entry : journalPaymentDto.getEntries()) {
 			JournalPayment debit = new JournalPayment();
 			debit.setEntryDate(journalPaymentDto.getEntryDate());
 			debit.setNarr(journalPaymentDto.getNarr());
+			debit.setTransactionKey(nextKey);
 			debit.setSchoolUdise(schoolService.getbyid(journalPaymentDto.getSchoolUdise()));
 			debit.setSubheadId(subHeadMasterService.getById(entry.getDebitaccount()));
 			debit.setHeadId(subHeadMasterService.getById(entry.getDebitaccount()).getHeadId());
@@ -73,7 +87,7 @@ public class JournalPaymentController {
 
 		GeneralLedger crgeneralLedger = new GeneralLedger();
 
-//		crgeneralLedger.setEntryNo(saveCashReceipt.getEntryNo());
+		crgeneralLedger.setEntryNo(nextKey);
 		crgeneralLedger.setEntryType(journalPaymentDto.getTranType());
 		crgeneralLedger.setEntrydate(journalPaymentDto.getEntryDate());
 		crgeneralLedger.setShopId(schoolService.getbyid(journalPaymentDto.getSchoolUdise()));
@@ -83,7 +97,7 @@ public class JournalPaymentController {
 
 		if (bookside1.equals("Asset") || bookside1.equals("Profit And Loss")) {
 			crgeneralLedger.setCrAmt(journalPaymentDto.getCramount());
-		} else if ( bookside1.equals("Liabilities")) {
+		} else if (bookside1.equals("Liabilities")) {
 			crgeneralLedger.setDrAmt(journalPaymentDto.getCramount());
 		}
 		crgeneralLedger.setNarr(journalPaymentDto.getNarr());
@@ -94,7 +108,7 @@ public class JournalPaymentController {
 
 		for (Entry entry : journalPaymentDto.getEntries()) {
 			GeneralLedger drgeneralLedger = new GeneralLedger();
-//			drgeneralLedger.setEntryNo(saveCashReceipt.getEntryNo());
+			drgeneralLedger.setEntryNo(nextKey);
 			drgeneralLedger.setEntryType(journalPaymentDto.getTranType());
 			drgeneralLedger.setEntrydate(journalPaymentDto.getEntryDate());
 			drgeneralLedger.setShopId(schoolService.getbyid(journalPaymentDto.getSchoolUdise()));

@@ -16,4 +16,6 @@ public interface JournalPaymentService {
 	
 	public List<JournalPayment> getDataByUdise(long udiseNo);
 	
+	public Long getTrasactionKey();
+	
 }

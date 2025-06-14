@@ -46,4 +46,10 @@ public class JournalPaymentServiceImpl implements JournalPaymentService{
 		return journalRepository.findBySchoolUdise_UdiseNo(udiseNo);
 	}
 
+	@Override
+	public Long getTrasactionKey() {
+		// TODO Auto-generated method stub
+		return journalRepository.findMaxTransactionKey();
+	}
+
 }

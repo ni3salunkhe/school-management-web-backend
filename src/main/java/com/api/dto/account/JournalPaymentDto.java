@@ -15,6 +15,8 @@ public class JournalPaymentDto {
 //	@ManyToOne
 //	@JoinColumn(name = "cust_id")
 //	private CustomerMaster custId;
+	
+	private long transactionKey;
 
 	private String tranType;
 
