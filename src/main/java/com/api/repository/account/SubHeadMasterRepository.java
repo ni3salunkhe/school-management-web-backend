@@ -19,5 +19,13 @@ public interface SubHeadMasterRepository extends JpaRepository<SubHeadMaster, Lo
 	
 	SubHeadMaster findBysubheadId(long id);
 	
+	@Query("SELECT shm FROM SubHeadMaster shm " +
+		       "JOIN shm.headId h " +
+		       "JOIN h.bookSideMaster bsm " +
+		       "WHERE bsm.booksideName = :booksideName " +
+		       "AND shm.schoolUdise.udiseNo = :udiseNo")
+		List<SubHeadMaster> findByBookSideNameAndSchool( String booksideName,
+		                                                 Long udiseNo);
+	
 
 }

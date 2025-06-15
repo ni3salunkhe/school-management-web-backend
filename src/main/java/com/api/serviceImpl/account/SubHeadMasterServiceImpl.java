@@ -56,5 +56,11 @@ public class SubHeadMasterServiceImpl implements SubHeadMasterService{
 	    return subHeadMasterRepository.findMaxId() + 1;
 	}
 
+	@Override
+	public List<SubHeadMaster> getByUdiseAndBookSideName(String booksideName, long udise) {
+		// TODO Auto-generated method stub
+		return subHeadMasterRepository.findByBookSideNameAndSchool(booksideName, udise);
+	}
+
 
 }

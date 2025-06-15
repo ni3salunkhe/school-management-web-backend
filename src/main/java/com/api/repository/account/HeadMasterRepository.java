@@ -14,4 +14,6 @@ public interface HeadMasterRepository extends JpaRepository<HeadMaster, Long>{
 	List<HeadMaster> findBySchoolUdise(School udiseNo);
 	
 	HeadMaster findByHeadName(String headName);
+	
+	List<HeadMaster> findByBookSideMasterBooksideName(String booksideName);
 }

@@ -18,4 +18,6 @@ public interface HeadMasterService {
 	
 	public HeadMaster getByHeadName(String headName);
 	
+	public List<HeadMaster> getByBookSideName(String BookSideName);
+	
 }

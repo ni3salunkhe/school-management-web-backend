@@ -57,4 +57,10 @@ public class HeadMasterServiceImpl implements HeadMasterService{
 		return headMasterRepository.findByHeadName(headName);
 	}
 
+	@Override
+	public List<HeadMaster> getByBookSideName(String BookSideName) {
+		// TODO Auto-generated method stub
+		return headMasterRepository.findByBookSideMasterBooksideName(BookSideName);
+	}
+
 }

@@ -119,4 +119,16 @@ public class GeneralLedgerServiceImpl implements GeneralLedgerService {
 
 	    return balance;
 	}
+
+	@Override
+	public List<GeneralLedger> getByBookTypeName(String headName,long id) {
+		// TODO Auto-generated method stub
+		return generalLedgerRepository.findByBooksideNameAndShopId(headName,id);
+	}
+
+	@Override
+	public List<GeneralLedger> getByHeadId(HeadMaster headMaster) {
+		// TODO Auto-generated method stub
+		return generalLedgerRepository.findByHeadId(headMaster);
+	}
 }

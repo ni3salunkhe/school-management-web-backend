@@ -17,4 +17,6 @@ public interface SubHeadMasterService {
 	public List<SubHeadMaster> getbyudiseno(long udiseNo);
 	
 	public Long getNextLedgerId();
+	
+	public List<SubHeadMaster> getByUdiseAndBookSideName(String booksideName,long udise);
 }
