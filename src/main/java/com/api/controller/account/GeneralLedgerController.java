@@ -1,6 +1,7 @@
 package com.api.controller.account;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -95,14 +96,16 @@ public class GeneralLedgerController {
 
 	}
 
-	@GetMapping("/getvalue/{head}/shop/{udise}")
+	@GetMapping("/getvalue/{head}/shop/{udise}/date/{date}")
 	public ResponseEntity<Map<String, Map<String, Double>>> getSeperateData(@PathVariable String head,
-			@PathVariable long udise) {
+			@PathVariable long udise,@PathVariable String date) {
 
 		List<GeneralLedger> generalLedgers = generalLedgerService.getByBookTypeName(head, udise);
 		List<HeadMaster> headMasters = headMasterService.getByBookSideName(head);
 		List<SubHeadMaster> subHeadMasters = subHeadMasterService.getByUdiseAndBookSideName(head, udise);
 
+		Date entryDate = Date.valueOf(date);
+		
 		Map<String, Map<String, Double>> responseMap = new HashMap<>();
 
 		for (HeadMaster headMaster : headMasters) {
@@ -114,7 +117,7 @@ public class GeneralLedgerController {
 				if (subHeadMaster.getHeadId().getHeadId() == headMaster.getHeadId()) {
 
 					String subHeadName = subHeadMaster.getSubheadName();
-					List<GeneralLedger> ledgers = generalLedgerService.getbysubhead(subHeadMaster.getSubheadId());
+					List<GeneralLedger> ledgers = generalLedgerService.getByEntryDateSubHeadAndShop(subHeadMaster.getSubheadId(),entryDate,udise);
 
 					if ("Asset".equals(subHeadMaster.getHeadId().getBookSideMaster().getBooksideName())) {
 						double openingBalance = 0;
