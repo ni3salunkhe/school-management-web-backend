@@ -225,6 +225,7 @@ public class GeneralLedgerController {
 
 			ledger.setShopId(schoolService.getbyid(dto.getUdiseNo()));
 			ledger.setEntryType(dto.getEntryType());
+			ledger.setEntrydate(dto.getEntrydate());
 //	        ledger.setYear(Integer.parseInt(dto.getYear()));
 			ledger.setNarr(dto.getNarr());
 

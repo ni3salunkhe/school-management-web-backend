@@ -66,9 +66,7 @@ public class OpeningBalController {
 		openingBal.setSubHeadId(subHeadMasterService.getById(openingBalDto.getSubHeadId()));
 		
 		OpeningBal saveOpeningBal=openingBalService.postData(openingBal);
-		
-		
-		
+				
 		return new ResponseEntity<OpeningBal>(saveOpeningBal,HttpStatus.OK);
 	}
 	
