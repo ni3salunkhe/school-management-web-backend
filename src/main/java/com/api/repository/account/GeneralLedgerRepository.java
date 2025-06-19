@@ -20,7 +20,7 @@ public interface GeneralLedgerRepository extends JpaRepository<GeneralLedger, Lo
 	List<GeneralLedger> findBySubhead(SubHeadMaster subheadid);
 
 	@Query("SELECT g FROM GeneralLedger g WHERE g.subhead.subheadId = :subheadId AND g.shopId.udiseNo = :shopId")
-	List<GeneralLedger> findBySubheadAndShop( long subheadId, long shopId);
+	List<GeneralLedger> findBySubheadAndShop(long subheadId, long shopId);
 
 	@Query("SELECT gl FROM GeneralLedger gl " + "JOIN gl.headId h " + "JOIN h.bookSideMaster bsm "
 			+ "WHERE bsm.booksideName = :booksideName AND gl.shopId.udiseNo = :shopId")
@@ -30,5 +30,8 @@ public interface GeneralLedgerRepository extends JpaRepository<GeneralLedger, Lo
 
 	@Query("SELECT g FROM GeneralLedger g WHERE g.entrydate <= :entrydate AND g.shopId.udiseNo = :shopId")
 	List<GeneralLedger> getLedgersUpToDate(Date entrydate, long shopId);
+
+	@Query("SELECT g FROM GeneralLedger g WHERE g.subhead.subheadId = :subhead AND g.entrydate <= :entrydate AND g.shopId.udiseNo = :shopId")
+	List<GeneralLedger> getBySubheadAndDateAndShop(long subhead, Date entrydate, long shopId);
 
 }

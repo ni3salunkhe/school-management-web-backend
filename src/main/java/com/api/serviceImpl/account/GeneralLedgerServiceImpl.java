@@ -1,17 +1,15 @@
 package com.api.serviceImpl.account;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.api.dto.account.OpeningBalDto;
 import com.api.entity.School;
-import com.api.entity.account.CustomerMaster;
 import com.api.entity.account.GeneralLedger;
 import com.api.entity.account.HeadMaster;
-import com.api.entity.account.OpeningBal;
 import com.api.entity.account.SubHeadMaster;
 import com.api.repository.account.CustomerMasterRepository;
 import com.api.repository.account.GeneralLedgerRepository;
@@ -130,5 +128,23 @@ public class GeneralLedgerServiceImpl implements GeneralLedgerService {
 	public List<GeneralLedger> getByHeadId(HeadMaster headMaster) {
 		// TODO Auto-generated method stub
 		return generalLedgerRepository.findByHeadId(headMaster);
+	}
+
+	@Override
+	public List<GeneralLedger> getBySubHeadAndShop(long subheadId, long shopId) {
+		// TODO Auto-generated method stub
+		return generalLedgerRepository.findBySubheadAndShop(subheadId, shopId);
+	}
+
+	@Override
+	public List<GeneralLedger> getByEntryDate(Date entryDate, long shopId) {
+		// TODO Auto-generated method stub
+		return generalLedgerRepository.getLedgersUpToDate(entryDate, shopId);
+	}
+
+	@Override
+	public List<GeneralLedger> getByEntryDateSubHeadAndShop(long subheadId, Date entryDate, long shopId) {
+		// TODO Auto-generated method stub
+		return generalLedgerRepository.getBySubheadAndDateAndShop(subheadId, entryDate, shopId);
 	}
 }
