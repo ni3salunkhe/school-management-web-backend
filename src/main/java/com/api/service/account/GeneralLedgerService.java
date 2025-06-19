@@ -30,4 +30,6 @@ public interface GeneralLedgerService {
 	public List<GeneralLedger> getByEntryDate(Date entryDate,long shopId);
 	
 	public List<GeneralLedger> getByEntryDateSubHeadAndShop(long subheadId,Date entryDate,long shopId);
+
+	public GeneralLedger getByEntryNoAndSubhead(long EntryNo,long SubheadId);
 }

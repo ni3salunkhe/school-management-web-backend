@@ -3,11 +3,13 @@ package com.api.serviceImpl.account;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.api.entity.account.ExpensesVouchar;
 import com.api.repository.account.ExpensesVoucharRepository;
 import com.api.service.account.ExpensesVoucharService;
 
+@Service
 public class ExpensesVoucharServiceImpl implements ExpensesVoucharService {
 
 	@Autowired
@@ -42,5 +44,7 @@ public class ExpensesVoucharServiceImpl implements ExpensesVoucharService {
 		// TODO Auto-generated method stub
 		return expensesVoucharRepository.findBySchoolUdiseUdiseNo(UdiseNo);
 	}
+
+
 
 }
