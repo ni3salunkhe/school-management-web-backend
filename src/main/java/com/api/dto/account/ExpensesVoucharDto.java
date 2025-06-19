@@ -23,4 +23,8 @@ public class ExpensesVoucharDto {
 
 	private Date createDate;
 
+	private long custId;
+	
+	private String voucharType;
+
 }

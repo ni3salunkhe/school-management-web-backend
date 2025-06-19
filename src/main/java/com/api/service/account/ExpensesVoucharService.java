@@ -16,4 +16,6 @@ public interface ExpensesVoucharService {
 	
 	public List<ExpensesVouchar> getDataByUdiseNo(long UdiseNo);
 	
+	
+	
 }

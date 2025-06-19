@@ -27,6 +27,8 @@ public class ExpensesVouchar {
 	private double Amount;
 
 	private String narr;
+	
+	private String voucharType;
 
 	@ManyToOne
 	@JoinColumn(name = "school_udise")
@@ -41,5 +43,7 @@ public class ExpensesVouchar {
 	private SubHeadMaster subheadId;
 	
 	private Date createDate;
+	
+	private long custId;
 	
 }

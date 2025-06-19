@@ -12,4 +12,5 @@ public interface ExpensesVoucharRepository extends JpaRepository<ExpensesVouchar
 	
 	List<ExpensesVouchar> findBySchoolUdiseUdiseNo(long udiseNo);
 	
+	
 }

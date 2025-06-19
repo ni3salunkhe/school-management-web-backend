@@ -45,4 +45,6 @@ public class ExpensesVoucharServiceImpl implements ExpensesVoucharService {
 		return expensesVoucharRepository.findBySchoolUdiseUdiseNo(UdiseNo);
 	}
 
+
+
 }

@@ -147,4 +147,10 @@ public class GeneralLedgerServiceImpl implements GeneralLedgerService {
 		// TODO Auto-generated method stub
 		return generalLedgerRepository.getBySubheadAndDateAndShop(subheadId, entryDate, shopId);
 	}
+
+	@Override
+	public GeneralLedger getByEntryNoAndSubhead(long EntryNo, long SubheadId) {
+		// TODO Auto-generated method stub
+		return generalLedgerRepository.findByEntryNoAndSubheadSubheadId(EntryNo, SubheadId);
+	}
 }
