@@ -126,7 +126,7 @@ public class BankReceiptController {
 			drGeneralLedger.setHeadId(bankMaster.getHeadId());
 			drGeneralLedger.setNarr(bankReciptDto.getNarr());
 			drGeneralLedger.setShopId(schoolService.getbyid(bankReciptDto.getSchoolUdise()));
-//			drGeneralLedger.setSubhead(subHeadMasterService.getById(bankPaymentDto.getSubheadId()));
+			drGeneralLedger.setSubhead(bankMaster.getCustId().getSubheadId());
 			
 			generalLedgerService.post(drGeneralLedger);
 			
