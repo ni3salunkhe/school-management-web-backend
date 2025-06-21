@@ -82,7 +82,7 @@ public class ExpensesVoucharController {
 		crGeneralLedger.setShopId(schoolService.getbyid(expensesVoucharDto.getSchoolUdise()));
 		crGeneralLedger.setCustId(customerMasterService.getById(expensesVoucharDto.getCustId()));
 		crGeneralLedger.setHeadId(customerMasterService.getById(expensesVoucharDto.getCustId()).getHeadId());
-		crGeneralLedger.setSubhead(customerMasterService.getById(expensesVoucharDto.getCustId()).getSubheadId());
+		crGeneralLedger.setSubhead(subHeadMasterService.getById(expensesVoucharDto.getCustId()));
 		crGeneralLedger.setNarr(expensesVoucharDto.getNarr());
 		crGeneralLedger.setCrAmt(expensesVoucharDto.getAmount());
 //		generalLedger.setYear(0);

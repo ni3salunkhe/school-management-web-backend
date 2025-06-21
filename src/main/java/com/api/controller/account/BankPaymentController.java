@@ -107,6 +107,7 @@ public class BankPaymentController {
 
 			bankPayment.setHeadId(headMasterService.getById(bankPaymentDto.getHeadId()));
 
+			
 			bankPayment.setSubheadId(subHeadMasterService.getById(bankPaymentDto.getSubheadId()));
 
 			// Handle image upload

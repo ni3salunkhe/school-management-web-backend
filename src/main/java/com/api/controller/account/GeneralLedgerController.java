@@ -128,6 +128,7 @@ public class GeneralLedgerController {
 							if (ledger.getSubhead().getSubheadId() == subHeadMaster.getSubheadId()) {
 								if ("Opening Balance".equals(ledger.getEntryType())) {
 									openingBalance += ledger.getDrAmt() != null ? ledger.getDrAmt() : 0;
+									openingBalance -= ledger.getCrAmt() != null ? ledger.getCrAmt() : 0;
 								} else {
 									crTransaction += ledger.getCrAmt() != null ? ledger.getCrAmt() : 0;
 									drTransaction += ledger.getDrAmt() != null ? ledger.getDrAmt() : 0;
@@ -147,6 +148,7 @@ public class GeneralLedgerController {
 							if (ledger.getSubhead().getSubheadId() == subHeadMaster.getSubheadId()) {
 								if ("Opening Balance".equals(ledger.getEntryType())) {
 									openingBalance += ledger.getCrAmt() != null ? ledger.getCrAmt() : 0;
+									openingBalance -= ledger.getDrAmt() != null ? ledger.getDrAmt() : 0;
 								} else {
 									crTransaction += ledger.getCrAmt() != null ? ledger.getCrAmt() : 0;
 									drTransaction += ledger.getDrAmt() != null ? ledger.getDrAmt() : 0;

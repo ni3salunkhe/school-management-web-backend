@@ -11,7 +11,7 @@ public class ExpensesVoucharDto {
 
 	private String tranType;
 
-	private double Amount;
+	private double amount;
 
 	private String narr;
 
