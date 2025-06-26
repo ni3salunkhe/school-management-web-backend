@@ -9,5 +9,6 @@ import com.api.entity.Developer;
 public interface DeveloperService {
 	public Developer saveData(Developer developer);
 	public Developer getByUsername(String username);
+	public Developer getById(long id);
 }
 

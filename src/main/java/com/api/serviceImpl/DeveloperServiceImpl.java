@@ -57,4 +57,10 @@ public class DeveloperServiceImpl implements DeveloperService, UserDetailsServic
 	    );
 	}
 
+	@Override
+	public Developer getById(long id) {
+		// TODO Auto-generated method stub
+		return developerRepository.findById(id).orElse(null);
+	}
+
 }

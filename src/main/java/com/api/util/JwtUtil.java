@@ -54,6 +54,7 @@ public class JwtUtil {
 	                claims.put("username", staff.getUsername());
 	                claims.put("role", "TEACHER");
 	                claims.put("udiseNo", staff.getSchool() != null ? staff.getSchool().getUdiseNo() : null);
+	                claims.put("status", staff.getStatus());
 	                break;
 
 	            case "CLERK":
@@ -61,7 +62,7 @@ public class JwtUtil {
 	                claims.put("username", staff.getUsername());
 	                claims.put("role", "CLERK");
 	                claims.put("udiseNo", staff.getSchool() != null ? staff.getSchool().getUdiseNo() : null);
-	                
+	                claims.put("status", staff.getStatus());
 	                break;
 	            default:
 	                throw new IllegalArgumentException("Unsupported staff role: " + role);
