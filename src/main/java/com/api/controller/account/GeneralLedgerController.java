@@ -11,25 +11,31 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.api.dto.account.GeneralLedgerDto;
+import com.api.entity.School;
 import com.api.entity.account.CustomerMaster;
 import com.api.entity.account.GeneralLedger;
 import com.api.entity.account.HeadMaster;
+import com.api.entity.account.OpeningBal;
 import com.api.entity.account.SubHeadMaster;
 import com.api.repository.account.CustomerMasterRepository;
+import com.api.repository.account.OpeningBalRepository;
 import com.api.service.SchoolService;
 import com.api.service.account.CustomerMasterService;
 import com.api.service.account.EntryTypeService;
 import com.api.service.account.GeneralLedgerService;
 import com.api.service.account.HeadMasterService;
+import com.api.service.account.OpeningBalService;
 import com.api.service.account.SubHeadMasterService;
 import com.api.serviceImpl.account.OpeningBalServiceImpl;
 
@@ -61,6 +67,12 @@ public class GeneralLedgerController {
 
 	@Autowired
 	private CustomerMasterRepository customerMasterRepository;
+
+	@Autowired
+	private OpeningBalRepository opnRepo;
+
+	@Autowired
+	private OpeningBalService balService;
 
 	@PostMapping("/")
 	public ResponseEntity<GeneralLedger> savealldata(@RequestBody GeneralLedgerDto generalLedgerDto) {
@@ -98,14 +110,14 @@ public class GeneralLedgerController {
 
 	@GetMapping("/getvalue/{head}/shop/{udise}/date/{date}")
 	public ResponseEntity<Map<String, Map<String, Double>>> getSeperateData(@PathVariable String head,
-			@PathVariable long udise,@PathVariable String date) {
+			@PathVariable long udise, @PathVariable String date) {
 
 		List<GeneralLedger> generalLedgers = generalLedgerService.getByBookTypeName(head, udise);
 		List<HeadMaster> headMasters = headMasterService.getByBookSideName(head);
 		List<SubHeadMaster> subHeadMasters = subHeadMasterService.getByUdiseAndBookSideName(head, udise);
 
 		Date entryDate = Date.valueOf(date);
-		
+
 		Map<String, Map<String, Double>> responseMap = new HashMap<>();
 
 		for (HeadMaster headMaster : headMasters) {
@@ -117,7 +129,8 @@ public class GeneralLedgerController {
 				if (subHeadMaster.getHeadId().getHeadId() == headMaster.getHeadId()) {
 
 					String subHeadName = subHeadMaster.getSubheadName();
-					List<GeneralLedger> ledgers = generalLedgerService.getByEntryDateSubHeadAndShop(subHeadMaster.getSubheadId(),entryDate,udise);
+					List<GeneralLedger> ledgers = generalLedgerService
+							.getByEntryDateSubHeadAndShop(subHeadMaster.getSubheadId(), entryDate, udise);
 
 					if ("Asset".equals(subHeadMaster.getHeadId().getBookSideMaster().getBooksideName())) {
 						double openingBalance = 0;
@@ -155,6 +168,7 @@ public class GeneralLedgerController {
 								}
 							}
 						}
+
 						double currentBalance = (openingBalance + crTransaction) - drTransaction;
 						mapSubhead.put(subHeadName, currentBalance);
 					}
@@ -255,6 +269,26 @@ public class GeneralLedgerController {
 		}
 
 		return ResponseEntity.ok(savedList);
+	}
+
+	@PutMapping("/profit-loss/{headName}/{udise}")
+	public ResponseEntity<OpeningBal> putData(@PathVariable String headName, @PathVariable long udise, @RequestBody GeneralLedgerDto dto) {
+		OpeningBal opnBal = opnRepo.findBySubHeadIdSubheadNameAndSchoolUdiseUdiseNo(headName, udise);
+		System.out.println(opnBal);
+		opnBal.setCrAmt(dto.getCr_Amt());
+		opnBal.setDrAmt(dto.getDr_Amt());
+
+		OpeningBal savedata = balService.postData(opnBal);
+
+		return new ResponseEntity<OpeningBal>(savedata, HttpStatus.OK);
+	}
+
+	@GetMapping("/get-profit-loss/{headName}/{udise}")
+	public ResponseEntity<List<OpeningBal>> getData(@PathVariable String headName, @PathVariable long udise) {
+		School school= schoolService.getbyid(udise);
+		List<OpeningBal> opnBal= opnRepo.findByHeadIdHeadNameAndSchoolUdise(headName, school);
+		
+		return new ResponseEntity<List<OpeningBal>>(opnBal,HttpStatus.OK);
 	}
 
 }

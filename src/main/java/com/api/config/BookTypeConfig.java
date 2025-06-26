@@ -45,7 +45,14 @@ public class BookTypeConfig {
 				bookTypeMaster.setEntryDate(sqlDate);
 				bookTypeMasterService.postData(bookTypeMaster);
 			}
+			if (bookSideMasterService.getByBookSideName("Profit & Loss") == null) {
+				BookSideMaster bookSideMaster = new BookSideMaster();
+				bookSideMaster.setBooksideName("Profit & Loss");
+				bookSideMaster.setBooktypeId(bookTypeMasterService.getByBookTypeName("Profit And Loss"));
+				bookSideMaster.setEntryDate(sqlDate);
 
+				bookSideMasterService.postData(bookSideMaster);
+			}
 			if (bookSideMasterService.getByBookSideName("Profit And Loss") == null) {
 				BookSideMaster bookSideMaster = new BookSideMaster();
 				bookSideMaster.setBooksideName("Profit And Loss");
@@ -72,6 +79,15 @@ public class BookTypeConfig {
 
 //			---------------------------------------------------------------------------------------
 //			set heads
+			if (headMasterService.getByHeadName("Profit & Loss") == null) {
+				HeadMaster headMaster = new HeadMaster();
+				headMaster.setHeadName("Profit & Loss");
+				headMaster.setBookTypeMaster(bookTypeMasterService.getByBookTypeName("Profit And Loss"));
+				headMaster.setBookSideMaster(bookSideMasterService.getByBookSideName("Profit & Loss"));
+
+				headMasterService.postData(headMaster);
+
+			}
 			if (headMasterService.getByHeadName("Bank Accounts") == null) {
 				HeadMaster headMaster = new HeadMaster();
 				headMaster.setHeadName("Bank Accounts");

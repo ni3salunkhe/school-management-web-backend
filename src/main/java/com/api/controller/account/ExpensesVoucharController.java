@@ -1,5 +1,6 @@
 package com.api.controller.account;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.api.dto.account.ExpensesVoucharDto;
 import com.api.entity.account.ExpensesVouchar;
 import com.api.entity.account.GeneralLedger;
+import com.api.entity.account.SubHeadMaster;
 import com.api.service.SchoolService;
 import com.api.service.account.CustomerMasterService;
 import com.api.service.account.ExpensesVoucharService;
@@ -62,6 +64,24 @@ public class ExpensesVoucharController {
 	@PostMapping("/")
 	public ResponseEntity<ExpensesVouchar> saveExpensesVoucharData(@RequestBody ExpensesVoucharDto expensesVoucharDto) {
 
+		final List<String> subheadList = Arrays.asList("Direct Incomes",
+		        "Indirect Incomes",
+		        "Income (Direct)",
+		        "Income (Indirect)",
+		        "Sales Accounts",
+		        "Retained Earnings"
+		        );
+		final List<String> expenseSubheadList = Arrays.asList("Direct Expenses",
+		        "Indirect Expenses",
+		        "Expenses (Direct)",
+		        "Expenses (Indirect)",
+		        "Purchase Accounts"
+		        );
+		SubHeadMaster customerSubhead = subHeadMasterService.getById(expensesVoucharDto.getCustId());
+		SubHeadMaster expenseSubhead = subHeadMasterService.getById(expensesVoucharDto.getSubheadId());
+
+		String bookSideName = customerSubhead.getHeadId().getBookSideMaster().getBooksideName();
+		String subheadHeadName = expenseSubhead.getHeadId().getHeadName();
 		ExpensesVouchar expensesVouchar = new ExpensesVouchar();
 		expensesVouchar.setEntryDate(expensesVoucharDto.getEntryDate());
 		expensesVouchar.setCreateDate(expensesVoucharDto.getEntryDate());
@@ -84,7 +104,18 @@ public class ExpensesVoucharController {
 		crGeneralLedger.setHeadId(customerMasterService.getById(expensesVoucharDto.getCustId()).getHeadId());
 		crGeneralLedger.setSubhead(subHeadMasterService.getById(expensesVoucharDto.getCustId()));
 		crGeneralLedger.setNarr(expensesVoucharDto.getNarr());
-		crGeneralLedger.setCrAmt(expensesVoucharDto.getAmount());
+		System.out.println(subHeadMasterService.getById(expensesVoucharDto.getCustId()).getHeadId().getBookSideMaster().getBooksideName());
+		System.out.println(subheadList.contains(subHeadMasterService.getById(expensesVoucharDto.getSubheadId()).getHeadId().getHeadName()));
+		System.out.println(expenseSubheadList.contains(subHeadMasterService.getById(expensesVoucharDto.getSubheadId()).getHeadId().getHeadName()));
+		if(bookSideName.equals("Asset") && subheadList.contains(subHeadMasterService.getById(expensesVoucharDto.getSubheadId()).getHeadId().getHeadName())) {
+			crGeneralLedger.setDrAmt(expensesVoucharDto.getAmount());
+		}else if(bookSideName.equals("Liabilities") && subheadList.contains(subHeadMasterService.getById(expensesVoucharDto.getSubheadId()).getHeadId().getHeadName())) {
+			crGeneralLedger.setCrAmt(expensesVoucharDto.getAmount());
+		}else if(bookSideName.equals("Liabilities") && expenseSubheadList.contains(subHeadMasterService.getById(expensesVoucharDto.getSubheadId()).getHeadId().getHeadName())) {
+			crGeneralLedger.setDrAmt(expensesVoucharDto.getAmount());
+		}else if(bookSideName.equals("Asset") && expenseSubheadList.contains(subHeadMasterService.getById(expensesVoucharDto.getSubheadId()).getHeadId().getHeadName())) {
+				crGeneralLedger.setCrAmt(expensesVoucharDto.getAmount());
+		}
 //		generalLedger.setYear(0);
 
 		GeneralLedger saveCrGeneralLedger = generalLedgerService.post(crGeneralLedger);
@@ -98,9 +129,17 @@ public class ExpensesVoucharController {
 		drGeneralLedger.setHeadId(headMasterService.getById(expensesVoucharDto.getHeadId()));
 		drGeneralLedger.setSubhead(subHeadMasterService.getById(expensesVoucharDto.getSubheadId()));
 		drGeneralLedger.setNarr(expensesVoucharDto.getNarr());
-		drGeneralLedger.setDrAmt(expensesVoucharDto.getAmount());
-
-		generalLedgerService.post(drGeneralLedger);
+		if(bookSideName.equals("Asset") && subheadList.contains(subHeadMasterService.getById(expensesVoucharDto.getSubheadId()).getHeadId().getHeadName())) {
+			drGeneralLedger.setCrAmt(expensesVoucharDto.getAmount());
+		}else if(bookSideName.equals("Liabilities") && subheadList.contains(subHeadMasterService.getById(expensesVoucharDto.getSubheadId()).getHeadId().getHeadName())) {
+			drGeneralLedger.setCrAmt(expensesVoucharDto.getAmount());
+		}else if(bookSideName.equals("Asset") && expenseSubheadList.contains(subHeadMasterService.getById(expensesVoucharDto.getSubheadId()).getHeadId().getHeadName())) {
+			drGeneralLedger.setDrAmt(expensesVoucharDto.getAmount());
+		}
+		else {
+			drGeneralLedger.setDrAmt(expensesVoucharDto.getAmount());
+		}
+			generalLedgerService.post(drGeneralLedger);
 		return new ResponseEntity<>(saveExpensesVouchar, HttpStatus.OK);
 	}
 

@@ -94,14 +94,9 @@ public class OpeningBalController {
 		OpeningBal openingBal=openingBalService.getByIdData(id);
 		if(openingBal != null)
 		{
-			openingBal.setCustId(customerMasterService.getById(openingBalDto.getCustId()));
-			openingBal.setDate(openingBalDto.getDate());
 			openingBal.setCrAmt(openingBalDto.getCrAmt());
 			openingBal.setDrAmt(openingBalDto.getDrAmt());
 			openingBal.setAmount(openingBalDto.getAmount());
-			openingBal.setYear(openingBalDto.getYear());
-			openingBal.setHeadId(headMasterService.getById(openingBalDto.getHeadId()));
-			openingBal.setSubHeadId(subHeadMasterService.getById(openingBalDto.getSubHeadId()));
 
 			
 			OpeningBal saveOpeningBal=openingBalService.postData(openingBal);

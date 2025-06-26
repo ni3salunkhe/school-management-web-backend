@@ -1,6 +1,7 @@
 package com.api.config;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -27,6 +28,7 @@ public class DeveloperConfig {
 				developer.setPhone("1234569009");
 				developer.setRole("DEVELOPER");
 				developer.setCreatedAt(new Date(System.currentTimeMillis()));
+				developer.setAccountExpiryDate(LocalDate.now().plusYears(1));
 				
 				developerService.saveData(developer);
 			}

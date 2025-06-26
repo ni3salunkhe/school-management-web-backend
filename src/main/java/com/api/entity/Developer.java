@@ -1,6 +1,7 @@
 package com.api.entity;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,4 +22,6 @@ public class Developer {
 	private String email;
 	private String role;
 	private Date createdAt;
+	private LocalDate accountExpiryDate;
+	private Boolean active;
 }
