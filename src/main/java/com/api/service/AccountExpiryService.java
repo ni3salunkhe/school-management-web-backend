@@ -23,7 +23,8 @@ public class AccountExpiryService {
         this.developerService = developerService;
     }
     
-    @Scheduled(cron = "0 0 0 * * ?") // Runs daily at midnight
+    
+    @Scheduled(cron = "10 4 15 * * ?")  // Runs daily at midnight
     public void disableExpiredAccounts() {
         List<Developer> developers = devRepo.findAll();
         LocalDate today = LocalDate.now();

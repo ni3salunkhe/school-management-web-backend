@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.api.entity.Subscription;
 import com.api.repository.SubscriptionRepository;
+import com.api.service.ModuleMasterService;
 import com.api.service.SchoolService;
 import com.api.service.SubscriptionService;
 import com.api.service.TimeService;
@@ -25,6 +26,9 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     @Autowired
     private SchoolService schoolService;
 
+    @Autowired
+    private ModuleMasterService masterService;
+    
     @Autowired
     public SubscriptionServiceImpl(TimeService timeService) {
         this.timeService = timeService;
@@ -63,7 +67,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     // Renew the subscription and return SubscriptionDto
-    public SubscriptionDto renewSubscription(long udiseNumber, LocalDate newEndDate) {
+    public SubscriptionDto renewSubscription(long udiseNumber, LocalDate newEndDate, long moduleId) {
         if (udiseNumber <= 0) {
             throw new IllegalArgumentException("Invalid UDISE number: " + udiseNumber);
         }
@@ -76,12 +80,16 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         if (newEndDate.isBefore(currentDate)) {
             throw new IllegalArgumentException("New end date cannot be in the past");
         }
-
+        var school = schoolService.getbyid(udiseNumber);
+        var moduleCode = masterService.getById(moduleId);
+        if (school == null) {
+            throw new IllegalArgumentException("School with UDISE number " + udiseNumber + " not found");
+        }
         try {
-            Optional<Subscription> subscriptionOpt = subscriptionRepository.findByUdiseNumber(udiseNumber);
+            Optional<Subscription> existingSubscription = Optional.ofNullable(subscriptionRepository.findBySchoolUdiseNoAndModuleId(school, moduleCode));
 
-            if (subscriptionOpt.isPresent()) {
-                Subscription subscription = subscriptionOpt.get();
+            if (existingSubscription.isPresent()) {
+                Subscription subscription = existingSubscription.get();
                 subscription.setSubscriptionEndDate(newEndDate);
                 Subscription updatedSubscription = subscriptionRepository.save(subscription); // Save the renewed subscription
                 return convertToDto(updatedSubscription);  // Convert to DTO before returning
@@ -96,20 +104,21 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     // Create a new subscription and return SubscriptionDto
-    public SubscriptionDto createSubscription(long udiseNumber, LocalDate startDate, LocalDate endDate) {
+    public SubscriptionDto createSubscription(long udiseNumber, LocalDate startDate, LocalDate endDate, long moduleId) {
         if (udiseNumber <= 0) {
             throw new IllegalArgumentException("Invalid UDISE number: " + udiseNumber);
         }
 
         // Validate school exists
         var school = schoolService.getbyid(udiseNumber);
+        var moduleCode = masterService.getById(moduleId);
         if (school == null) {
             throw new IllegalArgumentException("School with UDISE number " + udiseNumber + " not found");
         }
 
         // Check if subscription already exists
-        Optional<Subscription> existingSubscription = subscriptionRepository.findByUdiseNumber(udiseNumber);
-        if (existingSubscription.isPresent()) {
+        Subscription existingSubscription = subscriptionRepository.findBySchoolUdiseNoAndModuleId(school, moduleCode);
+        if (existingSubscription != null) {
             throw new IllegalArgumentException("Subscription already exists for school with UDISE number " + udiseNumber);
         }
 
@@ -119,6 +128,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
             subscription.setSchoolUdiseNo(school);
             subscription.setSubscriptionStartDate(startDate);
             subscription.setSubscriptionEndDate(endDate);
+            subscription.setModuleId(moduleCode);
             Subscription savedSubscription = subscriptionRepository.save(subscription);
             return convertToDto(savedSubscription);  // Convert to DTO before returning
         } catch (Exception e) {

@@ -8,5 +8,7 @@ import com.api.entity.Developer;
 public interface DeveloperRepository extends JpaRepository<Developer, Long> {
 
 	Developer findByUsername(String username);
+	
+	Developer findByActiveTrue();
 
 }

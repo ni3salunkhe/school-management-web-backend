@@ -23,9 +23,18 @@ public class Subscription {
     @JoinColumn(name = "school_udise_no", nullable = false)
     private School schoolUdiseNo;
 
+    @ManyToOne
+    @JoinColumn(name="module",referencedColumnName = "id")
+    private ModuleMaster moduleId;
+    
     @Column(nullable = false)
     private LocalDate subscriptionStartDate;
 
     @Column(nullable = false)
     private LocalDate subscriptionEndDate;
+
+	public boolean isPresent() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

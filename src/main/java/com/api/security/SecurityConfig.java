@@ -52,6 +52,9 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/public/**").permitAll()
                 .requestMatchers("/staff/checkmobileamdemail").permitAll()
+                .requestMatchers("/developer/active").permitAll()
+                .requestMatchers("/developer/renew/**").permitAll()
+                .requestMatchers("/developer/expiry-date-by-name/**").permitAll()
                 .requestMatchers("/staff/resetpassword/**").permitAll()
                 .requestMatchers("/school/checkmobileamdemail").permitAll()
                 .requestMatchers("/school/resetpassword/**").permitAll()

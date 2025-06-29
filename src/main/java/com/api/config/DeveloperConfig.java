@@ -20,7 +20,6 @@ public class DeveloperConfig {
 			if(developerService.getByUsername("Developer96") == null) {
 				BCryptPasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
 				String encodePassword = passwordEncoder.encode("Developer@96");
-				
 				Developer developer= new Developer();
 				developer.setEmail("developer@gmail.com");
 				developer.setUsername("Developer96");
@@ -29,6 +28,7 @@ public class DeveloperConfig {
 				developer.setRole("DEVELOPER");
 				developer.setCreatedAt(new Date(System.currentTimeMillis()));
 				developer.setAccountExpiryDate(LocalDate.now().plusYears(1));
+				developer.setActive(true);	
 				
 				developerService.saveData(developer);
 			}

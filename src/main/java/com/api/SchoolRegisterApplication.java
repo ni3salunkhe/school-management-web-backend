@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import ch.qos.logback.core.net.SyslogOutputStream;
 
@@ -12,6 +13,7 @@ import ch.qos.logback.core.net.SyslogOutputStream;
 @ComponentScan(basePackages = "com.api")
 @EntityScan(basePackages = "com.api.entity")
 @EnableJpaRepositories(basePackages = "com.api.repository")
+@EnableScheduling
 public class SchoolRegisterApplication {
     public static void main(String[] args) {
         SpringApplication.run(SchoolRegisterApplication.class, args);

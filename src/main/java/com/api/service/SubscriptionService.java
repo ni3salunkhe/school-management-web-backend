@@ -8,8 +8,8 @@ import java.util.List;
 
 public interface SubscriptionService {
     boolean isSubscriptionExpired(long udiseNumber);
-    SubscriptionDto renewSubscription(long udiseNumber, LocalDate newEndDate);
-    SubscriptionDto createSubscription(long udiseNumber, LocalDate startDate, LocalDate endDate);
+    SubscriptionDto renewSubscription(long udiseNumber, LocalDate newEndDate, long moduleId);
+    SubscriptionDto createSubscription(long udiseNumber, LocalDate startDate, LocalDate endDate, long moduleId);
     SubscriptionDto getdata(long udiseNumber);  // Changed return type to SubscriptionDto
 	Subscription getExpiringTomorrowByUdise(long udiseNo);
 }
