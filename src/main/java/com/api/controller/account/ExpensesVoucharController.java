@@ -92,6 +92,7 @@ public class ExpensesVoucharController {
 		expensesVouchar.setHeadId(subHeadMasterService.getById(expensesVoucharDto.getSubheadId()).getHeadId());
 		expensesVouchar.setAmount(expensesVoucharDto.getAmount());
 		expensesVouchar.setVoucharType(expensesVoucharDto.getVoucharType());
+		expensesVouchar.setYear(expensesVoucharDto.getYear());
 
 		ExpensesVouchar saveExpensesVouchar = expensesVoucharService.postData(expensesVouchar);
 		GeneralLedger crGeneralLedger = new GeneralLedger();
@@ -104,6 +105,7 @@ public class ExpensesVoucharController {
 		crGeneralLedger.setHeadId(customerMasterService.getById(expensesVoucharDto.getCustId()).getHeadId());
 		crGeneralLedger.setSubhead(subHeadMasterService.getById(expensesVoucharDto.getCustId()));
 		crGeneralLedger.setNarr(expensesVoucharDto.getNarr());
+		crGeneralLedger.setYear(expensesVoucharDto.getYear());
 		System.out.println(subHeadMasterService.getById(expensesVoucharDto.getCustId()).getHeadId().getBookSideMaster().getBooksideName());
 		System.out.println(subheadList.contains(subHeadMasterService.getById(expensesVoucharDto.getSubheadId()).getHeadId().getHeadName()));
 		System.out.println(expenseSubheadList.contains(subHeadMasterService.getById(expensesVoucharDto.getSubheadId()).getHeadId().getHeadName()));
@@ -129,6 +131,7 @@ public class ExpensesVoucharController {
 		drGeneralLedger.setHeadId(headMasterService.getById(expensesVoucharDto.getHeadId()));
 		drGeneralLedger.setSubhead(subHeadMasterService.getById(expensesVoucharDto.getSubheadId()));
 		drGeneralLedger.setNarr(expensesVoucharDto.getNarr());
+		drGeneralLedger.setYear(expensesVoucharDto.getYear());
 		if(bookSideName.equals("Asset") && subheadList.contains(subHeadMasterService.getById(expensesVoucharDto.getSubheadId()).getHeadId().getHeadName())) {
 			drGeneralLedger.setCrAmt(expensesVoucharDto.getAmount());
 		}else if(bookSideName.equals("Liabilities") && subheadList.contains(subHeadMasterService.getById(expensesVoucharDto.getSubheadId()).getHeadId().getHeadName())) {

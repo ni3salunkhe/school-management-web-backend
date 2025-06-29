@@ -92,6 +92,7 @@ public class CashReceiptController {
 		cashReceipt.setBillType(cashReceiptDto.getBillType());
 		cashReceipt.setSaleDup(cashReceiptDto.getSaleDup());
 		cashReceipt.setStatus(cashReceiptDto.getStatus());
+		cashReceipt.setYear(cashReceiptDto.getYear());
 		System.out.println(cashReceipt);
 
 		CashReceipt saveCashReceipt = cashReceiptService.postData(cashReceipt);
@@ -109,6 +110,7 @@ public class CashReceiptController {
 		drgeneralLedger.setHeadId(customerMaster.getHeadId());
 //		System.out.println(headMasterService.getByHeadName("Cash In Hand"));
 //		drgeneralLedger.setSubhead(subHeadMasterService.getById(cashReceiptDto.getSubheadId()));
+		drgeneralLedger.setYear(cashReceiptDto.getYear());
 		drgeneralLedger.setSubhead(customerMaster.getSubheadId());
 
 		GeneralLedger saveDrGeneralLedger = generalLedgerService.post(drgeneralLedger);
@@ -124,6 +126,7 @@ public class CashReceiptController {
 		crgeneralLedger.setNarr(cashReceiptDto.getNarr());
 		crgeneralLedger.setHeadId(headMasterService.getById(cashReceiptDto.getHeadId()));
 		crgeneralLedger.setSubhead(subHeadMasterService.getById(cashReceiptDto.getSubheadId()));
+		crgeneralLedger.setYear(cashReceiptDto.getYear());
 
 		GeneralLedger saveCrGeneralLedger = generalLedgerService.post(crgeneralLedger);
 

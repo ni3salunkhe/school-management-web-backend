@@ -42,7 +42,7 @@ public class BankReceipt {
 	@JoinColumn(name = "bank_id")
 	private BankMaster bankId;
 	
-	private long year;
+	private String year;
 	
 	@ManyToOne
 	@JoinColumn(name = "school_udise")

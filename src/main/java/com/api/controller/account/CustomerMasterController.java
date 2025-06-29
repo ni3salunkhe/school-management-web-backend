@@ -111,9 +111,13 @@ public class CustomerMasterController {
 		subHeadMaster.setSchoolUdise(saveCustomerMaster.getSchoolUdise());
 
 		SubHeadMaster subHeadMaster2 = subHeadMasterService.postData(subHeadMaster);
+		
+		saveCustomerMaster.setSubheadId(subHeadMaster2);
 
-		customerMaster.setSubheadId(subHeadMasterService.getById(subHeadMaster2.getSubheadId()));
-		customerMasterService.postData(customerMaster);
+//		customerMaster.setSubheadId(subHeadMasterService.getById(subHeadMaster2.getSubheadId()));
+//		customerMasterService.postData(customerMaster);
+		
+		customerMasterService.postData(saveCustomerMaster);
 
 		return new ResponseEntity<CustomerMaster>(saveCustomerMaster, HttpStatus.OK);
 

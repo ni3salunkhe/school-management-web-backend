@@ -34,5 +34,9 @@ public interface GeneralLedgerRepository extends JpaRepository<GeneralLedger, Lo
 	@Query("SELECT g FROM GeneralLedger g WHERE g.subhead.subheadId = :subhead AND g.entrydate <= :entrydate AND g.shopId.udiseNo = :shopId")
 	List<GeneralLedger> getBySubheadAndDateAndShop(long subhead, Date entrydate, long shopId);
 
-	GeneralLedger findByEntryNoAndSubheadSubheadId(long entryNo,long subheadId);
+	GeneralLedger findByEntryNoAndSubheadSubheadId(long entryNo, long subheadId);
+
+	List<GeneralLedger> findBySubheadSubheadIdAndShopIdUdiseNoAndEntrydateBetween(long subhead,long shopId, Date startDate, Date endDate);
+
+	List<GeneralLedger> findBySubheadSubheadIdAndShopIdUdiseNoAndYear(long subhead, long shopId, String year);
 }

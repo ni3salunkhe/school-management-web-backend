@@ -43,7 +43,7 @@ public class BankPayment {
 	@ManyToOne
 	private School schoolUdise;
 	
-	private Date year;
+	private String year;
 	
 	@ManyToOne
 	private HeadMaster headId;

@@ -135,7 +135,7 @@ public class BankPaymentController {
 			crGeneralLedger.setNarr(bankPaymentDto.getNarr());
 			crGeneralLedger.setShopId(schoolService.getbyid(bankPaymentDto.getSchoolUdise()));
 			crGeneralLedger.setSubhead(subHeadMasterService.getById(bankPaymentDto.getBankSubheadId()));
-//			crGeneralLedger.setYear("");
+			crGeneralLedger.setYear(bankPaymentDto.getYear());
 			
 			generalLedgerService.post(crGeneralLedger);
 			
@@ -149,6 +149,7 @@ public class BankPaymentController {
 			drGeneralLedger.setNarr(bankPaymentDto.getNarr());
 			drGeneralLedger.setShopId(schoolService.getbyid(bankPaymentDto.getSchoolUdise()));
 			drGeneralLedger.setSubhead(subHeadMasterService.getById(bankPaymentDto.getSubheadId()));
+			drGeneralLedger.setYear(bankPaymentDto.getYear());
 			
 			generalLedgerService.post(drGeneralLedger);
 			

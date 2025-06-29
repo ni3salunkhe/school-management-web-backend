@@ -38,7 +38,7 @@ public class GeneralLedger {
 	
 	private Double drAmt;
 	
-	private int year;
+	private String year;
 	
 	private String narr;
 	

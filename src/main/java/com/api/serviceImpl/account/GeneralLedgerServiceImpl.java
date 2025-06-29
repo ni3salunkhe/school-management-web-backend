@@ -71,10 +71,10 @@ public class GeneralLedgerServiceImpl implements GeneralLedgerService {
 	}
 	
 	@Override
-	public List<GeneralLedger> getbysubhead(long subhead) {
+	public List<GeneralLedger> getbysubhead(long subhead,long shopId,Date startDate,Date endDate) {
 		// TODO Auto-generated method stub
 		
-		return generalLedgerRepository.findBySubhead(subHeadMasterRepository.findBysubheadId(subhead));
+		return generalLedgerRepository.findBySubheadSubheadIdAndShopIdUdiseNoAndEntrydateBetween(subhead, shopId,startDate, endDate);
 	}
 	
 	@Override
@@ -152,5 +152,11 @@ public class GeneralLedgerServiceImpl implements GeneralLedgerService {
 	public GeneralLedger getByEntryNoAndSubhead(long EntryNo, long SubheadId) {
 		// TODO Auto-generated method stub
 		return generalLedgerRepository.findByEntryNoAndSubheadSubheadId(EntryNo, SubheadId);
+	}
+
+	@Override
+	public List<GeneralLedger> getBysubheadAndShopAndYear(long subhead, long shopId, String year) {
+		// TODO Auto-generated method stub
+		return generalLedgerRepository.findBySubheadSubheadIdAndShopIdUdiseNoAndYear(subhead, shopId, year);
 	}
 }

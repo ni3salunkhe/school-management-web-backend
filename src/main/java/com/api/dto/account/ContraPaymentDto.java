@@ -16,7 +16,7 @@ public class ContraPaymentDto {
 	
 	private int custid;
 	
-	private int year;
+	private String year;
 	
 	private String narr;
 	

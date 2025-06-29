@@ -18,7 +18,7 @@ public class GeneralLedgerDto {
 	
 	private int custid;
 	
-	private int year;
+	private String year;
 	
 	private String narr;
 	

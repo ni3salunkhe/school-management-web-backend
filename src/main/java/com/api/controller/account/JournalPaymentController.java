@@ -70,6 +70,7 @@ public class JournalPaymentController {
 	        credit.setHeadId(subHeadMasterService.getById(entry.getCreditAccount()).getHeadId());
 	        credit.setAmount(entry.getAmount());
 	        credit.setTranType(journalPaymentDto.getTranType());
+	        credit.setYear(journalPaymentDto.getYear());
 	        journalPaymentService.postData(credit);
 	    }
 
@@ -95,6 +96,7 @@ public class JournalPaymentController {
 	    // Changed from getCreditAccount() to getDebitaccount()
 	    drgeneralLedger.setHeadId(subHeadMasterService.getById(journalPaymentDto.getDebitaccount()).getHeadId());
 	    drgeneralLedger.setSubhead(subHeadMasterService.getById(journalPaymentDto.getDebitaccount()));
+	    drgeneralLedger.setYear(journalPaymentDto.getYear());
 	    generalLedgerService.post(drgeneralLedger);
 
 	    for (Entry entry : journalPaymentDto.getEntries()) {
@@ -103,7 +105,7 @@ public class JournalPaymentController {
 	        crgeneralLedger.setEntryType(journalPaymentDto.getTranType());
 	        crgeneralLedger.setEntrydate(journalPaymentDto.getEntryDate());
 	        crgeneralLedger.setShopId(schoolService.getbyid(journalPaymentDto.getSchoolUdise()));
-	        
+	        crgeneralLedger.setYear(journalPaymentDto.getYear());
 	        // Changed from getDebitaccount() to getCreditAccount()
 //	        String bookside = subHeadMasterService.getById(entry.getCreditAccount()).getHeadId().getBookSideMaster()
 //	                .getBooksideName();
