@@ -90,7 +90,7 @@ public class BankReceiptController {
 			bankReceipt.setTranType(bankReciptDto.getTranType());
 			bankReceipt.setAmount(bankReciptDto.getAmount());
 			bankReceipt.setNarr(bankReciptDto.getNarr());
-//			bankReceipt.setYear(bankReciptDto.getYear());
+			bankReceipt.setYear(bankReciptDto.getYear());
 			bankReceipt.setPaymentType(bankReciptDto.getPaymentType());
 			bankReceipt.setBillNo(bankReciptDto.getBillNo());
 			bankReceipt.setStatus(bankReciptDto.getStatus());
@@ -127,6 +127,7 @@ public class BankReceiptController {
 			drGeneralLedger.setNarr(bankReciptDto.getNarr());
 			drGeneralLedger.setShopId(schoolService.getbyid(bankReciptDto.getSchoolUdise()));
 			drGeneralLedger.setSubhead(bankMaster.getCustId().getSubheadId());
+			drGeneralLedger.setYear(bankReciptDto.getYear());
 			
 			generalLedgerService.post(drGeneralLedger);
 			
@@ -140,7 +141,7 @@ public class BankReceiptController {
 			crGeneralLedger.setNarr(bankReciptDto.getNarr());
 			crGeneralLedger.setShopId(schoolService.getbyid(bankReciptDto.getSchoolUdise()));
 			crGeneralLedger.setSubhead(subHeadMasterService.getById(bankReciptDto.getSubheadId()));
-//			crGeneralLedger.setYear("");
+			crGeneralLedger.setYear(bankReciptDto.getYear());
 			
 			generalLedgerService.post(crGeneralLedger);
 			

@@ -30,6 +30,8 @@ public class JournalPayment {
 	
 	private String narr;
 	
+	private String year;
+	
 	@ManyToOne
 	@JoinColumn(name = "school_udise")
 	private School schoolUdise;

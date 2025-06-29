@@ -28,6 +28,8 @@ public class ExpensesVouchar {
 
 	private String narr;
 	
+	private String year;
+	
 	private String voucharType;
 
 	@ManyToOne

@@ -32,25 +32,25 @@ public class CashPaymentController {
 
 	@Autowired
 	private CashPaymentService cashPaymentService;
-	
+
 	@Autowired
 	private SchoolService schoolService;
-	
+
 	@Autowired
 	private StaffService staffService;
-	
+
 	@Autowired
 	private CustomerMasterService customerMasterService;
-	
+
 	@Autowired
 	private HeadMasterService headMasterService;
-	
+
 	@Autowired
 	private SubHeadMasterService subHeadMasterService;
 
 	@Autowired
 	private GeneralLedgerService generalLedgerService;
-	
+
 	@GetMapping("/")
 	public ResponseEntity<List<CashPayment>> getAllCashPaymentData() {
 		List<CashPayment> cashPayments = cashPaymentService.getAllData();
@@ -93,9 +93,9 @@ public class CashPaymentController {
 		cashPayment.setCreateDate(cashPaymentDto.getCreateDate());
 		cashPayment.setYear(cashPaymentDto.getYear());
 		cashPayment.setTranType(cashPaymentDto.getTranType());
-		
-		CashPayment savedPayements= cashPaymentService.postData(cashPayment);
-		
+
+		CashPayment savedPayements = cashPaymentService.postData(cashPayment);
+
 		GeneralLedger drEntry = new GeneralLedger();
 		drEntry.setBillno(savedPayements.getBillNo());
 		drEntry.setDrAmt(cashPaymentDto.getAmount());
@@ -107,8 +107,9 @@ public class CashPaymentController {
 		drEntry.setHeadId(headMasterService.getById(cashPaymentDto.getHeadId()));
 		drEntry.setShopId(school);
 		drEntry.setSubhead(subHeadMasterService.getById(cashPaymentDto.getSubheadId()));
+		drEntry.setYear(cashPaymentDto.getYear());
 		generalLedgerService.post(drEntry);
-		
+
 		GeneralLedger crEntry = new GeneralLedger();
 		crEntry.setBillno(savedPayements.getBillNo());
 		crEntry.setCrAmt(cashPaymentDto.getAmount());
@@ -118,12 +119,13 @@ public class CashPaymentController {
 		crEntry.setNarr(cashPaymentDto.getNarr());
 		crEntry.setHeadId(headMasterService.getById(cashPaymentDto.getMainHead()));
 		crEntry.setCustId(customerMasterService.getById(cashPaymentDto.getMainSubHead()));
+		crEntry.setYear(cashPaymentDto.getYear());
 		crEntry.setShopId(school);
 		crEntry.setSubhead(subHeadMasterService.getById(cashPaymentDto.getMainSubHead()));
 		generalLedgerService.post(crEntry);
-		
+
 		return new ResponseEntity<CashPayment>(savedPayements, HttpStatus.OK);
-		
+
 	}
 
 	@PutMapping("/{id}")

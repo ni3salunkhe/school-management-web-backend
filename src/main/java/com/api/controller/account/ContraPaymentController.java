@@ -68,6 +68,7 @@ public class ContraPaymentController {
 		contraPayment.setSchoolUdise(schoolService.getbyid(dto.getUdiseNo()));
 		contraPayment.setStaffId(staffService.getbyid(dto.getStaffId()));
 		contraPayment.setCreateDate(dto.getEntrydate());
+		contraPayment.setYear(dto.getYear());
 		
 		ContraPayment contraPayment2 = contraPaymentService.post(contraPayment);
 		
@@ -79,6 +80,8 @@ public class ContraPaymentController {
 		drEntry.setSubhead(subHeadMasterService.getById(dto.getSubhead()));
 		drEntry.setNarr(dto.getNarr());
 		drEntry.setShopId(schoolService.getbyid(dto.getUdiseNo()));
+		drEntry.setEntrydate(dto.getEntrydate());
+		drEntry.setYear(dto.getYear());
 		if(headType.equals("Asset") || headType.equals("Profit And Loss")) {
 			drEntry.setDrAmt(dto.getAmount());
 		}
@@ -101,6 +104,8 @@ public class ContraPaymentController {
 		crEntry.setHeadId(headMasterService.getById(dto.getMainHeadId()));
 		crEntry.setSubhead(subHeadMasterService.getById(dto.getMainSubHead()));
 		crEntry.setShopId(schoolService.getbyid(dto.getUdiseNo()));
+		crEntry.setEntrydate(dto.getEntrydate());
+		crEntry.setYear(dto.getYear());
 		
 		GeneralLedger saveGeneralLedger = generalLedgerService.post(crEntry);
 		

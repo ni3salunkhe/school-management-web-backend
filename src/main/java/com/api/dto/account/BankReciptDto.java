@@ -25,7 +25,7 @@ public class BankReciptDto {
 
 	private long schoolUdise;
 
-	private Date year;
+	private String year;
 
 	private long headId;
 

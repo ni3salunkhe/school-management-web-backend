@@ -36,7 +36,7 @@ public class CashReceipt {
 	@JoinColumn(name = "school_udise")
 	private School schoolUdise;
 
-	private long year;
+	private String year;
 
 	@ManyToOne
 	@JoinColumn(name = "head_id")

@@ -17,7 +17,7 @@ public interface GeneralLedgerService {
 
 	GeneralLedger getbyid(long entryNo); 
 
-	public List<GeneralLedger> getbysubhead(long subhead);
+	public List<GeneralLedger> getbysubhead(long subhead,long shopId,Date startDate,Date endDate);
 	
 	public BigDecimal getBalanceBySubhead(Long subhead);
 	
@@ -32,4 +32,6 @@ public interface GeneralLedgerService {
 	public List<GeneralLedger> getByEntryDateSubHeadAndShop(long subheadId,Date entryDate,long shopId);
 
 	public GeneralLedger getByEntryNoAndSubhead(long EntryNo,long SubheadId);
+	
+	public List<GeneralLedger> getBysubheadAndShopAndYear(long subhead, long shopId, String year);
 }

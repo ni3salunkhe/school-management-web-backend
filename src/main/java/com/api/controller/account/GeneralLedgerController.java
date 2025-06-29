@@ -202,10 +202,109 @@ public class GeneralLedgerController {
 		return new ResponseEntity<>(responseMap, HttpStatus.OK);
 	}
 
-	@GetMapping("/balances/{id}")
-	public ResponseEntity<List<GeneralLedger>> getbyid(@PathVariable long id) {
+	@GetMapping("/getdata/{head}/shop/{udise}/year/{year}")
+	public ResponseEntity<Map<String, Map<String, Double>>> getYearbasedData(@PathVariable String head,
+			@PathVariable long udise, @PathVariable String year) {
 
-		List<GeneralLedger> generalLedgers = generalLedgerService.getbysubhead(id);
+		List<GeneralLedger> generalLedgers = generalLedgerService.getByBookTypeName(head, udise);
+		List<HeadMaster> headMasters = headMasterService.getByBookSideName(head);
+		List<SubHeadMaster> subHeadMasters = subHeadMasterService.getByUdiseAndBookSideName(head, udise);
+
+//		Date entryDate = Date.valueOf(date);
+
+		Map<String, Map<String, Double>> responseMap = new HashMap<>();
+
+		for (HeadMaster headMaster : headMasters) {
+			String headName = headMaster.getHeadName();
+			Map<String, Double> mapSubhead = new HashMap<>();
+
+			for (SubHeadMaster subHeadMaster : subHeadMasters) {
+				// Match HeadId
+				if (subHeadMaster.getHeadId().getHeadId() == headMaster.getHeadId()) {
+
+					String subHeadName = subHeadMaster.getSubheadName();
+					List<GeneralLedger> ledgers = generalLedgerService
+							.getBysubheadAndShopAndYear(subHeadMaster.getSubheadId(), udise,year);
+
+					if ("Asset".equals(subHeadMaster.getHeadId().getBookSideMaster().getBooksideName())) {
+						double openingBalance = 0;
+						double crTransaction = 0;
+						double drTransaction = 0;
+
+						for (GeneralLedger ledger : ledgers) {
+							if (ledger.getSubhead().getSubheadId() == subHeadMaster.getSubheadId()) {
+								if ("Opening Balance".equals(ledger.getEntryType())) {
+									openingBalance += ledger.getDrAmt() != null ? ledger.getDrAmt() : 0;
+									openingBalance -= ledger.getCrAmt() != null ? ledger.getCrAmt() : 0;
+								} else {
+									crTransaction += ledger.getCrAmt() != null ? ledger.getCrAmt() : 0;
+									drTransaction += ledger.getDrAmt() != null ? ledger.getDrAmt() : 0;
+								}
+							}
+						}
+
+						double currentBalance = (openingBalance + drTransaction) - crTransaction;
+						mapSubhead.put(subHeadName, currentBalance);
+					}
+
+					if ("Liabilities".equals(subHeadMaster.getHeadId().getBookSideMaster().getBooksideName())) {
+						double openingBalance = 0;
+						double crTransaction = 0;
+						double drTransaction = 0;
+						for (GeneralLedger ledger : ledgers) {
+							if (ledger.getSubhead().getSubheadId() == subHeadMaster.getSubheadId()) {
+								if ("Opening Balance".equals(ledger.getEntryType())) {
+									openingBalance += ledger.getCrAmt() != null ? ledger.getCrAmt() : 0;
+									openingBalance -= ledger.getDrAmt() != null ? ledger.getDrAmt() : 0;
+								} else {
+									crTransaction += ledger.getCrAmt() != null ? ledger.getCrAmt() : 0;
+									drTransaction += ledger.getDrAmt() != null ? ledger.getDrAmt() : 0;
+								}
+							}
+						}
+
+						double currentBalance = (openingBalance + crTransaction) - drTransaction;
+						mapSubhead.put(subHeadName, currentBalance);
+					}
+
+					if ("Profit And Loss".equals(subHeadMaster.getHeadId().getBookSideMaster().getBooksideName())) {
+						double openingBalance = 0;
+						double crTransaction = 0;
+						double drTransaction = 0;
+
+						for (GeneralLedger ledger : ledgers) {
+							if (ledger.getSubhead().getSubheadId() == subHeadMaster.getSubheadId()) {
+								if ("Opening Balance".equals(ledger.getEntryType())) {
+									openingBalance += ledger.getDrAmt() != null ? ledger.getDrAmt() : 0;
+								} else {
+									crTransaction += ledger.getCrAmt() != null ? ledger.getCrAmt() : 0;
+									drTransaction += ledger.getDrAmt() != null ? ledger.getDrAmt() : 0;
+								}
+							}
+						}
+
+						double currentBalance = (openingBalance + drTransaction) - crTransaction;
+						mapSubhead.put(subHeadName, currentBalance);
+					}
+				}
+
+			}
+
+			responseMap.put(headName, mapSubhead);
+		}
+
+		return new ResponseEntity<>(responseMap, HttpStatus.OK);
+	}
+	
+	
+	@GetMapping("/balances/shop/{udiseNo}/bydate/{startdate}/{enddate}/{id}")
+	public ResponseEntity<List<GeneralLedger>> getbyid(@PathVariable long id, @PathVariable String startdate,@PathVariable long udiseNo,
+			@PathVariable String enddate) {
+
+		Date startDate = Date.valueOf(startdate);
+		Date endDate = Date.valueOf(enddate);
+
+		List<GeneralLedger> generalLedgers = generalLedgerService.getbysubhead(id,udiseNo, startDate, endDate);
 		return new ResponseEntity<List<GeneralLedger>>(generalLedgers, HttpStatus.OK);
 
 	}
@@ -245,7 +344,7 @@ public class GeneralLedgerController {
 			ledger.setShopId(schoolService.getbyid(dto.getUdiseNo()));
 			ledger.setEntryType(dto.getEntryType());
 			ledger.setEntrydate(dto.getEntrydate());
-//	        ledger.setYear(Integer.parseInt(dto.getYear()));
+			ledger.setYear(dto.getYear());
 			ledger.setNarr(dto.getNarr());
 
 			// Related Entity Mapping
@@ -272,7 +371,8 @@ public class GeneralLedgerController {
 	}
 
 	@PutMapping("/profit-loss/{headName}/{udise}")
-	public ResponseEntity<OpeningBal> putData(@PathVariable String headName, @PathVariable long udise, @RequestBody GeneralLedgerDto dto) {
+	public ResponseEntity<OpeningBal> putData(@PathVariable String headName, @PathVariable long udise,
+			@RequestBody GeneralLedgerDto dto) {
 		OpeningBal opnBal = opnRepo.findBySubHeadIdSubheadNameAndSchoolUdiseUdiseNo(headName, udise);
 		System.out.println(opnBal);
 		opnBal.setCrAmt(dto.getCr_Amt());
@@ -285,10 +385,10 @@ public class GeneralLedgerController {
 
 	@GetMapping("/get-profit-loss/{headName}/{udise}")
 	public ResponseEntity<List<OpeningBal>> getData(@PathVariable String headName, @PathVariable long udise) {
-		School school= schoolService.getbyid(udise);
-		List<OpeningBal> opnBal= opnRepo.findByHeadIdHeadNameAndSchoolUdise(headName, school);
-		
-		return new ResponseEntity<List<OpeningBal>>(opnBal,HttpStatus.OK);
+		School school = schoolService.getbyid(udise);
+		List<OpeningBal> opnBal = opnRepo.findByHeadIdHeadNameAndSchoolUdise(headName, school);
+
+		return new ResponseEntity<List<OpeningBal>>(opnBal, HttpStatus.OK);
 	}
 
 }

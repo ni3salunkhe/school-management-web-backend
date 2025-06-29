@@ -37,6 +37,7 @@ public class OpeningBalDto {
 	        private Double amount;
 	        private String balanceType;
 	        private long udiseNo;
+	        private String year;
 	 }
 
 }

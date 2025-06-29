@@ -25,11 +25,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.api.dto.SchoolDto;
 import com.api.entity.School;
+import com.api.entity.account.CustomerMaster;
+import com.api.entity.account.HeadMaster;
+import com.api.entity.account.SubHeadMaster;
+import com.api.repository.account.SubHeadMasterRepository;
 import com.api.service.DistrictService;
 import com.api.service.SchoolService;
 import com.api.service.StateService;
 import com.api.service.TehsilService;
 import com.api.service.VillageService;
+import com.api.service.account.CustomerMasterService;
+import com.api.service.account.HeadMasterService;
+import com.api.service.account.SubHeadMasterService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -54,6 +61,18 @@ public class SchoolController {
 
 	@Autowired
 	PasswordEncoder passwordEncoder;
+
+	@Autowired
+	private HeadMasterService headMasterService;
+
+	@Autowired
+	private CustomerMasterService customerMasterService;
+
+	@Autowired
+	private SubHeadMasterService subHeadMasterService;
+
+	@Autowired
+	private SubHeadMasterRepository subHeadMasterRepository;
 
 	@PostMapping(value = "/", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ResponseEntity<School> savedata(@RequestPart("schoolDto") String schoolDtoJson,
@@ -100,6 +119,48 @@ public class SchoolController {
 			school.setCreatedAt(schoolDto.getCreatedAt());
 
 			School saveSchool = schoolService.post(school);
+
+			HeadMaster headMaster = headMasterService.getByHeadName("Cash In Hand");
+
+			HeadMaster profitHeadMaster = headMasterService.getByHeadName("Profit & Loss");
+
+			CustomerMaster customerMaster = new CustomerMaster();
+			customerMaster.setSchoolUdise(saveSchool);
+			customerMaster.setCustName("Cash In Hand");
+			customerMaster.setHeadId(headMaster);
+
+			CustomerMaster saveCustomerMaster = customerMasterService.postData(customerMaster);
+
+			SubHeadMaster subHeadMaster = new SubHeadMaster();
+			subHeadMaster.setHeadId(headMaster);
+			subHeadMaster.setSchoolUdise(saveSchool);
+			subHeadMaster.setSubheadId(saveCustomerMaster.getCustId());
+			subHeadMaster.setSubheadName("Cash In Hand");
+			SubHeadMaster saveSubHeadMaster = subHeadMasterService.postData(subHeadMaster);
+
+			saveCustomerMaster.setSubheadId(saveSubHeadMaster);
+
+			customerMasterService.postData(saveCustomerMaster);
+
+//			-----------------------------------------------------------------------
+
+			long id = subHeadMasterService.getNextLedgerId();
+
+			SubHeadMaster currentPeriodSubHeadMaster = new SubHeadMaster();
+			currentPeriodSubHeadMaster.setSubheadId(id);
+			currentPeriodSubHeadMaster.setHeadId(profitHeadMaster);
+			currentPeriodSubHeadMaster.setSchoolUdise(saveSchool);
+			currentPeriodSubHeadMaster.setSubheadName("Current Period");
+			subHeadMasterService.postData(currentPeriodSubHeadMaster);
+
+			long id2 = subHeadMasterService.getNextLedgerId();
+			SubHeadMaster openingBalanceSubHeadMaster = new SubHeadMaster();
+			openingBalanceSubHeadMaster.setSubheadId(id2);
+			openingBalanceSubHeadMaster.setHeadId(profitHeadMaster);
+			openingBalanceSubHeadMaster.setSchoolUdise(saveSchool);
+			openingBalanceSubHeadMaster.setSubheadName("Opening Balance");
+			SubHeadMaster saveopeningBalanceSubHeadMaster = subHeadMasterService.postData(openingBalanceSubHeadMaster);
+
 			return new ResponseEntity<School>(saveSchool, HttpStatus.CREATED);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -138,16 +199,15 @@ public class SchoolController {
 			return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
 		}
 	}
-	
+
 	@PutMapping("/resetpassword/{id}")
-	public ResponseEntity<School> resetHeadMasterPassword(@RequestBody SchoolDto schoolDto,@PathVariable long id)
-	{
-		School school=schoolService.getbyid(id);
+	public ResponseEntity<School> resetHeadMasterPassword(@RequestBody SchoolDto schoolDto, @PathVariable long id) {
+		School school = schoolService.getbyid(id);
 		school.setHeadMasterPassword(schoolDto.getHeadMasterPassword());
-		
-		School saveSchool=schoolService.post(school);
-		return new ResponseEntity<School>(saveSchool,HttpStatus.OK);
-		
+
+		School saveSchool = schoolService.post(school);
+		return new ResponseEntity<School>(saveSchool, HttpStatus.OK);
+
 	}
 
 	@PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

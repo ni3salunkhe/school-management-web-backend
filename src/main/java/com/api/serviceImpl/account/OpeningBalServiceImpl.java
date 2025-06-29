@@ -111,7 +111,7 @@ public class OpeningBalServiceImpl implements OpeningBalService{
             }
 
             openingBal.setAmount(amount);
-            openingBal.setYear(financialYear);
+            openingBal.setYear(request.getFinancialYear());
 
             // Save entry
             openingBalRepository.save(openingBal);

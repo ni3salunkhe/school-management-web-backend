@@ -14,6 +14,8 @@ public class ExpensesVoucharDto {
 	private double amount;
 
 	private String narr;
+	
+	private String year;
 
 	private long schoolUdise;
 
