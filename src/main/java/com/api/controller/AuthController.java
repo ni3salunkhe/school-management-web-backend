@@ -42,66 +42,54 @@ public class AuthController {
     @Autowired
     private JwtUtil jwtUtil;
 
-    @PostMapping("/authenticate")
-	public ResponseEntity<?> authenticate(@RequestBody LoginDto loginRequest) {
-	    try {
-	        // Log the incoming request for debugging purposes
-	        System.out.println("Attempting to authenticate user: " + loginRequest.getUsername());
-	
-	        // Authenticate the user based on username and password
-	        
-	        
-	        Object user = null;
-	        String jwt="";
-	        // Handle different user types
-	        switch (loginRequest.getUserType().toUpperCase()) {
-	            case "DEVELOPER":
-	                // For developers, fetch the developer by username
-	                Developer developer = developerService.getByUsername(loginRequest.getUsername());
-	                if (developer != null) {
-	                    user = developer;
-	                }
-	                break;
-	                
-	            case "STAFF":
-	                // For staff, fetch the staff member by username
-	                Staff staff = staffService.getByUsername(loginRequest.getUsername());
-	                if (staff != null) {
-	                    user = staff;
-	                }
-	                break;
-	
-	            case "HEADMASTER":
-	                // For headmasters, fetch the school by headmaster username
-	                School school = schoolService.getByUsername(loginRequest.getUsername());
-	                if (school != null) {
-	                    user = school;
-	                }
-	                break;
-	
-	            default:
-	                // Invalid user type provided in the request
-	                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid user type");
-	        }
-	
-	        // Check if user is found
-	        if (user != null) {
-	            // Generate a JWT for the authenticated user
-	            jwt = jwtUtil.generateTokenBasedOnRole(user);
-	            Map<String, String> response = new HashMap<>();
-	            response.put("token", jwt);
-	            return ResponseEntity.ok(response);
+	@PostMapping("/authenticate")
+public ResponseEntity<?> authenticate(@RequestBody LoginDto loginRequest) {
+    try {
+        // 1. Validate credentials using Spring Security
+        authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(
+                loginRequest.getUsername(),
+                loginRequest.getPassword()
+            )
+        );
 
-	        } else {
-	            // If no user is found, return a 404 (Not Found) response
-	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
-	        }
-	
-	    } catch (Exception e) {
-	        // Handle any errors that may occur during authentication
-	        System.err.println("Authentication failed: " + e.getMessage());
-	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username/password");
-	    }
-	}
+        // 2. Continue only if credentials are valid
+        Object user = null;
+        String jwt = "";
+
+        switch (loginRequest.getUserType().toUpperCase()) {
+            case "DEVELOPER":
+                Developer developer = developerService.getByUsername(loginRequest.getUsername());
+                if (developer != null) user = developer;
+                break;
+
+            case "STAFF":
+                Staff staff = staffService.getByUsername(loginRequest.getUsername());
+                if (staff != null) user = staff;
+                break;
+
+            case "HEADMASTER":
+                School school = schoolService.getByUsername(loginRequest.getUsername());
+                if (school != null) user = school;
+                break;
+
+            default:
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid user type");
+        }
+
+        if (user != null) {
+            jwt = jwtUtil.generateTokenBasedOnRole(user);
+            Map<String, String> response = new HashMap<>();
+            response.put("token", jwt);
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+
+    } catch (Exception e) {
+        // Catch invalid credentials
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
+    }
+}
 
 }
