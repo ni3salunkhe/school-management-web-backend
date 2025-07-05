@@ -38,9 +38,9 @@ public class OpeningBalController {
 	@Autowired
 	private SubHeadMasterService subHeadMasterService;
 
-	@GetMapping("/")
-	public ResponseEntity<List<OpeningBal>> getAllOpeningBalData() {
-		List<OpeningBal> openingBal = openingBalService.getAllData();
+	@GetMapping("/byudise/{udiseNo}")
+	public ResponseEntity<List<OpeningBal>> getAllOpeningBalData(@PathVariable long udiseNo) {
+		List<OpeningBal> openingBal = openingBalService.getAllData(udiseNo);
 		return new ResponseEntity<List<OpeningBal>>(openingBal, HttpStatus.OK);
 	}
 
@@ -70,9 +70,9 @@ public class OpeningBalController {
 		return new ResponseEntity<OpeningBal>(saveOpeningBal,HttpStatus.OK);
 	}
 	
-	@GetMapping("/sum")
-	public ResponseEntity<Map<String, Double>> getcrdrsum(){
-		Map<String, Double> openingBal = openingBalService.getSumCrDr();
+	@GetMapping("/sum/{udiseNo}")
+	public ResponseEntity<Map<String, Double>> getcrdrsum(@PathVariable long udiseNo){
+		Map<String, Double> openingBal = openingBalService.getSumCrDr(udiseNo);
 		
 		return ResponseEntity.ok(openingBal);
 	}

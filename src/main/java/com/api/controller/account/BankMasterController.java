@@ -52,6 +52,8 @@ public class BankMasterController {
 	@PostMapping("/")
 	public ResponseEntity<BankMaster> savebankdata(@RequestBody BankMasterDto bankDto) {
 
+		long id=subHeadMasterService.getNextLedgerId();
+		
 		CustomerMaster customerMaster=new CustomerMaster();
 		customerMaster.setCustName(bankDto.getBankname());
 		customerMaster.setHeadId(headMasterService.getById(bankDto.getHeadId()));
@@ -63,10 +65,12 @@ public class BankMasterController {
 		SubHeadMaster subHeadMaster=new SubHeadMaster();
 		subHeadMaster.setHeadId(headMasterService.getById(bankDto.getHeadId()));
 		subHeadMaster.setSchoolUdise(schoolService.getbyid(bankDto.getUdiseNo()));
-		subHeadMaster.setSubheadId(customerMaster.getCustId());
+		subHeadMaster.setSubheadId(id);
 		subHeadMaster.setSubheadName(bankDto.getBankname());
 		
 		SubHeadMaster saveSubHeadMaster= subHeadMasterService.postData(subHeadMaster);
+		
+		saveCustomerMaster.setSubheadId(saveSubHeadMaster);
 		
 		BankMaster bankMaster = new BankMaster();
 		School school = schoolService.getbyid(bankDto.getUdiseNo());
@@ -80,6 +84,7 @@ public class BankMasterController {
 			bankMaster.setAccounttype(accountType);
 			bankMaster.setAccountno(bankDto.getAccountno());
 			bankMaster.setHeadId(headMasterService.getById(bankDto.getHeadId()));
+			bankMaster.setSubHeadId(saveSubHeadMaster);
 			bankMaster.setCustId(saveCustomerMaster);
 			BankMaster saveBankMaster = bankMasterService.post(bankMaster);
 

@@ -85,6 +85,8 @@ public class CustomerMasterController {
 	public ResponseEntity<CustomerMaster> saveCustomerMasterData(@RequestBody CustomerMasterDto customerMasterDto) {
 		CustomerMaster customerMaster = new CustomerMaster();
 
+		long subheadId=subHeadMasterService.getNextLedgerId();
+		
 		customerMaster.setCustName(customerMasterDto.getCustName());
 		customerMaster.setCustAddress(customerMasterDto.getCustAddress());
 		customerMaster.setContactPerson(customerMasterDto.getContactPerson());
@@ -105,7 +107,7 @@ public class CustomerMasterController {
 
 		SubHeadMaster subHeadMaster = new SubHeadMaster();
 
-		subHeadMaster.setSubheadId(saveCustomerMaster.getCustId());
+		subHeadMaster.setSubheadId(subheadId);
 		subHeadMaster.setHeadId(saveCustomerMaster.getHeadId());
 		subHeadMaster.setSubheadName(saveCustomerMaster.getCustName());
 		subHeadMaster.setSchoolUdise(saveCustomerMaster.getSchoolUdise());

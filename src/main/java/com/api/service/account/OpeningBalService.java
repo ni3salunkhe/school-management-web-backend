@@ -8,7 +8,7 @@ import com.api.entity.account.OpeningBal;
 
 public interface OpeningBalService {
 	
-	public List<OpeningBal> getAllData();
+	public List<OpeningBal> getAllData(long udiseNo);
 	
 	public OpeningBal getByIdData(long id);
 	
@@ -18,5 +18,5 @@ public interface OpeningBalService {
 	
 	public void saveOpeningBalances(OpeningBalDto request);
 	
-	public Map<String, Double> getSumCrDr();
+	public Map<String, Double> getSumCrDr(long udiseNo);
 }

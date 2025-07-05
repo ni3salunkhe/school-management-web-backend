@@ -124,7 +124,7 @@ public class BankPaymentController {
 			
 			BankMaster bankMaster=bankMasterService.getbyid(bankPaymentDto.getBankId());
 			
-			
+			System.out.println(bankPaymentDto);
 			GeneralLedger crGeneralLedger=new GeneralLedger();
 			crGeneralLedger.setCrAmt(bankPaymentDto.getAmount());
 			crGeneralLedger.setCustId(bankMaster.getCustId());
@@ -135,6 +135,7 @@ public class BankPaymentController {
 			crGeneralLedger.setNarr(bankPaymentDto.getNarr());
 			crGeneralLedger.setShopId(schoolService.getbyid(bankPaymentDto.getSchoolUdise()));
 			crGeneralLedger.setSubhead(subHeadMasterService.getById(bankPaymentDto.getBankSubheadId()));
+			System.out.println(subHeadMasterService.getById(bankPaymentDto.getBankSubheadId()));
 			crGeneralLedger.setYear(bankPaymentDto.getYear());
 			
 			generalLedgerService.post(crGeneralLedger);

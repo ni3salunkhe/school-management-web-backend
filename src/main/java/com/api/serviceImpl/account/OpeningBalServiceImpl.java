@@ -48,9 +48,9 @@ public class OpeningBalServiceImpl implements OpeningBalService{
 	private static final Logger log = LoggerFactory.getLogger(OpeningBalServiceImpl.class);
 
 	@Override
-	public List<OpeningBal> getAllData() {
+	public List<OpeningBal> getAllData(long udiseNo) {
 		// TODO Auto-generated method stub
-		return openingBalRepository.findAll();
+		return openingBalRepository.findBySchoolUdiseUdiseNo(udiseNo);
 	}
 
 	@Override
@@ -119,8 +119,8 @@ public class OpeningBalServiceImpl implements OpeningBalService{
     }
 	
 	@Override
-	public Map<String, Double> getSumCrDr() {
-	    Object result = openingBalRepository.getTotalCreditAndDebit();
+	public Map<String, Double> getSumCrDr(long udiseNo) {
+	    Object result = openingBalRepository.getTotalCreditAndDebitByUdise(udiseNo);
 	    
 	    Object[] row = (Object[]) result;
 

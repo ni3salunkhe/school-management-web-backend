@@ -77,7 +77,7 @@ public class ExpensesVoucharController {
 		        "Expenses (Indirect)",
 		        "Purchase Accounts"
 		        );
-		SubHeadMaster customerSubhead = subHeadMasterService.getById(expensesVoucharDto.getCustId());
+		SubHeadMaster customerSubhead = customerMasterService.getById(expensesVoucharDto.getCustId()).getSubheadId();
 		SubHeadMaster expenseSubhead = subHeadMasterService.getById(expensesVoucharDto.getSubheadId());
 
 		String bookSideName = customerSubhead.getHeadId().getBookSideMaster().getBooksideName();

@@ -43,4 +43,8 @@ public class BankMaster {
 	@ManyToOne
 	@JoinColumn(name = "cust_id")
 	private CustomerMaster custId;
+	
+	@ManyToOne
+	@JoinColumn(name = "subhead_id")
+	private SubHeadMaster subHeadId;
 }
